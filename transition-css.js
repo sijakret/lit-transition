@@ -73,7 +73,7 @@ export function transitionCSS(elem, opts) {
     configure();
 
     // execute cycle
-    requestAnimationFrame( () => {
+    requestAnimationFrame( () => requestAnimationFrame( () => {
       a = [name+'-enter-active',name+'-enter-to'];
       b = [name+'-leave-active', name+'-leave-to'];
       configure();
@@ -111,7 +111,7 @@ export function transitionCSS(elem, opts) {
           configure();
         }
       }
-    });
+    }));
   }
 }
 
