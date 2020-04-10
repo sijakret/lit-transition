@@ -10,7 +10,7 @@ export class Predefined {
 const def = (name, css) => new Predefined(name, css);
 
 export const swipe = function({
-  duration = 0.3,
+  duration = 2,
   direction = 'right',
   ease = 'ease-out',
   opacity = 0.0} = {}) {

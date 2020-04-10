@@ -1,24 +1,33 @@
 
-import {directive, NodePart, html} from 'lit-html';
+import {NodePart, html} from 'lit-html';
 import {classMap} from 'lit-html/directives/class-map';
 import {Predefined} from './styles';
 
 const previous = new WeakMap();
 
-export function transitionCSS(elem, opts = {}) {
+export function transitionCSS(elem, opts) {
+
+  if(opts instanceof Predefined) {
+    opts = {
+      css: opts.css,
+      name: opts.name
+    }
+  }
+  if(opts instanceof Function) {
+    opts = opts();
+  }
+
+  if(!opts) {
+    // no transition configured
+    return container => container.setValue(elem);
+  }
+
   let {
     duration = undefined,
-    name = "swipe"
-  } = typeof opts === Object ? opts : { name: opts };
+    css = undefined,
+    name = undefined
+  } = opts;
 
-  if(name instanceof Function) {
-    name = name();
-  }
-  let css = undefined;
-  if(name instanceof Predefined) {
-    css = name.css
-    name = name.name
-  }
   return (container) => {
     if (!(container instanceof NodePart)) {
       throw new Error('The `transition` directive must be used on nodes');
@@ -27,7 +36,7 @@ export function transitionCSS(elem, opts = {}) {
     // get current and previous element
     // prev may not exist
     const prev = previous.get(container) || undefined;
-    const next = elem;
+    const next = elem; // guard([], () => elem);
     previous.set(container, elem);
 
     // initial configuration
@@ -39,7 +48,7 @@ export function transitionCSS(elem, opts = {}) {
 
     // configures classes of support dom
     function configure() {
-      container.setValue(b&&prev ? html`
+      container.setValue( html`
       ${css}
       <div class=${
         classMap(a.reduce((acc,i) => ({...acc, [i]: true }), {}))
@@ -47,12 +56,16 @@ export function transitionCSS(elem, opts = {}) {
       @transitionend=${() => eend()}
       @animationend=${() => eend()}
       >${next}</div>
-      <div class=${
-        classMap(b.reduce((acc,i) => ({...acc, [i]: true }), {}))
-      }
-      @transitionend=${() => lend()}
-      @animationend=${() => lend()}
-      >${prev}</div>` : next);
+      ${b&&prev ?
+        html `<div class=${
+          classMap(b.reduce((acc,i) => ({...acc, [i]: true }), {}))
+          }
+          @transitionend=${() => lend()}
+          @animationend=${() => lend()}
+          >${prev}</div>`
+        : undefined
+      }`
+      );
       container.commit();
     } 
 
