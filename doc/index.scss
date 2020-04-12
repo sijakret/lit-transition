@@ -1,0 +1,94 @@
+body, html {
+  font-family: Roboto;
+  display: flex;
+  flex-direction: column;
+  --theme-color: #9999ff; 
+  --bg-color: #FFFFFF; 
+  padding: 0px;
+  overflow: hidden;
+  margin: 0px;  
+  height: 100%;
+}
+
+doc-app {
+  overflow: hidden;
+  flex: 1 1;
+}
+
+header {
+  height: 60px;
+  position: fixed;
+  z-index: 1;
+  top: 0px;
+  width: 100%;
+  background-color: var(--theme-color);  
+  padding-left: 80px;
+  font-size: 20px;
+  line-height: 60px;
+  font-weight: 600;
+  color: #ffffff;  
+}
+
+main {
+  display: flex;
+  flex: 1 1;
+  flex-direction: row;
+  overflow: hidden;
+  padding-left: 32px;
+  padding-top: 0px;
+  padding-right: 32px;
+  height: calc(100%);
+}
+
+nav {
+  position: fixed;
+  top: 70px;
+  padding: 40px;
+  width: 300px;
+  > a {
+    color: inherit;
+    display: block;
+    cursor: pointer;
+    padding: 10px;
+  }
+  > a[active], > a:hover {
+    color: var(--theme-color);  
+  }
+}
+
+content {
+  flex: 1 1;
+  overflow: auto;
+  margin-left: 300px;
+  padding-top: 90px;
+  padding-bottom: 50px;
+  h1[title] {
+    color: var(--theme-color);  
+  }
+}
+
+a {
+  text-decoration: none;
+}
+a:visited {
+  color: inherit;
+}
+
+
+[home] {
+  display: flex;
+  flex: 1 1;
+  margin-top: 60px;
+  height: 100%;
+  > * {
+    margin: auto;
+  }
+  h1 {
+    font-size: 50px;
+  }
+  background-image: linear-gradient(
+    to bottom right,
+    var(--bg-color),
+    var(--theme-color));
+  
+}
