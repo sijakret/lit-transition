@@ -1,9 +1,9 @@
 
 import {NodePart, html} from 'lit-html';
-import {classMap} from 'lit-html/directives/class-map';
+import classList from './class-list';
 import {Predefined} from './styles';
 
-const previous = new WeakMap();
+const setup = new WeakMap();
 
 export function transitionCSS(elem, opts) {
 
@@ -35,9 +35,41 @@ export function transitionCSS(elem, opts) {
 
     // get current and previous element
     // prev may not exist
-    const prev = previous.get(container) || undefined;
-    const next = elem; // guard([], () => elem);
-    previous.set(container, elem);
+    let data = setup.get(container);
+    let stylePart = undefined;
+    let currentPart = undefined;
+    let nextPart = undefined;
+    if(!data) {
+      // init
+      stylePart = new NodePart(container.options);
+      stylePart.appendIntoPart(container);
+      currentPart = new NodePart(container.options);
+      currentPart.appendIntoPart(container);
+      nextPart = new NodePart(container.options);
+      nextPart.appendIntoPart(container);
+      const data = {
+        currentPart,
+        nextPart,
+        stylePart
+      }
+      setup.set(container, data);
+
+      currentPart.setValue(elem);
+      currentPart.commit();
+    } else {
+      stylePart = data.stylePart;
+
+      nextPart = data.nextPart;
+      currentPart = data.currentPart;
+
+      // set incomming
+      nextPart.setValue(elem);
+      nextPart.commit();
+
+      // swap
+      data.currentPart = nextPart;
+      data.nextPart = currentPart;
+    }
 
     // initial configuration
     // always the same
@@ -48,25 +80,16 @@ export function transitionCSS(elem, opts) {
 
     // configures classes of support dom
     function configure() {
-      container.setValue( html`
-      ${css}
-      <div class=${
-        classMap(a.reduce((acc,i) => ({...acc, [i]: true }), {}))
-      }
-      @transitionend=${() => eend()}
-      @animationend=${() => eend()}
-      >${next}</div>
-      ${b&&prev ?
-        html `<div class=${
-          classMap(b.reduce((acc,i) => ({...acc, [i]: true }), {}))
-          }
-          @transitionend=${() => lend()}
-          @animationend=${() => lend()}
-          >${prev}</div>`
-        : undefined
-      }`
-      );
-      container.commit();
+      stylePart.setValue(css);
+      stylePart.commit();
+
+      // container.setValue( html`
+      // ${css}
+      // ${next}
+      // ${b&&prev ? prev: undefined
+      // }`
+      // );
+      // container.commit();
     } 
 
     // configure initially
@@ -114,75 +137,3 @@ export function transitionCSS(elem, opts) {
     }));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const map = new WeakMap();
-
-
-
-
-function nestOnce(container) {
-  return map.has(container) ? map.get(container) : (() => {
-    const newPart = new NodePart(container.options);
-    newPart.appendIntoPart(container);  
-    map.set(container, newPart);
-    return newPart;
-  })();
-}
-
-function classList(element) {
-  return (element.classList || new ClassList(element));
-}
-
-class ClassList {
-  constructor(element) {
-    this.classes = new Set();
-    this.changed = false;
-    this.element = element;
-    const classList = (element.getAttribute('class') || '').split(/\s+/);
-    for (const cls of classList) {
-      this.classes.add(cls);
-    }
-  }
-  add(cls) {
-    this.classes.add(cls);
-    this.changed = true;
-  }
-
-  remove(cls) {
-    this.classes.delete(cls);
-    this.changed = true;
-  }
-
-  commit() {
-    if (this.changed) {
-      let classString = '';
-      this.classes.forEach((cls) => classString += cls + ' ');
-      this.element.setAttribute('class', classString);
-    }
-  }
-}
-    

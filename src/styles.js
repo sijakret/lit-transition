@@ -1,13 +1,14 @@
 import {html} from 'lit-html';
 
-export class Predefined {
-  constructor(name, css) {
-    this.name = name;
+export class Transition {
+  constructor(css) {
     this.css = html`<style>${css}</style>`;
   }
 };
 
-const def = (name, css) => new Predefined(name, css);
+const def = (css) => ({
+  transition: new Transition(css)
+});
 
 export const swipe = function({
   duration = 2,
@@ -16,30 +17,27 @@ export const swipe = function({
   opacity = 0.0} = {}) {
 
   const swap = direction === 'right' ? 'left' : 'right';
-  return def(`swipe-${direction}`, `
-  .swipe-${direction}-enter-active, .swipe-${direction}-leave-active {
+  return def(`
+  .anim-active {
     position: absolute;
-    display: flex;
-    width: 100%;
-    height: 100%;
     transition: opacity ${duration}s ${ease}, left ${duration}s ${ease}, right ${duration}s ${ease}, ${direction} ${duration}s ${ease};
   }
-  .swipe-${direction}-enter {
+  .anim-enter {
     opacity: ${opacity};
   }
-  .swipe-${direction}-leave-to {
+  .anim-leave-to {
     opacity: 1;
   }
-  .swipe-${direction}-enter {
+  .anim-enter {
     ${direction}: 100%;
   }
-  .swipe-${direction}-enter-to {
+  .anim-enter-to {
     ${direction}: 0%;
   }
-  .swipe-${direction}-leave {
+  .anim-leave {
     ${swap}: 0%;
   }
-  .swipe-${direction}-leave-to {
+  .anim-leave-to {
     ${swap}: 100%;
   }`);
 };
@@ -50,9 +48,6 @@ export const fade = function({
   opacity = 0.0} = {}) {
   return def(`fade`, `
   .fade-enter-active, .fade-leave-active {
-    display: flex;
-    width: 100%;
-    height: 100%;
     position: absolute;
     transition: opacity ${duration}s ${ease};
   }
