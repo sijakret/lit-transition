@@ -1,7 +1,6 @@
+import {lockExtents} from './utils';
 
-const def = transition => ({
-  transition
-});
+const def = transition => transition;
 
 export const swipe = function({
   duration = 0.2,
@@ -39,7 +38,7 @@ export const swipe = function({
 };
 
 export const land = function({
-  duration = 0.8,
+  duration = 300,
   direction = 'right',
   easing = 'ease-out',
   transformOrigin = 'left',
@@ -98,27 +97,6 @@ export const land = function({
   });
 };
 
-function lockExtents(e) {
-  const rect = e.getBoundingClientRect();
-  const style = e.currentStyle || window.getComputedStyle(e);
-  let mt = parseFloat(style.marginTop) || 0;
-  let ml = parseFloat(style.marginLeft) || 0;
-  let scrollTop = 0;
-  let scrollLeft = 0;
-  {
-    let p = e;
-    while(p && p != e.offsetParent) {
-      scrollTop += p.scrollTop;
-      scrollLeft += p.scrollLeft;
-      p = p.parentElement;
-    }
-  }
-  e.style.left = (e.offsetLeft-ml-scrollLeft)+'px';
-  e.style.top = (e.offsetTop-mt-scrollTop)+'px';
-  e.style.width = (rect.width)+'px';
-  e.style.height = (rect.height)+'px';
-  e.style.position = 'absolute';
-}
 
 
 

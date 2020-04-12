@@ -3,6 +3,9 @@ import {
   directive
 } from 'lit-html';
 
+export * from './anims';
+export {mark} from './utils';
+
 import {partDom} from './utils';
 import {transitionBase} from './transition-base';
 import 'web-animations-js';
@@ -27,10 +30,6 @@ import 'web-animations-js';
   }
  }
 
-
-
-
-export * from './anims';
 export const transition = directive(function(elem:any, opts:any = {}) {
   if(typeof opts === 'function') {
     opts = opts();

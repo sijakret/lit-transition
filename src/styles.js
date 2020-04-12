@@ -3,12 +3,20 @@ import {html} from 'lit-html';
 export class Transition {
   constructor(css) {
     this.css = html`<style>${css}</style>`;
+    this.leave = {
+      active: 'enter-active',
+      from: 'enter-from',
+      to: 'enter-to',
+    };
+    this.enter = {
+      active: 'leave-active',
+      from: 'leave-from',
+      to: 'leave-to',
+    };
   }
 };
 
-const def = (css) => ({
-  transition: new Transition(css)
-});
+const def = (css) => new Transition(css);
 
 export const swipe = function({
   duration = 2,
@@ -57,6 +65,42 @@ export const fade = function({
   `);
 };
 
+export const land = function({
+  duration = 2000,
+  direction = 'right',
+  ease = 'ease-out',
+  opacity = 0.0} = {}) {
+  return def(`
+  .enter-active, .leave-active {
+    position: fixed;
+    transition: opacity ${duration}ms ${ease},
+      left ${duration}ms ${ease},
+      right ${duration}ms ${ease},
+      ${direction} ${duration}ms
+      ${ease};
+  }
+  .enter-to {
+    opacity: ${opacity};
+  }
+  .leave-to {
+    opacity: ${opacity};
+  }`);
+};
 
+/*
+
+  .anim-enter {
+    ${direction}: 100%;
+  }
+  .anim-enter-to {
+    ${direction}: 0%;
+  }
+  .anim-leave {
+    ${swap}: 0%;
+  }
+  .anim-leave-to {
+    ${swap}: 100%;
+  }
+  */
 
 

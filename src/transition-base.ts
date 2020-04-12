@@ -3,23 +3,32 @@ import {
   TemplateResult
 } from 'lit-html';
 import {
-  sameTemplate,
-  sameValues
+  unpackMarked
 } from './utils'
 
 const setup = new WeakMap();
 
 export function transitionBase(flow:any) {
  
-  return (incoming:TemplateResult, opts : any)  => {
-    const { transition } = opts;
+  return (tr:TemplateResult, transition : any)  => {
     return async (container:NodePart) => {
       if (!(container instanceof NodePart)) {
         throw new Error('The `transition` directive must be used on nodes');
       }
+
+      const {
+        tr: incoming,
+        name
+      } = unpackMarked(tr);
   
       // data for container
       let data = setup.get(container);
+
+      const {
+        enter,
+        leave,
+        mode = 'in-out'
+      } = transition;
   
       // adds new template result
       function add(e:TemplateResult) {
@@ -36,14 +45,14 @@ export function transitionBase(flow:any) {
       }
   
       // perform enter transition
-      async function enter(part:NodePart) {
+      async function enterFlow(part:NodePart) {
         // first mount element
-        flow.transition(part, transition.enter);
+        await flow.transition(part, enter);
       }
   
       // perform enter transition
-      async function leave(part:NodePart) {
-        await flow.transition(part, transition.leave);
+      async function leaveFlow(part:NodePart) {
+        await flow.transition(part, leave);
         remove(part);
       }
   
@@ -56,7 +65,7 @@ export function transitionBase(flow:any) {
       }
 
       // same template? no animation! 
-      if(data.last && sameTemplate(data.last, incoming) && sameValues(data.last,incoming)) {
+      if(data.last && !!name && name === data.name) {
         // simply commit
         data.last.setValue(incoming);
         data.last.commit();
@@ -66,16 +75,20 @@ export function transitionBase(flow:any) {
       // update css
       if(flow.init) {
         flow.init({
-          opts,
+          transition,
           data,
           add,
           remove
         });
       }      
-      data.last && leave(data.last);
-      enter(data.last = add(incoming));
+      if(mode === 'out-in') {
+        data.last && await leaveFlow(data.last);
+      } else {
+        data.last && leaveFlow(data.last);
+      }
+      enterFlow(data.last = add(incoming));
+      data.name = name;
       data.lastTemplate = incoming;
-      container.commit();
     }
   }  
 }

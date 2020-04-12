@@ -3,62 +3,87 @@ import {
   directive
 } from 'lit-html';
 
-import classList from './class-list';
-import {nextFrame, partDom} from './utils';
 import {transitionBase} from './transition-base';
 
+export * from './styles';
+export {mark} from './utils';
+export const transition = directive(function(elem:any, opts:any = {}) {
+  if(typeof opts === 'function') {
+    opts = opts();
+  }
+  return transitionBase(flow)(elem, opts);
+});
+
+
+
 // takes care of scheduling css transitons
+import classList from './class-list';
+import {nextFrame, partDom, applyExtents, recordExtends} from './utils';
 const flow = {
-  async transition(part:NodePart, type:string) {
+  async transition(part:NodePart, classes:any) {
+    if(typeof classes === 'string' || Array.isArray(classes)) {
+      classes = {
+        active: classes
+      };
+    }
+    // destructure params
+    const {
+      active,
+      from,
+      to,
+      lock
+    } = classes;
+    const dom = partDom(part);
+
+    let extents: any;
+    if(lock) {
+      extents = recordExtends(dom);
+    }
     await new Promise(async resolve => {
-      const name = 'anim';
       const id = Math.random();
-      const dom = partDom(part);
       const cl = classList(dom);
+      const add = (c:Array<string>) => Array.isArray(c) ?
+        c.forEach((i:string) => cl.add(i)) : cl.add(c);
+      const remove = (c:Array<string>) => Array.isArray(c) ?
+        c.forEach((i:string) => cl.remove(i)) : cl.remove(c);
+
       const cancelled = !!dom.__transition_id;
       if(cancelled) {
         await dom.__cancel__transition();
-        cl.add(`${name}-active`);
+        active && add(active);
       }
   
       // wait for dom to update initially
       await nextFrame();
+      if(extents) {
+        applyExtents(dom, extents);
+      }
       dom.__transition_id = id;
       dom.__cancel__transition = async () => {
         delete dom.__cancel__transition;
         delete dom.__transition_id;
-        cl.remove(`${name}-active`);
-        cl.remove(`${name}-${type}-active`);
-        cl.remove(`${name}-${type}-to`);
-        cl.remove(`${name}-${type}`);
+        active && remove(active);
+        from && remove(from);
+        to && remove(to);
         resolve();
       }
-      cl.add(`${name}-${type}-active`);
-      cl.add(`${name}-active`);
-      !cancelled && cl.add(`${name}-${type}`);
+      active && add(active);
+      !cancelled && from && add(from);
       await nextFrame();
-      !cancelled && cl.remove(`${name}-${type}`);
-      cl.add(`${name}-${type}-to`);
+      !cancelled && from && remove(from);
+      to && add(to);
       // wait for transition to complete
-      dom.addEventListener('transitionend', async () => {
+      const done = async () => {
         if(dom.__transition_id === id) {
           await dom.__cancel__transition();
-          // cl.remove(`${name}-active`);
-          // cl.remove(`${name}-${type}-active`);
-          // cl.remove(`${name}-${type}-to`);
-          // cl.remove(`${name}-${type}`);
         }
-      }, {once: true})
+      }
+      dom.addEventListener('transitionend', done, {once: true})
+      dom.addEventListener('animationend', done, {once: true})
     });
   },
-  init({data,remove,add,opts}:{data:any,remove:any,add:any,opts:any}) {
+  init({data,remove,add,transition}:{data:any,remove:any,add:any,transition:any}) {
     data.css && remove(data.css);
-    data.css = add(opts.transition.css);
+    data.css = add(transition.css);
   }
 };
-
-
-export * from './styles';
-export const transition = directive(function(elem:any, opts:any = {}) {
-  return transitionBase(flow)(elem, opts);
-});
