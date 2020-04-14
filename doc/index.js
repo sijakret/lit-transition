@@ -1,12 +1,20 @@
 import './index.scss';
 import 'markdown-it-highlight/dist/index.css';
+import 'highlight.js/styles/hybrid.css';
 
 // Import the LitElement base class and html tag function
-import { html, svg } from 'lit-element';
+import { LitElement, html, svg } from 'lit-element';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 import index from './loaders/index?folder=./guide!./loaders/index';
 import router from './router';
-import {transition, land, mark } from '../src/transition-css';
+import {transition, land, mark } from 'lit-transition';
+import './demo';
+
+window.globals = {
+  transition,
+  LitElement,
+  html
+}
 
 //const transPage = land;
 //const transTitle = land({y:'-30px', duration: 500});
@@ -28,6 +36,7 @@ const transTitle = {
   }
 };
 const transContent = transTitle;
+window.transPage = transPage;
 
 // routing
 const routes = [

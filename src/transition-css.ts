@@ -4,10 +4,11 @@ import {
 } from 'lit-html';
 
 import {transitionBase} from './transition-base';
+import {defaultTransition} from './styles';
 
 export * from './styles';
 export {mark} from './utils';
-export const transition = directive(function(elem:any, opts:any = {}) {
+export const transition = directive(function(elem:any, opts:any = defaultTransition) {
   if(typeof opts === 'function') {
     opts = opts();
   }

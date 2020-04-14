@@ -9,13 +9,13 @@ const md = new MarkdownIt({
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
-        return '<pre class="highlight"><code>' +
+        return '<pre class="hljs"><code>' +
                hljs.highlight(lang, str, true).value +
                '</code></pre>';
       } catch (__) {}
     }
 
-    return '<pre class="highlight"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
   }
 });
 
@@ -28,18 +28,23 @@ module.exports = function(source) {
   const data = files.map(file => {
     const mdFile = path.join(root,file);
     this.dependency(mdFile);
-    const markdown = fs.readFileSync(mdFile, 'utf8').split('\n');
+    let markdown = fs.readFileSync(mdFile, 'utf8').split('\n');
     const title = markdown[0]
-    // markdown = markdown.map(l => {
-    //   const m = line.match(/CODE:(.*)/);
-    //   if(m) {
-    //     return require('js')
-    //   }
-    // })
+    markdown = markdown.slice(1).join('\n')
+    markdown = markdown.replace(/<script>([\s\S]*)<\/script>/g,(match, code) => {
+      return `\`\`\`javascript
+${code.trim()}
+\`\`\`
+<doc-demo>
+<!--${code.split('\n').filter(l => !!l.trim()).join('\n')}-->
+</doc-demo>
+      `;
+    });
+
     return {
       file,
       title,
-      data: md.render(markdown.slice(1).join('\n'))
+      data: md.render(markdown)
     }
   })
   return `export default ${ JSON.stringify(data) }`;

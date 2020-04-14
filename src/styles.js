@@ -18,39 +18,39 @@ export class Transition {
 
 const def = (css) => new Transition(css);
 
-export const swipe = function({
-  duration = 2,
+export function swipe({
+  duration = 300,
   direction = 'right',
   ease = 'ease-out',
   opacity = 0.0} = {}) {
 
   const swap = direction === 'right' ? 'left' : 'right';
   return def(`
-  .anim-active {
+  .enter-active {
     position: absolute;
-    transition: opacity ${duration}s ${ease}, left ${duration}s ${ease}, right ${duration}s ${ease}, ${direction} ${duration}s ${ease};
+    transition: opacity ${duration}ms ${ease}, left ${duration}ms ${ease}, right ${duration}ms ${ease}, ${direction} ${duration}ms ${ease};
   }
-  .anim-enter {
+  .enter-from {
     opacity: ${opacity};
   }
-  .anim-leave-to {
+  .leave-to {
     opacity: 1;
   }
-  .anim-enter {
+  .enter-from {
     ${direction}: 100%;
   }
-  .anim-enter-to {
+  .enter-to {
     ${direction}: 0%;
   }
-  .anim-leave {
+  .leave-active {
     ${swap}: 0%;
   }
-  .anim-leave-to {
+  .leave-to {
     ${swap}: 100%;
   }`);
 };
 
-export const fade = function({
+export function fade({
   duration = 0.8,
   ease = 'ease-out',
   opacity = 0.0} = {}) {
@@ -65,7 +65,7 @@ export const fade = function({
   `);
 };
 
-export const land = function({
+export function land({
   duration = 2000,
   direction = 'right',
   ease = 'ease-out',
@@ -87,20 +87,4 @@ export const land = function({
   }`);
 };
 
-/*
-
-  .anim-enter {
-    ${direction}: 100%;
-  }
-  .anim-enter-to {
-    ${direction}: 0%;
-  }
-  .anim-leave {
-    ${swap}: 0%;
-  }
-  .anim-leave-to {
-    ${swap}: 100%;
-  }
-  */
-
-
+export const defaultTransition = swipe;
