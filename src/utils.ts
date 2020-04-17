@@ -7,7 +7,32 @@ import {
 
 export function nextFrame(n = 1):Promise<void> {
   return new Promise(resolve => 
-    --n === 0 ? requestAnimationFrame(() => resolve()) : nextFrame(n));
+    --n === 0 ? requestAnimationFrame(() => resolve()) :
+      resolve(nextFrame(n)));
+}
+
+/**
+ * resolves once the class attribute of a node
+ * has been consolidated
+ * @param node DOMNode
+ */
+export function classChanged(node:HTMLElement, cb:Function|null = null, skipFrame:Boolean = true) {
+  return new Promise(resolve => {
+    // Create an observer instance linked to the callback function
+    const observer = new MutationObserver(async () => {
+      // Later, you can stop observing
+      observer.disconnect();
+      skipFrame && await nextFrame();
+      resolve();
+    });
+    // Start observing the target node for configured mutations
+    observer.observe(node, {
+      attributes: true,
+      attributeFilter: ["class"]
+    });
+    cb && cb();
+  });
+
 }
 
 export function partDom(part:NodePart):any {
@@ -30,45 +55,33 @@ export function sameValues(part:any, tr:any) {
   }, true);
 }
 
-//const named = new WeakMap<TemplateResult,String>();
+const markedTemplates = new WeakMap<TemplateResult,String>();
 
-export class MarkedTemplateResult {
-  tr:TemplateResult
-  name: String
-
-  constructor(tr:TemplateResult, name:String) {
-    this.tr = tr;
-    this.name = name;
-  }
-}
-export function mark(tr:TemplateResult, name:String) {
-  return new MarkedTemplateResult(tr,name);
+export function mark(templateResult:TemplateResult, name:String) {
+  markedTemplates.set(templateResult, name);
+  return templateResult;
 }
 
-export function unpackMarked(tr:TemplateResult|MarkedTemplateResult) {
-  return tr instanceof MarkedTemplateResult ? {
-    name: tr.name,
-    tr: tr.tr
-  } : {
-    tr
-  }
+export function marked(templateResult:TemplateResult) {
+  return markedTemplates.get(templateResult);
 }
 
 /**
  * records geometry of a dom node
  */
-export function recordExtends(e:HTMLElement) {
+export function recordExtents(e:HTMLElement) {
   const rect = e.getBoundingClientRect();
   const style = window.getComputedStyle(e);
   let top = e.offsetTop - parseFloat(style.marginTop) || 0;
   let left = e.offsetLeft - parseFloat(style.marginLeft) || 0;
   {
-    let p:HTMLElement|null = e;
-    while(p && p != e.offsetParent) {
-      top -= p.scrollTop;
-      left -= p.scrollLeft;
-      p = p.parentElement;
-    }
+    let p:any = e;
+    do {
+      p = p.parentNode || p.host;
+      if(!p) break;
+      top -= p.scrollTop || 0;
+      left -= p.scrollLeft || 0;
+    } while(p != e.offsetParent)
   }
   return {
     left,
@@ -115,3 +128,14 @@ export function lockExtents(e:HTMLElement, offset:Boolean = true) {
 
 
 
+
+let _visible:Boolean;
+function updteVisibility(){
+  _visible = !document.hidden;
+}
+updteVisibility();
+document.addEventListener('visibilitychange', updteVisibility, false);
+
+export function pageVisible() {
+  return _visible;
+}

@@ -1,20 +1,14 @@
 import './index.scss';
-import 'markdown-it-highlight/dist/index.css';
 import 'highlight.js/styles/hybrid.css';
 
 // Import the LitElement base class and html tag function
-import { LitElement, html, svg } from 'lit-element';
+import { css, html, svg } from 'lit-element';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
-import index from './loaders/index?folder=./guide!./loaders/index';
+import {cache} from 'lit-html/directives/cache';
+import {index} from './loaders/md-loader?folder=./guide!';
 import router from './router';
-import {transition, land, mark } from 'lit-transition';
+import {transition, slide, mark } from 'lit-transition';
 import './demo';
-
-window.globals = {
-  transition,
-  LitElement,
-  html
-}
 
 //const transPage = land;
 //const transTitle = land({y:'-30px', duration: 500});
@@ -46,9 +40,15 @@ const routes = [
   },
   ...index.map(i => ({
     name: i.title,
+    index: i.index,
     pattern: i.file,
     data: {
-      render: () => html`<div>${unsafeHTML(i.data)}</div>`,
+      render: () => {
+        // debugger
+        // const im = await load(i.import);
+        // const {default: page} = 
+        return html`<div>${unsafeHTML(i.markdown)}</div>`;
+      },
       title: i.title
     }
   }))
@@ -64,20 +64,22 @@ class Component extends router(routes) {
 
   render() {
     return html`
-    <page @click=${e => {
-     if(e.target.tagName === 'A') {
-       const href = e.target.href;
-       if(href.startsWith(window.location.origin)) {
-         e.preventDefault();
-         this.navigate(href);
-       }
-     }
+    <div @click=${(e) => {
+      if(e.target.tagName === 'A') {
+        const href = e.target.href;
+        if(href.startsWith(window.location.origin)) {
+          e.preventDefault();
+          this.navigate(href);
+        }
+      }
     }}>
-    <header>
+    ${cache(
+      html`<header>
       <a href="/">lit-transition <span>${require('../package.json').version}</span></a>
       <a href=${index[0].file}>${github}</a>
       <a href=${index[0].file}>doc</a>
-    </header>
+    </header>`
+    )}
     ${transition(
       this.route === 'Home' ?
       mark(this.home,'home') :
@@ -87,18 +89,23 @@ class Component extends router(routes) {
         </nav>
         <content>
           ${transition(this.renderRouteTitle(),transTitle)}
-          <demo-land></demo-land>
           ${transition(this.renderRoute(), transContent)}
         </content>
       </main>`, 'page'),
       transPage
     )}
-    <page>`;
+    </div>`;
   }
 
   get nav() {
     return index.map(i => {
-      return html`<a href=${i.file} ?active=${this.route===i.title}>${i.title}</a>`
+      const active = this.route===i.title;
+      return [
+        html`<a href=${i.file} ?active=${active}>${i.title}</a>`,
+        transition(active ? html`<ul>
+          ${i.index.map(s => html`<li><a href=${i.file}>${s}</a></li>` )}
+        </ul>` : undefined, slide())
+      ]
     });
   }
   
