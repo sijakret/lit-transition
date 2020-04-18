@@ -32,6 +32,7 @@ const transTitle = {
 const transContent = transTitle;
 window.transPage = transPage;
 
+
 // routing
 const routes = [
   {
@@ -54,6 +55,13 @@ const routes = [
   }))
 ];
 
+function show(sel, offset) {
+  const top = document.querySelector(sel)
+    .getBoundingClientRect().top + window.pageYOffset - offset;
+
+  window.scrollTo({top, behavior: 'smooth'});
+}
+
 // main app
 class Component extends router(routes) {
   
@@ -70,6 +78,7 @@ class Component extends router(routes) {
         if(href.startsWith(window.location.origin)) {
           e.preventDefault();
           this.navigate(href);
+          show('#top');
         }
       }
     }}>
@@ -84,6 +93,7 @@ class Component extends router(routes) {
       this.route === 'Home' ?
       mark(this.home,'home') :
       mark(html`<main>
+        <a id="top"></a>
         <nav>
           ${this.nav}
         </nav>
@@ -103,7 +113,9 @@ class Component extends router(routes) {
       return [
         html`<a href=${i.file} ?active=${active}>${i.title}</a>`,
         transition(active ? html`<ul>
-          ${i.index.map(s => html`<li><a href=${i.file}>${s}</a></li>` )}
+          ${i.index.map((s,j) => html`<li>
+          <a @click=${() => show('#sec-'+j, 100)}>${s}</a>
+          </li>` )}
         </ul>` : undefined, slide())
       ]
     });

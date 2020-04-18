@@ -95,7 +95,8 @@ function toc(md) {
   console.log(md);
   md = md.replace(new RegExp('(#+) (.*)', 'ig'), (match, h, title) => {
     index.push(title)
-    return match;
+    return `<a id="sec-${index.length-1}"></a>
+${match}`;
   });
   return {
     index,
