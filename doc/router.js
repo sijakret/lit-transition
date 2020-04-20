@@ -1,9 +1,32 @@
 import { LitElement, html } from 'lit-element';
 import { navigator, router } from 'lit-element-router';
+import {index} from './loaders/md-loader?folder=./guide!';
+import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 
  
-// OR
-export default function(routes) {
+// routing
+const routes = [
+  {
+    name: 'Home',
+    pattern: '*'
+  },
+  ...index.map(i => ({
+    name: i.title,
+    index: i.index,
+    pattern: i.file,
+    data: {
+      render: () => {
+        // debugger
+        // const im = await load(i.import);
+        // const {default: page} = 
+        return html`<div>${unsafeHTML(i.markdown)}</div>`;
+      },
+      title: i.title
+    }
+  }))
+];
+
+export default function() {
   return class Router extends navigator(router(LitElement)) {
     static get properties() {
       return {
@@ -32,10 +55,11 @@ export default function(routes) {
       this.routeData = data;
     }
   
-    renderRouteTitle() {
+    get routeTitle() {
       return this.routeData && html`<h1 title>${this.routeData.title}</h1>`;
     }
-    renderRoute() {
+    
+    get renderContent() {
       return this.routeData && this.routeData.render();
     }
   }

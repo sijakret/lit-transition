@@ -12,7 +12,6 @@ body, html {
   flex: 1 1;
 }
 
-
 code {
   color: var(--theme-color);
 }
@@ -68,7 +67,6 @@ header {
 }
 
 
-
 main {
   display: flex;
   flex: 1 1;
@@ -81,9 +79,9 @@ main {
 
 nav {
   position: fixed;
-  top: 70px;
-  padding-top: 40px;
-  width: 300px;
+  top: 110px;
+  left: var(--nav-left);
+  width: var(--nav-width);
   a {
     color: inherit;
     display: block;
@@ -107,9 +105,9 @@ nav {
 
 content {
   flex: 1 1;
-  max-width: 700px;
-  margin-left: 300px;
-  width: calc(100% - 300px);
+  max-width: 600px;
+  margin-left: var(--nav-width);
+  width: calc(100% - var(--nav-width));
   margin-top: 90px;
   padding-bottom: 50px;
   h1[title] {
@@ -124,15 +122,16 @@ content {
   }
 }
 
+[app] {
+  --nav-width: 260px;
+  --nav-left: 40px;
+}
+
 // Medium devices (tablets, 768px and up)
 @media (max-width: 768px) {
-  nav {
-    width: 200px;
-    padding-left: 0px;
-  }
-  content {
-    margin-left: 200px;
-    width: calc(100% - 200px);
+  [app] {
+    --nav-left: 20px;
+    --nav-width: 200px;
   }
 }
 

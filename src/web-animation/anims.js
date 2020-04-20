@@ -1,4 +1,4 @@
-import {lockExtents} from './utils';
+import {lockExtents} from '../core';
 
 const def = transition => transition;
 

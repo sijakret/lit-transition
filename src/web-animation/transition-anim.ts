@@ -4,10 +4,10 @@ import {
 } from 'lit-html';
 
 export * from './anims';
-export {mark} from './utils';
+export {mark} from '../core/utils';
 
-import {partDom} from './utils';
-import {transitionBase} from './transition-base';
+import {partDom} from '../core/utils';
+import {transitionBase} from '../core/transition-base';
 import 'web-animations-js';
 
  // takes care of scheduling transiton
