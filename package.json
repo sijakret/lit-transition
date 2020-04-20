@@ -1,8 +1,8 @@
 {
-  "name": "new-folder",
+  "name": "lit-transition",
   "version": "0.0.1-alpha",
   "description": "",
-  "module": "src/index",
+  "module": "dist/index",
   "scripts": {
     "start": "webpack-dev-server",
     "test-base": "karma start karma.conf.js",
