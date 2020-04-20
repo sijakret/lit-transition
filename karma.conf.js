@@ -31,9 +31,18 @@ module.exports = (config) => {
       'coverage-istanbul'
     ],
 
+    client: {
+      mocha: {
+        // change Karma's debug.html to the mocha web reporter
+        reporter: 'html',
+
+        ui: 'tdd',
+      }
+    },
+
     preprocessors: {
       // add webpack as preprocessor
-      'test/**/*': ['webpack']
+      'test/**/*': ['webpack','coverage']
     },
 
     coverageIstanbulReporter: {

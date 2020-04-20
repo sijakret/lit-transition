@@ -1,8 +1,15 @@
 
+import {html} from 'lit-element';
+import {transition} from 'lit-transition'
+import {compTest,TestComponent} from '../utils/comp';
 
-describe('test', function() {
-
-  it('assert', function() {
-    
+suite('Sanity', function() {
+  compTest(class Comp extends TestComponent {
+    render() {
+      return transition(html`<div>HI</div>`);
+    }
+    updated() {
+      this.resolve();
+    }
   })
 })
