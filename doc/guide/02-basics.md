@@ -42,14 +42,14 @@ export class Comp extends LitElement {
 }
 </script>
 
-# Marking templates
+# Marking Remplates
 
 
 
-# Layout Reflow
+# Layout Reflows
 
 
-# Javascript hooks
+# Javascript Hooks
 
 TODO
 

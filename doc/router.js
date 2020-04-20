@@ -3,6 +3,7 @@ import { navigator, router } from 'lit-element-router';
 import {index} from './loaders/md-loader?folder=./guide!';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 
+import {transition, slide, mark } from 'lit-transition';
  
 // routing
 const routes = [
@@ -40,7 +41,7 @@ export default function() {
     static get routes() {
       return routes;
     }
-    
+
     // make css bleed in
     createRenderRoot() {
       return this;
@@ -61,14 +62,15 @@ export default function() {
     }
   
     get routeTitle() {
-      return this.routeData && html`<h1 title>
+      return this.routeData && mark(html`<h1 title>
         ${this.routeData.title}
         <div></div>
-      </h1>`;
+      </h1>`, this.routeData.title+'title');
     }
     
     get renderContent() {
-      return this.routeData && this.routeData.render();
+      return this.routeData && mark(this.routeData.render(),
+      this.routeData.title+'title');
     }
   }
 };
