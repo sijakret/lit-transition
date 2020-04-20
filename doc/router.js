@@ -40,6 +40,11 @@ export default function() {
     static get routes() {
       return routes;
     }
+    
+    // make css bleed in
+    createRenderRoot() {
+      return this;
+    }
   
     constructor() {
       super();
@@ -56,7 +61,10 @@ export default function() {
     }
   
     get routeTitle() {
-      return this.routeData && html`<h1 title>${this.routeData.title}</h1>`;
+      return this.routeData && html`<h1 title>
+        ${this.routeData.title}
+        <div></div>
+      </h1>`;
     }
     
     get renderContent() {

@@ -19,7 +19,7 @@ const config = {
   },
   resolve: {
     alias: {
-      'lit-transition': path.resolve(__dirname,'src/transition')
+      'lit-transition': path.resolve(__dirname,'src')
     },
     extensions: [ '.ts', '.js' ],
   },

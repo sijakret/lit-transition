@@ -12,11 +12,6 @@ import {github, scrolly} from './utils';
 
 // main app
 class Component extends router() {
-  
-  // make css bleed in
-  createRenderRoot() {
-    return this;
-  }
 
   render() {
     return html`
@@ -35,7 +30,8 @@ class Component extends router() {
     }}>
     ${cache(
       html`<header>
-      <a href="/">lit-transition <span>${require('../package.json').version}</span></a>
+      <a href="/">lit-transition <span>${require('../package.json').version}</span>
+      <div></div></a>
       <a href=${index[0].file}>${github}</a>
       <a href=${index[0].file}>doc</a>
     </header>`

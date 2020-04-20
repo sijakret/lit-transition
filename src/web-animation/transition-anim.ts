@@ -1,9 +1,9 @@
 import {
   NodePart,
   directive
-} from 'lit-html';
 
-export * from './anims';
+} from 'lit-html/lit-html';
+
 export {mark} from '../core/utils';
 
 import {partDom} from '../core/utils';

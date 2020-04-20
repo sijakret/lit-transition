@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "module": "es2015",
+    "module": "commonjs",
     "lib": ["es2017", "esnext.asynciterable", "dom"],
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "inlineSources": true,
-    "outDir": "./",
-    "allowJs": true,
+    "outDir": "./dist",
+    "allowJs": false,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
