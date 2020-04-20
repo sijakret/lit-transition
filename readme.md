@@ -1,6 +1,8 @@
 
 # TODO
 
+![Build](https://github.com/sijakret/lit-transition/workflows/Build/badge.svg?branch=master)
+
 * add hooks
 v-on:before-enter="beforeEnter"
 v-on:enter="enter"
