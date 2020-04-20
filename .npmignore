@@ -1,0 +1,9 @@
+.github
+webpack.config.js
+karma.conf.js
+readme.md
+coverage
+src
+doc
+test
+!dist
