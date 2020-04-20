@@ -3,16 +3,61 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
   devtool: 'eval',
- 
+  entry: {
+    doc: './doc/index.js',
+    'lit-transition': 'lit-transition'
+  },
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
+    filename: '[name].js'
+  },
+  devServer: {
+      historyApiFallback: {
+        disableDotRule: true
+      },
+  },
   resolve: {
     alias: {
-      transition: path.resolve(__dirname,'transition.js')
+      'lit-transition': path.resolve(__dirname,'src')
     },
+    extensions: [ '.ts', '.js' ],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader',
+          // Compiles Sass to CSS
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader',
+        ],
+      },
+    ],
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: 'doc/index.html',
+      chunks: ['doc'],
+      inject: true
     }),
   ]
 };

@@ -43,7 +43,7 @@ class Component extends LitElement {
 
   render() {
     return html`
-    <div><div>${instances.get(this.name)}</div></div>
+    ${instances.get(this.name)}
     <slot></slot>`;
   }
 }
