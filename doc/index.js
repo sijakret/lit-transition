@@ -1,5 +1,5 @@
 import './index.scss';
-import 'highlight.js/styles/hybrid.css';
+import 'highlight.js/styles/atelier-savanna-dark.css';
 import './demo';
 
 import { html } from 'lit-element';
@@ -49,13 +49,13 @@ class Component extends router() {
     return index.map(i => {
       const active = this.route===i.title;
       return [
-        html`<a href=${i.file} ?active=${active}>${i.title}</a>`,
+        html`<a href=${i.route} ?active=${active}>${i.title}</a>`,
         // subsections
-        transition(active ? html`<ul>
+        transition(active ? mark(html`<ul>
           ${i.index.map((s,j) => html`<li>
           <a @click=${() => scrolly('#sec-'+j, 100)}>${s}</a>
           </li>` )}
-        </ul>` : undefined, slide({mode: 'out-in'}))
+        </ul>`,i.route+'-sub') : undefined, slide({mode: 'out-in'}))
       ]
     });
   }
@@ -63,7 +63,7 @@ class Component extends router() {
   get home() {
     return html`<div home>
       <center>
-      <h1><a href="01-getting-started.md">sers</a></h1>
+      <h1><a href="getting-started">sers</a></h1>
       </center>
     </home>`;
   }

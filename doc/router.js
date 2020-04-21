@@ -14,7 +14,7 @@ const routes = [
   ...index.map(i => ({
     name: i.title,
     index: i.index,
-    pattern: i.file,
+    pattern: (i.route = i.file.slice(3,-3)),
     data: {
       render: () => {
         // debugger

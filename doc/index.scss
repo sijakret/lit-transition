@@ -1,5 +1,6 @@
 body, html {
   font-family: Roboto;
+  font-size: 14px;
   display: flex;
   flex-direction: column;
   --theme-color: #2dabca; 
@@ -136,6 +137,39 @@ content {
   }
   a:visited {
     color: var(--theme-color);
+  }
+  blockquote {
+    margin: 2em 0;
+    margin-left: 10px;
+    padding: 4px;
+    padding-left: 20px;
+    border-left: 4px solid var(--theme-color);
+    background: #f8f8f8;
+    position: relative;
+    > p:after {
+        content: "?";
+        background-color: var(--theme-color);
+        position: absolute;
+        top: calc(50% - 10px);
+        left: -12px;
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        text-align: center;
+        line-height: 20px;
+        font-weight: bold;
+        font-family: "Dosis", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      
+    }
+  }
+
+  .result {
+    margin: 10px;
+    padding: 10px;
+    margin-bottom: 30px;
+    border-left: 4px solid rgba(0,0,0,0.2);
   }
 }
 

@@ -3,7 +3,7 @@ Basics
 # Transition types
 
 Currently, only transitioning between single elements/components are supported.
-Ass opposed to concepts like [list transitions](https://vuejs.org/v2/guide/transitions.html#List-Transitions), here only one of the transitioned items is designated for
+In contrast to concepts like [list transitions](https://vuejs.org/v2/guide/transitions.html#List-Transitions), here only one of the transitioned items is designated for
 presentation at any point in time.
 
 This means you can apply the `transition` directive on anything that returns a
@@ -17,7 +17,6 @@ const items = [
   'Hey,', 'I\'m', 'gonna', 'get', 'you', 'too'
 ];
 
-// demo component
 export class Comp extends LitElement {
   // i cycles through items
   static get properties() { return { i: Number } }
@@ -29,11 +28,12 @@ export class Comp extends LitElement {
   }
   disconnectedCallback(){
     super.disconnectedCallback();
+    // clean up
     clearInterval(this.interval);
   }
 
   render() {
-    // cycle throrough items
+    // cycle through items
     return transition(
       items.map(item => html`<b>${item}</b>`)[this.i],
       slide({x:'400%'})
@@ -42,14 +42,16 @@ export class Comp extends LitElement {
 }
 </script>
 
-# Marking Remplates
+
+# State diagram
+
+# Marking templates
 
 
+# Layout reflows
 
-# Layout Reflows
 
-
-# Javascript Hooks
+# Javascript hooks
 
 TODO
 

@@ -26,9 +26,13 @@ module.exports = function(source) {
     const {title,markdown,blocks} = processMd(options.file);
     this.dependency(options.file);
     //return `export default () => 'sers'`;
+    const {code,opts} = blocks[Number(options.block)];
+    const codeOut = code.match(/\/\/\/run/) ? `
+    ${code.replace(/\/\/\/run/, 'export function run(domNode) {')}
+    }` : code
     return `
-      ${blocks[Number(options.block)]}
-      export const code = ${JSON.stringify(blocks[Number(options.block)])};
+      ${codeOut}
+      export const code = ${JSON.stringify(code)};
     `
 
   }
@@ -44,8 +48,8 @@ module.exports = function(source) {
       this.dependency(mdFile);
       const {title, markdown, blocks, index} = processMd(mdFile);
   
-      blocks.forEach((b,i) => 
-        imports.push(`./doc/loaders/md-loader.js?file=${mdFile}&block=${i}!`)
+      blocks.forEach(({opts},i) => 
+        imports.push(`./doc/loaders/md-loader.js?file=${mdFile}&block=${i}&opts=${opts}!`)
       );
       return {
         file,
@@ -59,6 +63,7 @@ module.exports = function(source) {
     return `
     export function load(id) {
       // generate import statements so chunks are generated
+      // by webpack
       switch(id) {
         ${imports.map(i => `case '${i}': return import('${i}');`).join('\n')}
       }
@@ -75,10 +80,11 @@ function processMd(mdFile) {
   const title = markdown[0];
   markdown = markdown.slice(1).join('\n');
   const blocks = [];
-  markdown = markdown.replace(/<script(.*)>([\s\S]*)<\/script>/g,(match, opts, code) => {
-    blocks.push(code);
-    return `<doc-demo ${opts}chunk="${
-      `./doc/loaders/md-loader.js?file=${mdFile}&block=${blocks.length-1}!`
+  markdown = markdown.replace(/<script(.*)>([\s\S]*?)<\/script>/g,(match, opts, code) => {
+    opts = opts.trim();
+    blocks.push({code,opts});
+    return `<doc-demo ${opts} chunk="${
+      `./doc/loaders/md-loader.js?file=${mdFile}&block=${blocks.length-1}&opts=${opts}!`
     }"></doc-demo>`;
   });
   let {index,md} = toc(markdown);
