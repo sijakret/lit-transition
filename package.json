@@ -13,8 +13,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
     "@webcomponents/webcomponentsjs": "^2.4.3",
+    "chai": "^4.2.0",
     "css-loader": "^3.5.2",
     "html-webpack-plugin": "^3.2.0",
     "istanbul-instrumenter-loader": "^3.0.1",
@@ -23,6 +25,7 @@
     "karma-coverage": "^2.0.2",
     "karma-coverage-istanbul-reporter": "^2.1.1",
     "karma-mocha": "^2.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "^4.0.2",
     "lit-element": "^2.3.0",

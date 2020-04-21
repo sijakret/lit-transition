@@ -16,7 +16,7 @@ export function transitionBase(flow:any) {
   return function _transition(tr:TemplateResult|any, transition : any) {
     return async (container:NodePart) => {
       if (!(container instanceof NodePart)) {
-        throw new Error('The `transition` directive must be used on nodes');
+        throw new Error('The `transition` directive can only be used on nodes');
       }
 
       // skip empty templates
@@ -27,23 +27,6 @@ export function transitionBase(flow:any) {
       if(typeof tr === 'string' || typeof tr === 'number') {
         tr = html`<div>${tr}</div>`;
       }
-      
-      // most likely bullshit
-      // // wait for promises
-      // if(tr instanceof Promise) {
-      //   _transition(await tr, transition);
-      //   return;
-      // }
-
-      // // eval functions
-      // if(tr instanceof Function) {
-
-      //   const part = new NodePart(container.options);
-      //   part.appendIntoPart(container);
-
-      //   //tr(part)
-      //   return;
-      // }
 
       // see if template was marked
       // the name is used to decide if consider
@@ -57,6 +40,8 @@ export function transitionBase(flow:any) {
       const {
         enter,
         leave,
+        onEnter,
+        onLeave,
         mode = 'in-out'
       } = transition;
   
@@ -81,12 +66,14 @@ export function transitionBase(flow:any) {
       async function enterFlow(part:NodePart) {
         // first mount element
         enter && await flow.transition(part, enter);
+        onEnter && onEnter();
       }
   
       // perform enter transition
       async function leaveFlow(part:NodePart) {
         leave && await flow.transition(part, leave);
         remove(part);
+        onLeave && onLeave();
       }
   
       // init container

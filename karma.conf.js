@@ -23,7 +23,8 @@ module.exports = (config) => {
       require("karma-coverage"),
       require("karma-chrome-launcher"),
       require("karma-spec-reporter"),
-      require("karma-coverage-istanbul-reporter")
+      require("karma-coverage-istanbul-reporter"),
+      require("karma-sourcemap-loader")
     ],
 
     reporters: [
@@ -42,7 +43,7 @@ module.exports = (config) => {
 
     preprocessors: {
       // add webpack as preprocessor
-      'test/**/*': ['webpack','coverage']
+      'test/**/*': ['webpack','coverage','sourcemap'],
     },
 
     coverageIstanbulReporter: {

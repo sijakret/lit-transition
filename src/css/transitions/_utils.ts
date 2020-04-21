@@ -14,7 +14,9 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
     css,
     enter={},
     leave={},
-    mode='in-out'
+    mode='in-out',
+    onEnter,
+    onLeave
   } = opts;
 
   return {
@@ -32,6 +34,8 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
       lock: mode === 'in-out',
       ...leave
     } : false,
+    onEnter,
+    onLeave,
     mode
   }
 }

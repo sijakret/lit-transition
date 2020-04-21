@@ -1,11 +1,19 @@
 import {CSSTransition} from './_utils';
+import {CSSTransitionOptions} from '../base';
 
-export function fade({
-  duration = 500,
-  ease = 'ease-out',
-  opacity = 0.0,
-  mode = 'in-out'
-} = {}) {
+interface CSSFadeOptions extends CSSTransitionOptions  {
+  duration?: number
+  ease?: string,
+  opacity?: number
+}
+
+export function fade(opts:CSSFadeOptions = {}) {
+  const {
+    duration = 500,
+    ease = 'ease-out',
+    opacity = 0.0,
+    mode = 'in-out'
+  } = opts;
   return CSSTransition({
     css: `
     .leave-active {
@@ -25,5 +33,7 @@ export function fade({
   .enter-to, .leave-from {
     opacity: 1;
   }
-  `});
+  `,
+  ...opts
+  });
 };

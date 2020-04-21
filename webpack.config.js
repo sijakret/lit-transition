@@ -2,7 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
-  devtool: 'eval',
+  mode: 'development',
+  devtool: 'inline-source-map',
   entry: {
     doc: './doc/index.js',
     'lit-transition': 'lit-transition'

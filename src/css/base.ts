@@ -2,7 +2,7 @@ import {
   TemplateResult
 } from 'lit-html';
 
-enum TransitionMode {
+export enum TransitionMode {
   InOut = "in-out",
   OutIn = "out-in"
 }
@@ -18,4 +18,6 @@ export interface CSSTransitionOptions {
   enter?: CSSClassSequence|Boolean
   leave?: CSSClassSequence|Boolean
   mode?: TransitionMode
+  onEnter?: Function
+  onLeave?: Function
 }

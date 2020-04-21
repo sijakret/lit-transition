@@ -1,10 +1,18 @@
 import {CSSTransition} from './_utils';
+import {CSSTransitionOptions} from '../base';
 
-export function land({
-  duration = 500,
-  ease = 'ease-in',
-  opacity = 0.0
-  } = {}) {
+interface CSSLandOptions extends CSSTransitionOptions  {
+  duration?: number
+  ease?: string,
+  opacity?: number
+}
+
+export function land(opts:CSSLandOptions = {}) {
+  const {
+    duration = 500,
+    ease = 'ease-in',
+    opacity = 0.0
+  } = opts;
   return CSSTransition({
     css:`
   .enter-active, .leave-active {
@@ -28,5 +36,6 @@ export function land({
     opacity: ${opacity};
     transform: translate(0, 100px);
   }`,
+  ...opts
   });
 };
