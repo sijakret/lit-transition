@@ -4,7 +4,7 @@ import {
   html
 } from 'lit-html';
 import {
-  marked, nextFrame,
+  marked,
   //nextFrame
 } from './utils'
 
@@ -101,7 +101,7 @@ export function transitionBase(flow:any) {
           add,
           remove
         });
-        await nextFrame();
+        //await nextFrame();
       }
 
       // same template? no animation! 

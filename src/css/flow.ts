@@ -55,10 +55,6 @@ export const flow = {
         remove([active, from, to]);
         resolve();
       }
-      // let begin:string[] = [];
-      // active && begin.push(active);
-      // from && begin.push(from);
-      // await classChanged(dom, () => add(begin));
       
       // Register these hooks before we set the css
       // class es that will trigger animations

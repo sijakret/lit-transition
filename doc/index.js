@@ -21,10 +21,6 @@ class Component extends router() {
         if(href.startsWith(window.location.origin)) {
           e.preventDefault();
           this.navigate(href);
-          // for nav links we scroll to top!
-          if(document.querySelector('nav').contains(e.target)) {
-            scrolly('#top');
-          }
         }
       }
     }}>
@@ -53,9 +49,9 @@ class Component extends router() {
         // subsections
         transition(active ? mark(html`<ul>
           ${i.index.map((s,j) => html`<li>
-          <a @click=${() => scrolly('#sec-'+j, 100)}>${s}</a>
+          <a href=${`${i.route}#sec-${j}`}>${s}</a>
           </li>` )}
-        </ul>`,i.route+'-sub') : undefined, slide({mode: 'out-in'}))
+        </ul>`,i.route+'-sub') : undefined, slide({mode: 'out-in',duration:200}))
       ]
     });
   }

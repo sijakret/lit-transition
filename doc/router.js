@@ -5,6 +5,8 @@ import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 
 import {transition, slide, mark } from 'lit-transition';
  
+import {scrolly} from './utils';
+
 // routing
 const routes = [
   {
@@ -59,6 +61,28 @@ export default function() {
       this.params = params;
       this.query = query;
       this.routeData = data;
+
+      // for nav links we scroll to top!
+      //if(this.route) {
+      //}
+    }
+
+    navigate(href) {
+      super.navigate(href);
+      this.scroll(href);
+    }
+
+    scroll(href) {
+      const anchor = (href+'#top').split('#')[1];
+      scrolly('#'+anchor, anchor!='top'?100:0);
+    }
+
+    firstUpdated() {
+      // the proper wayof doing this would be
+      // to make sure the page has rendered..
+      setTimeout(() => {
+        this.scroll(window.location.href);
+      }, 100);
     }
   
     get routeTitle() {
