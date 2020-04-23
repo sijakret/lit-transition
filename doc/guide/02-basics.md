@@ -13,7 +13,7 @@ template with one single root node. This includes lists.
 import { LitElement, html,css} from 'lit-element';
 import {transition,slide} from 'lit-transition';
 const items = [
-  'Another', 'one', 'bites', 'the', 'dust',
+  'Another', html`<i>one</i>`, 'bites', 'the', html`<h3>dust</h3>`,
   'Hey,', 'I\'m', 'gonna', 'get', 'you', 'too'
 ];
 
@@ -36,7 +36,7 @@ export class Comp extends LitElement {
     // cycle through items
     return transition(
       items.map(item => html`<b>${item}</b>`)[this.i],
-      slide({x:'400%'})
+      slide({x:'300px'})
     )
   } 
 }
@@ -44,6 +44,9 @@ export class Comp extends LitElement {
 
 
 # State diagram
+
+
+<img src="assets/state-diagram.svg">
 
 # Marking templates
 

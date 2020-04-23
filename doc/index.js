@@ -8,7 +8,7 @@ import {index} from './loaders/md-loader?folder=./guide!';
 import router from './router';
 import {transition, slide, mark } from 'lit-transition';
 import {transPage,transContent,transTitle} from './transitions';
-import {github, scrolly} from './utils';
+import {github} from './utils';
 
 
 // main app
@@ -29,8 +29,8 @@ class Component extends router() {
       html`<header>
       <a href="/">lit-transition <span>${require('../package.json').version}</span>
       <div></div></a>
-      <a href=${index[0].file}>${github}</a>
-      <a href=${index[0].file}>doc</a>
+      <a href=${index[0].route}>${github}</a>
+      <a href=${index[0].route}>doc</a>
     </header>`
     )}
     ${transition(

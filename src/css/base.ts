@@ -2,6 +2,10 @@ import {
   TemplateResult
 } from 'lit-html';
 
+/**
+ * in-out: enter transition starts playing right away
+ * out-in: enter transition only plays after leave completed
+ */
 export enum TransitionMode {
   InOut = "in-out",
   OutIn = "out-in"

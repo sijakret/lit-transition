@@ -1,5 +1,5 @@
 import {CSSTransition} from './_utils';
-import {CSSTransitionOptions} from '../base';
+import {CSSTransitionOptions,TransitionMode} from '../base';
 
 interface CSSSlideOptions extends CSSTransitionOptions  {
   duration?: number
@@ -15,7 +15,7 @@ export function slide(opts:CSSSlideOptions = {}) {
     y = '0%',
     ease = 'ease-out',
     opacity = 0.0,
-    mode = 'in-out'
+    mode = TransitionMode.InOut
   } = opts;
   return CSSTransition({
     css:`

@@ -1,17 +1,14 @@
 About
 
 lit-transition is a directive for [lit-html](https://lit-html.polymer-project.org/)
-that allows to for animated transitions between lit-html templates during rendering
-in a dead simple way.
+that allows to for animated transitions between templates during rendering in a dead simple way.
 It was inspired by the concepts of beautiful [transition system of vue.js](https://vuejs.org/v2/guide/transitions.html).
 
-The library is written in typescript, tiny and tree-shakeable and will add no more than TODO kb (gzipped) to your web app.
-It mainly orchestrates state transitions when a template is updated by adding css classes, executing web animations and delaying the removal or insertion of new dom.
+The library is written in typescript, extremely tiny and tree-shakeable.
+It mainly orchestrates state transitions when a template is updated by adding css classes or executing web animations while delaying the removal or insertion of new dom until transitions play out.
 
 Currently we only support [css transitions](https://developer.mozilla.org/de/docs/Web/CSS/transition).
 However, the plan is to transparently support [web animations](https://developer.mozilla.org/de/docs/Web/API/Web_Animations_API) eventually.
-
-All animations in this documentation are obviously built using lit-transition.
 
 <!-- script>
 import {render,html} from 'lit-html'
@@ -34,7 +31,7 @@ export async function run(domNode) {
 </script-->
 
 
-Check out the following example
+Check out the following example:
 
 <script>
 import {html} from 'lit-html'
@@ -44,11 +41,12 @@ import {transition, land} from 'lit-transition';
 // generates a new date once a second
 async function* count() {
   while (true) {
+    // wrapping a template using transition directive will
+    // automatically animate it on change
     yield transition(new Date().toLocaleString(),land);
     await new Promise(r => setTimeout(r, 1000));
   }
 }
 
-export const render = () =>
-  html`<div>lit! ${asyncReplace(count())}</div>`;
+export const render = () => html`lit! ${asyncReplace(count())}`;
 </script>

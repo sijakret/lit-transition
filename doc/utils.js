@@ -5,7 +5,9 @@ export const github = svg`<svg width=24 height=24><path d="M12,2C6.48,2,2,6.59,2
 
 // scroll to an element with an of
 export function scrolly(elem, offset = 0) {
-  const top = document.querySelector(elem)
-    .getBoundingClientRect().top + window.pageYOffset - offset;
-  window.scrollTo({top, behavior: 'smooth'});
+  elem = document.querySelector(elem)
+  if(elem) {
+    const top = elem.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({top, behavior: 'smooth'});
+  }
 }

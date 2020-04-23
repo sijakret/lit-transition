@@ -1,5 +1,5 @@
 import {CSSTransition} from './_utils';
-import {CSSTransitionOptions} from '../base';
+import {CSSTransitionOptions,TransitionMode} from '../base';
 
 interface CSSFadeOptions extends CSSTransitionOptions  {
   duration?: number
@@ -12,7 +12,7 @@ export function fade(opts:CSSFadeOptions = {}) {
     duration = 500,
     ease = 'ease-out',
     opacity = 0.0,
-    mode = 'in-out'
+    mode = TransitionMode.InOut
   } = opts;
   return CSSTransition({
     css: `

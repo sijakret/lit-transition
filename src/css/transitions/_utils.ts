@@ -3,7 +3,8 @@ import {
 } from 'lit-html';
 
 import {
-  CSSTransitionOptions
+  CSSTransitionOptions,
+  TransitionMode
 } from '../base';
 /**
  * takes an object and normalizes it into CSSTransitionOptions
@@ -14,7 +15,7 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
     css,
     enter={},
     leave={},
-    mode='in-out',
+    mode = TransitionMode.InOut,
     onEnter,
     onLeave
   } = opts;
@@ -31,7 +32,7 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
       active: 'leave-active',
       from: 'leave-from',
       to: 'leave-to',
-      lock: mode === 'in-out',
+      lock: mode === TransitionMode.InOut,
       ...leave
     } : false,
     onEnter,

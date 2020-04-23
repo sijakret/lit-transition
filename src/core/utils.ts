@@ -1,8 +1,7 @@
 
 import {
   NodePart,
-  TemplateResult,
-  TemplateInstance
+  TemplateResult
 } from 'lit-html';
 
 export function nextFrame(n = 1):Promise<void> {
