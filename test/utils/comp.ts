@@ -40,11 +40,25 @@ export class TestComponent extends LitElement {
  * @param Comp component that will be registered and mounted
  */
 export function compTest(testName:string, Comp:CustomElementConstructor) {
-  test(testName, () => new Promise((resolve) => {
-    const name = 'test-'+(''+Math.random()).split('.').pop();
-    customElements.define(name, Comp);
-    const instance = document.createElement(name);
-    document.body.appendChild(instance);
-    instance.addEventListener('resolve', resolve, {once:true});
-  }));
+  test(testName, () => mountComp(Comp));
+}
+
+/**
+ * Resolves once component
+ * emits 'resolve' event
+ * @param Comp component that will be registered and mounted
+ */
+export function mountComp(Comp:CustomElementConstructor) {
+  return new Promise((resolve,reject) => {
+    try {
+
+      const name = 'test-'+(''+Math.random()).split('.').pop();
+      customElements.define(name, Comp);
+      const instance = document.createElement(name);
+      document.body.appendChild(instance);
+      instance.addEventListener('resolve', resolve, {once:true});
+    } catch(e) {
+      reject(e);
+    }
+  });
 }
