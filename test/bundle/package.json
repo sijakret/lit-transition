@@ -1,0 +1,19 @@
+{
+  "name": "bundle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm install ../../lit-transition*.tgz&&webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.43.0"
+  },
+  "dependencies": {
+    "lit-html": "^1.2.1",
+    "lit-transition": "file:../../lit-transition-0.0.1-alpha.tgz",
+    "save-dev": "0.0.1-security"
+  }
+}
