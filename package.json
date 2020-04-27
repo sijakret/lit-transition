@@ -5,7 +5,7 @@
   "module": "dist/index",
   "scripts": {
     "start": "webpack-dev-server",
-    "test-base": "karma start karma.conf.js",
+    "test-base": "karma start test/karma.conf.js",
     "test": "npm run test-base -- --single-run",
     "test-dev": "npm run test-base -- --no-single-run --browsers Chrome",
     "test-bundle": "npm pack&&cd test/bundle&&npm install",
