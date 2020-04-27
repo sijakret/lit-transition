@@ -8,7 +8,8 @@ import {
  */
 export enum TransitionMode {
   InOut = "in-out",
-  OutIn = "out-in"
+  OutIn = "out-in",
+  Both = "both"
 }
 
 export interface CSSClassSequence {
@@ -24,4 +25,6 @@ export interface CSSTransitionOptions {
   mode?: TransitionMode
   onEnter?: Function
   onLeave?: Function
+  onAfterEnter?: Function
+  onAfterLeave?: Function
 }

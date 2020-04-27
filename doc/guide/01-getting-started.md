@@ -14,10 +14,9 @@ you can animate the transition like this:
 ```javascript
 import {transition} from 'lit-transition';
 
+const transitioned = cond ? html`<b>One</b>` : html`<b>Two</b>`;
 const template = html`
-  <div>${
-    transition(cond ? html`<b>One</b>` : html`<b>Two</b>`)
-  }</div>`;
+  <div>${transition(transitioned, { /* ... opts */ })}</div>`;
 ```
 
 > Throughout this guide we will mostly be using LitElement

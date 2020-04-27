@@ -1,8 +1,9 @@
 Limitations and Notes
 
-Here is a list of things that do currently not work
 
 # Performance hit
+
+Be aware that animating large sections of your web app will come at a performance cost.
 
 # Single roots
 

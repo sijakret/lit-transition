@@ -15,7 +15,7 @@ export function nextFrame(n = 1):Promise<void> {
  * has been consolidated
  * @param node DOMNode
  */
-export function classChanged(node:HTMLElement, cb:Function|null = null, skipFrame:Boolean = true) {
+export function classChanged(node:HTMLElement, cb:Function|null, skipFrame:Boolean = true) {
   return new Promise(resolve => {
     // Create an observer instance linked to the callback function
     const observer = new MutationObserver(async () => {

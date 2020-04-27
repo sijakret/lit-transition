@@ -116,7 +116,7 @@ nav {
 
 content {
   flex: 1 1;
-  max-width: 600px;
+  max-width: 500px;
   margin-left: var(--nav-width);
   width: calc(100% - var(--nav-width));
   margin-top: 90px;
@@ -147,7 +147,7 @@ content {
     background: #f8f8f8;
     position: relative;
     > p:after {
-        content: "?";
+        content: "!";
         background-color: var(--theme-color);
         position: absolute;
         top: calc(50% - 10px);
@@ -224,9 +224,11 @@ a:visited {
 
 
 .hljs {
+  font-size: 12px;
   border-radius: 4px;
   padding: 10px !important;
   margin: 2px;
+  margin-top: 12px;
   box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }
 

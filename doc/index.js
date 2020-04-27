@@ -7,7 +7,7 @@ import {cache} from 'lit-html/directives/cache';
 import {index} from './loaders/md-loader?folder=./guide!';
 import router from './router';
 import {transition, slide, mark } from 'lit-transition';
-import {transPage,transContent,transTitle} from './transitions';
+import {transLanding,transContent,transTitle} from './transitions';
 import {github} from './utils';
 
 
@@ -37,7 +37,7 @@ class Component extends router() {
       this.route === 'Home' ?
         mark(this.home,'home') :
         mark(this.page, 'page')
-      , transPage
+      , transLanding
     )}
     </div>`;
   }

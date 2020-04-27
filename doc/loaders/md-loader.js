@@ -98,10 +98,13 @@ function processMd(mdFile) {
 
 function toc(md) {
   const index = [];
-  console.log(md);
   md = md.replace(new RegExp('(#+) (.*)', 'ig'), (match, h, title) => {
+    if(h.length !== 1) {
+      return match;
+    }
     index.push(title)
-    return `<a id="sec-${index.length-1}"></a>
+    return `
+<a id="sec-${index.length-1}"></a>
 ${match}`;
   });
   return {

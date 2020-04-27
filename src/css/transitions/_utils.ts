@@ -15,7 +15,9 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
     css,
     enter={},
     leave={},
-    mode = TransitionMode.InOut,
+    mode = TransitionMode.Both,
+    onAfterEnter,
+    onAfterLeave,
     onEnter,
     onLeave
   } = opts;
@@ -32,11 +34,13 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
       active: 'leave-active',
       from: 'leave-from',
       to: 'leave-to',
-      lock: mode === TransitionMode.InOut,
+      lock: mode !== TransitionMode.Both,
       ...leave
     } : false,
     onEnter,
     onLeave,
+    onAfterEnter,
+    onAfterLeave,
     mode
   }
 }

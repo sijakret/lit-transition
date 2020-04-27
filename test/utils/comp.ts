@@ -40,7 +40,7 @@ export class TestComponent extends LitElement {
  * @param Comp component that will be registered and mounted
  */
 export function compTest(testName:string, Comp:CustomElementConstructor) {
-  test(testName, () => mountComp(Comp));
+  test(testName, function(){ return mountComp.call(this,Comp) });
 }
 
 /**
@@ -49,6 +49,7 @@ export function compTest(testName:string, Comp:CustomElementConstructor) {
  * @param Comp component that will be registered and mounted
  */
 export function mountComp(Comp:CustomElementConstructor) {
+  this.timeout(4000);
   return new Promise((resolve,reject) => {
     try {
 

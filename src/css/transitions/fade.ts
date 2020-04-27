@@ -12,7 +12,7 @@ export function fade(opts:CSSFadeOptions = {}) {
     duration = 500,
     ease = 'ease-out',
     opacity = 0.0,
-    mode = TransitionMode.InOut
+    mode = TransitionMode.Both
   } = opts;
   return CSSTransition({
     css: `
@@ -25,7 +25,7 @@ export function fade(opts:CSSFadeOptions = {}) {
         transform ${duration}ms ${ease};
     }
   .leave-active {
-    position: ${mode !== 'out-in' ? 'absolute' : 'initial'};
+    position: ${mode === TransitionMode.Both ? 'fixed' : 'absolute'};
   } 
   .enter-from, .leave-to {
     opacity: ${opacity};
