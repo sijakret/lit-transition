@@ -49,7 +49,7 @@ export function compTest(testName:string, Comp:CustomElementConstructor) {
  * @param Comp component that will be registered and mounted
  */
 export function mountComp(Comp:CustomElementConstructor) {
-  this.timeout(4000);
+  this.timeout(5000);
   return new Promise((resolve,reject) => {
     try {
 
