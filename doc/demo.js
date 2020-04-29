@@ -13,14 +13,6 @@ let defs = new WeakMap();
 let id = 0;
 
 class Component extends LitElement {
-  static get styles() {
-    return css`
-    .result {
-      margin: 10px;
-      padding: 10px;
-      border-left: 2px solid rgba(0,0,0,0.2);
-    }`
-  }
   
   createRenderRoot() {
     return this;
@@ -38,7 +30,7 @@ class Component extends LitElement {
       ctx[e] = transition[e];
     }
 
-    let {Comp,render,template,code} = await load(this.chunk);
+    let {Comp,render,template,code,run} = await load(this.chunk);
     this.code = code;
     if(render) {
       Comp = class Auto extends LitElement {
@@ -50,6 +42,15 @@ class Component extends LitElement {
       Comp = class Auto extends LitElement {
         render() {
           return template;
+        }
+      }
+    } else if(run) {
+      Comp = class Auto extends LitElement {
+        render() {
+          return undefined
+        }
+        updated() {
+          run(this.shadowRoot);
         }
       }
     }

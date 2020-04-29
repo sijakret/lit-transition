@@ -1,8 +1,7 @@
 
 import {
   NodePart,
-  TemplateResult,
-  TemplateInstance
+  TemplateResult
 } from 'lit-html';
 
 export function nextFrame(n = 1):Promise<void> {
@@ -16,7 +15,7 @@ export function nextFrame(n = 1):Promise<void> {
  * has been consolidated
  * @param node DOMNode
  */
-export function classChanged(node:HTMLElement, cb:Function|null = null, skipFrame:Boolean = true) {
+export function classChanged(node:HTMLElement, cb:Function|null, skipFrame:Boolean = true) {
   return new Promise(resolve => {
     // Create an observer instance linked to the callback function
     const observer = new MutationObserver(async () => {
@@ -39,21 +38,6 @@ export function partDom(part:NodePart):any {
   return part.startNode.nextSibling;
 }
 
-export function sameTemplate(part:NodePart, value:TemplateResult) {
-  const template = part.options.templateFactory(value);
-  return (part.value instanceof TemplateInstance &&
-      part.value.template === template)
-}
-
-export function sameValues(part:any, tr:any) {
-  tr = Array.isArray(tr) ? tr : tr.values;
-  if(!part.value.__parts) {
-    return part.value === tr.value;
-  }
-  return part.value.__parts.reduce((a:Boolean,p:any,i:any) => {
-    a &&p !== undefined && sameValues(p, tr[i])
-  }, true);
-}
 
 const markedTemplates = new WeakMap<TemplateResult,String>();
 
@@ -102,31 +86,6 @@ export function applyExtents(e:HTMLElement, ext:any) {
   e.style.width = (ext.rect.width)+'px';
   e.style.height = (ext.rect.height)+'px';
 }
-
-
-export function lockExtents(e:HTMLElement, offset:Boolean = true) {
-  const rect = e.getBoundingClientRect();
-  const style = window.getComputedStyle(e);
-  if(offset && style.position === "absolute") {
-
-    let mt = parseFloat(style.marginTop) || 0;
-    let ml = parseFloat(style.marginLeft) || 0;
-    {
-      let p:HTMLElement|null = e;
-      while(p && p != e.offsetParent) {
-        mt -= p.scrollTop;
-        ml -= p.scrollLeft;
-        p = p.parentElement;
-      }
-    }
-    e.style.left = (e.offsetLeft-ml)+'px';
-    e.style.top = (e.offsetTop-mt)+'px';
-  }
-  e.style.width = (rect.width)+'px';
-  e.style.height = (rect.height)+'px';
-}
-
-
 
 
 let _visible:Boolean;

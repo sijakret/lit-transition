@@ -8,7 +8,7 @@ export class TestComponent extends LitElement {
    * get component in dom
    * @param detail 
    */
-  dom(selector:string) {
+  dom(selector:string) :any {
     const elems = this.shadowRoot!.querySelectorAll(selector);
     if(elems.length > 1) {
       return Array.from(elems);
@@ -29,6 +29,8 @@ export class TestComponent extends LitElement {
       composed: true,
       bubbles: true
     }));
+    // remove ourselves
+    this.parentElement!.removeChild(this);
   }
 }
 
@@ -37,12 +39,27 @@ export class TestComponent extends LitElement {
  * emits 'resolve' event
  * @param Comp component that will be registered and mounted
  */
-export function compTest(Comp:CustomElementConstructor) {
-  test('assert', () => new Promise((resolve) => {
-    const name = 'test-'+(''+Math.random()).split('.').pop();
-    customElements.define(name, Comp);
-    const instance = document.createElement(name);
-    document.body.appendChild(instance);
-    instance.addEventListener('resolve', resolve, {once:true});
-  }));
+export function compTest(testName:string, Comp:CustomElementConstructor) {
+  test(testName, function(){ return mountComp.call(this,Comp) });
+}
+
+/**
+ * Resolves once component
+ * emits 'resolve' event
+ * @param Comp component that will be registered and mounted
+ */
+export function mountComp(Comp:CustomElementConstructor) {
+  this.timeout(5000);
+  return new Promise((resolve,reject) => {
+    try {
+
+      const name = 'test-'+(''+Math.random()).split('.').pop();
+      customElements.define(name, Comp);
+      const instance = document.createElement(name);
+      document.body.appendChild(instance);
+      instance.addEventListener('resolve', resolve, {once:true});
+    } catch(e) {
+      reject(e);
+    }
+  });
 }

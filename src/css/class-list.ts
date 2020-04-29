@@ -3,7 +3,6 @@
 class ClassList {
   element: Element;
   classes: Set<string> = new Set();
-  changed = false;
 
   constructor(element: Element) {
     this.element = element;
@@ -14,23 +13,29 @@ class ClassList {
   }
   add(cls: string) {
     this.classes.add(cls);
-    this.changed = true;
+    this.commit()
   }
 
   remove(cls: string) {
     this.classes.delete(cls);
-    this.changed = true;
+    this.commit()
   }
 
   commit() {
-    if (this.changed) {
-      let classString = '';
-      this.classes.forEach((cls) => classString += cls + ' ');
-      this.element.setAttribute('class', classString);
-    }
+    let classString = '';
+    this.classes.forEach((cls) => classString += cls + ' ');
+    this.element.setAttribute('class', classString);
   }
 }
 
+let forceClassList:Boolean = false;
+
 export default function(element:Element) {
-  return (element.classList || new ClassList(element)) as DOMTokenList | ClassList;
+  return !forceClassList ?
+    (element.classList || new ClassList(element)) :
+      new ClassList(element) as DOMTokenList | ClassList;
+}
+
+export function setForceClassList(force:Boolean) {
+  forceClassList = force;
 }

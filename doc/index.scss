@@ -1,8 +1,10 @@
 body, html {
   font-family: Roboto;
+  font-size: 14px;
   display: flex;
   flex-direction: column;
   --theme-color: #2dabca; 
+  --theme-color-bright: #1db7dc;
   --bg-color: #FFFFFF; 
   --font-color: #000000;  
   padding: 0px;
@@ -14,7 +16,7 @@ body, html {
 }
 
 code {
-  color: var(--theme-color);
+  color: var(--theme-color-bright);
 }
 
 doc-app, doc-app > div {
@@ -98,7 +100,7 @@ nav {
     padding: 10px;
     transition: color 0.2s;
   }
-  > a[active], > a:hover {
+   a[active], a:hover {
     color: var(--theme-color);  
   }
   > ul {
@@ -109,13 +111,17 @@ nav {
       margin-left: 0px;
       list-style-type: none;
       font-size: 14px;
+      > a {
+        font-size: 13px;
+        padding: 6px;
+      }
     }
   }
 }
 
 content {
   flex: 1 1;
-  max-width: 600px;
+  max-width: 500px;
   margin-left: var(--nav-width);
   width: calc(100% - var(--nav-width));
   margin-top: 90px;
@@ -136,6 +142,39 @@ content {
   }
   a:visited {
     color: var(--theme-color);
+  }
+  blockquote {
+    margin: 2em 0;
+    margin-left: 10px;
+    padding: 4px;
+    padding-left: 20px;
+    border-left: 4px solid var(--theme-color);
+    background: #f8f8f8;
+    position: relative;
+    > p:after {
+        content: "!";
+        background-color: var(--theme-color);
+        position: absolute;
+        top: calc(50% - 10px);
+        left: -12px;
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        text-align: center;
+        line-height: 20px;
+        font-weight: bold;
+        font-family: "Dosis", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+        font-size: 14px;
+      
+    }
+  }
+
+  .result {
+    margin: 10px;
+    padding: 10px;
+    margin-bottom: 30px;
+    border-left: 4px solid rgba(0,0,0,0.2);
   }
 }
 
@@ -190,9 +229,11 @@ a:visited {
 
 
 .hljs {
+  font-size: 12px;
   border-radius: 4px;
   padding: 10px !important;
   margin: 2px;
+  margin-top: 12px;
   box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }
 

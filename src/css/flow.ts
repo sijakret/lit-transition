@@ -1,27 +1,21 @@
-import { NodePart } from 'lit-html';
+import { NodePart, html} from 'lit-html';
 import classList from './class-list';
 import {partDom, applyExtents, recordExtents, pageVisible, classChanged} from '../core/utils';
 
 // describes scheduling css transitons
 export const flow = {
-  async transition(part:NodePart, classes:any) {
+  async transition(part:NodePart, classes:any, global: any) {
     // make sure we never animate on hidden windows
     if(!pageVisible()) {
       return;
     }
-    // wait for dom to update initially
-    if(typeof classes === 'string' || Array.isArray(classes)) {
-      classes = {
-        active: classes
-      };
-    }
     // destructure params
     const {
+      duration = global.duration,
       active,
       from,
       to,
-      lock,
-      //timeout = true
+      lock
     } = classes;
     const dom = partDom(part);
     //const parent = dom.parentNode;
@@ -48,30 +42,30 @@ export const flow = {
         // Remove all unused hooks
         ['transitionend','transitioncancel'
         ,'animationend','animationcancel']
-        .filter(type => type !== e.type)
+        .filter(type => !e || type !== e.type)
         .forEach(type => dom.removeEventListener(type, done));
 
         // remove all classes we added and resolve
         remove([active, from, to]);
         resolve();
       }
-      // let begin:string[] = [];
-      // active && begin.push(active);
-      // from && begin.push(from);
-      // await classChanged(dom, () => add(begin));
       
       // Register these hooks before we set the css
       // class es that will trigger animations
       // or transitions
       const o = {once:true};
-      dom.addEventListener('transitionrun', function() {
-        dom.addEventListener('transitionend', done, o);
-        dom.addEventListener('transitioncancel', done, o);
-      }, o);
-      dom.addEventListener('animationstart', function() {
-        dom.addEventListener('animationend', done, o);
-        dom.addEventListener('animationcancel', done, o);
-      }, o);
+      if(duration) {
+        setTimeout(done, duration);
+      } else {
+        dom.addEventListener('transitionrun', function() {
+          dom.addEventListener('transitionend', done, o);
+          dom.addEventListener('transitioncancel', done, o);
+        }, o);
+        dom.addEventListener('animationstart', function() {
+          dom.addEventListener('animationend', done, o);
+          dom.addEventListener('animationcancel', done, o);
+        }, o);
+      }
 
       await classChanged(dom, () => add(from));
       await classChanged(dom, () => add(active));
@@ -83,7 +77,9 @@ export const flow = {
   },
   // injects style tags
   init({data,remove,add,transition}:{data:any,remove:any,add:any,transition:any}) {
+    let css = transition.css;
+    css = typeof css === 'string' ? html`<style>${css}</style>`: css;
     data.css && remove(data.css);
-    data.css = add(transition.css);
+    data.css = add(css);
   }
 };

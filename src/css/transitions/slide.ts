@@ -1,13 +1,22 @@
-import {CSSTransition} from './_utils';
-export function slide({
+import {CSSTransitionOptions,TransitionMode} from '../base';
+
+interface CSSSlideOptions extends CSSTransitionOptions  {
+  duration?: number
+  ease?: string
+  opacity?: number
+  x?: string
+  y?: string
+}
+export function slide(opts:CSSSlideOptions = {}) {
+  const {
     duration = 500,
     x = '100%',
     y = '0%',
     ease = 'ease-out',
     opacity = 0.0,
-    mode = 'in-out'
-  } = {}) {
-  return CSSTransition({
+    mode = TransitionMode.InOut
+  } = opts;
+  return {
     css:`
   .enter-active, .leave-active {
     transition: all ${duration}ms ${ease};
@@ -31,6 +40,6 @@ export function slide({
     opacity: ${opacity};
     transform: translate(${x}, ${y});
   }`,
-  ...arguments[0]
-});
+  ...opts
+};
 };

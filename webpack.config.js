@@ -1,21 +1,23 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
-  devtool: 'eval',
+  mode: 'development',
+  devtool: 'inline-source-map',
   entry: {
     doc: './doc/index.js',
     'lit-transition': 'lit-transition'
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'dist-doc'),
     publicPath: '/',
     filename: '[name].js'
   },
   devServer: {
-      historyApiFallback: {
-        disableDotRule: true
-      },
+    historyApiFallback: {
+      disableDotRule: true
+    },
   },
   resolve: {
     alias: {
@@ -50,6 +52,12 @@ const config = {
           'css-loader',
         ],
       },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader',
+        ],
+      },
     ],
   },
 
@@ -59,6 +67,12 @@ const config = {
       chunks: ['doc'],
       inject: true
     }),
+    new CopyPlugin([
+      {
+        from: 'doc/assets',
+        to: 'assets'
+      },
+    ])
   ]
 };
 
