@@ -1,4 +1,3 @@
-import {CSSTransition} from './_utils';
 import {CSSTransitionOptions} from '../base';
 
 interface CSSLandOptions extends CSSTransitionOptions  {
@@ -13,7 +12,7 @@ export function land(opts:CSSLandOptions = {}) {
     ease = 'ease-in',
     opacity = 0.0
   } = opts;
-  return CSSTransition({
+  return {
     css:`
   .enter-active, .leave-active {
     transform-origin: 0% 50%;
@@ -37,5 +36,5 @@ export function land(opts:CSSLandOptions = {}) {
     transform: translate(0, 100px);
   }`,
   ...opts
-  });
+  };
 };

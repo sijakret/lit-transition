@@ -4,6 +4,7 @@ body, html {
   display: flex;
   flex-direction: column;
   --theme-color: #2dabca; 
+  --theme-color-bright: #1db7dc;
   --bg-color: #FFFFFF; 
   --font-color: #000000;  
   padding: 0px;
@@ -15,7 +16,7 @@ body, html {
 }
 
 code {
-  color: var(--theme-color);
+  color: var(--theme-color-bright);
 }
 
 doc-app, doc-app > div {
@@ -99,7 +100,7 @@ nav {
     padding: 10px;
     transition: color 0.2s;
   }
-  > a[active], > a:hover {
+   a[active], a:hover {
     color: var(--theme-color);  
   }
   > ul {
@@ -110,6 +111,10 @@ nav {
       margin-left: 0px;
       list-style-type: none;
       font-size: 14px;
+      > a {
+        font-size: 13px;
+        padding: 6px;
+      }
     }
   }
 }

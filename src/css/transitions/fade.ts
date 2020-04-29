@@ -1,4 +1,3 @@
-import {CSSTransition} from './_utils';
 import {CSSTransitionOptions,TransitionMode} from '../base';
 
 interface CSSFadeOptions extends CSSTransitionOptions  {
@@ -14,7 +13,7 @@ export function fade(opts:CSSFadeOptions = {}) {
     opacity = 0.0,
     mode = TransitionMode.Both
   } = opts;
-  return CSSTransition({
+  return {
     css: `
     .leave-active {
       transition: opacity ${duration}ms ${ease},
@@ -35,5 +34,5 @@ export function fade(opts:CSSFadeOptions = {}) {
   }
   `,
   ...opts
-  });
+  };
 };

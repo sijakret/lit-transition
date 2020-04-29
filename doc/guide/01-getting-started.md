@@ -13,22 +13,25 @@ you can animate the transition like this:
 
 ```javascript
 import {transition} from 'lit-transition';
-
-const transitioned = cond ? html`<b>One</b>` : html`<b>Two</b>`;
-const template = html`
-  <div>${transition(transitioned, { /* ... opts */ })}</div>`;
+// this template will change depending on 'cond'
+const dynamic = cond ? html`<b>One</b>` : html`<b>Two</b>`;
+// when dynamic changes, it will animate automatically
+render(html`<b>${transition(dynamic /*, [options] */)}</b>`, ...);
 ```
 
 > Throughout this guide we will mostly be using LitElement
 > Components in examples since they allow for simple reactive rendering
-> and storing some state. All techniques, however also apply
+> and storing some state. 
+> All techniques, however also apply
 > in a plain lit-html rendering setup!
+> If you have lit-element and lit-transition installed,
+> the examples should work as they are..
 
 ## Example
 Here is an example of custom element that changes
 its template when clicked.
-Plainly the `transition` directive will 
-result in the default transition (fade).
+With no options supplied, the `transition` directive will 
+use in the default transition (fade).
 
 <script>
 import {LitElement, html} from 'lit-element';

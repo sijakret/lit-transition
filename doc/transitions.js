@@ -4,6 +4,8 @@ export const transLanding = {
   enter: ['animated', 'bounceIn', 'top'],
   leave: {
     active: ['animated', 'bounceOut', 'top', 'fixed'],
+    from: undefined,
+    to: undefined,
     lock: true
   }
 };
@@ -12,6 +14,8 @@ export const transTitle = {
   enter: ['animated', 'zoomIn', 'top'],
   leave: {
     active: ['animated', 'zoomOut', 'top', 'fixed'],
+    from: undefined,
+    to: undefined,
     lock: true
   }
 };
@@ -21,6 +25,8 @@ export const transContent = {
   enter: ['animated', 'zoomIn', 'top'],
   leave: {
     active: ['animated', 'zoomOut', 'top', 'fixed'],
+    from: undefined,
+    to: undefined,
     lock: true
   }
 };;

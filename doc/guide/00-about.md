@@ -1,12 +1,14 @@
 About
 
 lit-transition is a directive for [lit-html](https://lit-html.polymer-project.org/)
-that allows to for animated transitions between templates during rendering in a dead simple way.
-It was inspired by the concepts of beautiful [transition system of vue.js](https://vuejs.org/v2/guide/transitions.html).
+that enables animated transitions between templates in a dead simple way.
+It is largely inspired by the concepts of the beautiful [transition system of vue.js](https://vuejs.org/v2/guide/transitions.html).
 
-The library is written in typescript, extremely tiny and tree-shakeable.
-It mainly orchestrates state transitions when a template is updated by adding css classes or executing web animations while delaying the removal or insertion of new dom until transitions play out.
+lit-transition is written in typescript, extremely tiny and tree-shakeable.
+It mainly orchestrates state transitions when a lit-html template is updated.
+By adding css classes or executing js-based animations and delaying the removal or insertion of new DOM, transitions can be played.
 
+TODOTODOTODO
 Currently we only support [css transitions](https://developer.mozilla.org/de/docs/Web/CSS/transition).
 However, the plan is to transparently support [web animations](https://developer.mozilla.org/de/docs/Web/API/Web_Animations_API) eventually.
 
@@ -50,3 +52,6 @@ async function* count() {
 
 export const render = () => html`lit! ${asyncReplace(count())}`;
 </script>
+
+
+Head over to the [Getting Started](/getting-started) section to get set up.

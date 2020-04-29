@@ -20,6 +20,7 @@ export interface CSSClassSequence {
 
 export interface CSSTransitionOptions {
   css?: TemplateResult|string|null
+  duration?: Number
   enter?: CSSClassSequence|Boolean
   leave?: CSSClassSequence|Boolean
   mode?: TransitionMode

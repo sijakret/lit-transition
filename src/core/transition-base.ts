@@ -46,7 +46,7 @@ export function transitionBase(flow:any) {
         onAfterLeave,
         mode = 'in-out'
       } = transition;
-  
+
       // adds new template result
       function add(e:TemplateResult) {
         const part = new NodePart(container.options);
@@ -68,14 +68,14 @@ export function transitionBase(flow:any) {
       async function enterFlow(part:NodePart) {
         // first mount element
         onEnter && onEnter();
-        enter && await flow.transition(part, enter);
+        enter && await flow.transition(part, enter, transition);
         onAfterEnter && onAfterEnter();
       }
   
       // perform enter transition
       async function leaveFlow(part:NodePart) {
         onLeave && onLeave();
-        leave && await flow.transition(part, leave);
+        leave && await flow.transition(part, leave, transition);
         remove(part);
         onAfterLeave && onAfterLeave();
       }
