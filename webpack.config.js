@@ -53,11 +53,9 @@ const config = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader',
-        ],
-      },
+        test: /\.svg$/,
+        loader: './doc/loaders/svg-loader'
+      }
     ],
   },
 

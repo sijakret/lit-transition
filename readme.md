@@ -1,6 +1,3 @@
-
-> IMPORTANT: this project has is still in it's setup phase!
-
 # lit-transition
 
 A directive to effortlessly animated transitions in lit-html.
