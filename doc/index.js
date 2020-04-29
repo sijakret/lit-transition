@@ -29,7 +29,7 @@ class Component extends router() {
       html`<header>
       <a href="/">lit-transition <span>${require('../package.json').version}</span>
       <div></div></a>
-      <a href=${index[0].route}>${github}</a>
+      <a href=https://github.com/sijakret/lit-transition>${github}</a>
       <a href=${index[0].route}>doc</a>
     </header>`
     )}

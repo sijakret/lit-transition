@@ -37,9 +37,16 @@ the transition options.
 
 On top of that, the following options
 can be passed as the second argument to the transition directive:
+
 ```javascript
-// available options
+// all options are optional and have sane defaults!
 transition(html`..transition me..`, {
+  // see transition Basics -> transition mode
+  // * TransitionMode.InOut = 'in-out'
+  // * TransitionMode.OutIn = 'out-in'
+  // * TransitionMode.Both = 'both'
+  // default: TransitionMode.Both
+  mode: TransitionMode.Both ,
 
   // css that will be injected in a style tag
   // alongside the animated templates
@@ -106,14 +113,7 @@ transition(html`..transition me..`, {
   onLeave: () => {},
 
   // hook called after leave transition completed
-  onAfterLeave: () => {},
-
-  // see transition Basics -> transition mode
-  // * TransitionMode.InOut = 'in-out'
-  // * TransitionMode.OutIn = 'out-in'
-  // * TransitionMode.Both = 'both'
-  // default: TransitionMode.Both
-  mode: TransitionMode.Both 
+  onAfterLeave: () => {}
 })
 ```
 # Simple CSS transition
@@ -125,13 +125,58 @@ so everyone get's dizzy.
 
 Let's first create the css classes we need for our enter transition:
 ```css
-.enter-active
+/*
+ * let's be lazy and just transition all
+ * css props. a more clean solution is to
+ * only transition the needed props!
+ */
+.enter-active, .leave-active {
+  transition: all 0.2s linear;
+}
+
+/*
+ * when a new template enters, it starts
+ * with these props, so it will be very transparent
+ * a bit blurry and rotated 180degres away
+ */
+.enter-from {
+  opacity: 0.1;
+  filter: blur(1px);
+  transform: rotate3d(1, 0, 0.5, 180deg) scale(2);
+}
+
+/*
+ * after entering, and befor leaving
+ * we just set all transitioned properties to iniial
+ */
+.enter-to, .leave-from {
+  opacity: initial;
+  filter: initial;
+  transform: initial;
+}
+
+/*
+ * pretty much the same as .enter-from
+ * the main difference is the rotation angle
+ * so the rotation looks continuous and does not bounce
+ */
+.leave-to {
+  opacity: 0.1;
+  filter: blur(2px);
+  transform: rotate3d(1, 0, 0.5, -180deg) scale(2);
+}
 ```
+
+That's pretty much it, if we also specify `in-out` mode we have
+a neat rotating transition ready to be used with lit-transition.
+
+Putting everything together:
+
 <script>
 import {LitElement, html, css} from 'lit-element';
 import {transition} from 'lit-transition';
 
-const spin = {
+const spin3D = {
   mode: 'out-in',
   css: `
     .enter-active, .leave-active {
@@ -140,28 +185,18 @@ const spin = {
     .enter-from {
       opacity: 0.1;
       filter: blur(1px);
-      transform: rotate3d(1, 0, 0.5, 3.142rad) scale(2);
+      transform: rotate3d(1, 0, 0.5, 180deg) scale(2);
     }
     .enter-to, .leave-from {
-      opacity: 1;
-      filter: blur(0px);
-      transform: rotate3d(1, 0, 0.5, 0rad);
+      opacity: initial;
+      filter: initial;
+      transform: initial;
     }
     .leave-to {
       opacity: 0.1;
       filter: blur(2px);
-      transform: rotate3d(1, 0, 0.5, -3.142rad) scale(2);
-    }`,
-  /*enter: {
-    active: 'spin',
-    from: 'spin-start',
-    to: 'spin-show',
-  },
-  leave: {
-    active: 'spin',
-    from: 'spin-show',
-    to: 'spin-leave',
-  }*/
+      transform: rotate3d(1, 0, 0.5, -180deg) scale(2);
+    }`
 }
 export class Comp extends LitElement {
   // a prop that we toggle and what will trigger redraw
@@ -172,7 +207,7 @@ export class Comp extends LitElement {
     return transition( // <- this is all!
       this.a ? html`<h2>DIZZZZY!</h2>` 
              : html`<h2>Click me</h2>`,
-      spin);
+      spin3D);
   }
   
   render() {
@@ -183,60 +218,66 @@ export class Comp extends LitElement {
 }
 </script>
 
-> It is important your css classes actually execute
-> a transition since lit-transition uses 'ontransitionend' 
-> and 'onanimationend' events to determine if your animation
-> has finished and the next transition can be scheduled.
-> If your animations never start or finish, this mechanism breaks.
-> You can specify a fixed duration using the `duration` field in ei
 
 # Advanced CSS transition
+
+In the last example we inject the css directly.
+If we can make it available in the transition context
+this is not necessary.
+
+This what we did in the example below.
+We also renamed the classes of `spin3D` merging some classes
+for the different states of enter and leave.
+In addition, we added some easing 
+and went a bit more out there with what the animation does :)
 <script>
 import {LitElement, html, css} from 'lit-element';
 import {transition} from 'lit-transition';
 
-const spin = {
+const spin3D = {
   mode: 'out-in',
-  css: `
-    .enter-active, .leave-active {
-      transition: all 0.4s linear;
-    }
-    .enter-from {
-      opacity: 0.1;
-      filter: blur(1px);
-      transform: rotate3d(1, 0, 0.5, 3.142rad) scale(2);
-    }
-    .enter-to, .leave-from {
-      opacity: 1;
-      filter: blur(0px);
-      transform: rotate3d(1, 0, 0.5, 0rad);
-    }
-    .leave-to {
-      opacity: 0.1;
-      filter: blur(2px);
-      transform: rotate3d(1, 0, 0.5, -3.142rad) scale(2);
-    }`,
-  /*enter: {
+  enter: {
     active: 'spin',
-    from: 'spin-start',
+    from: 'spin-enter',
     to: 'spin-show',
   },
   leave: {
     active: 'spin',
     from: 'spin-show',
     to: 'spin-leave',
-  }*/
+  }
 }
 export class Comp extends LitElement {
   // a prop that we toggle and what will trigger redraw
   static get properties() { return { a: Boolean } }
+  static get styles() {
+    return css`
+    .spin {
+      transition: all 0.3s ease-in;
+    }
+    .spin-enter {
+      opacity: 0.1;
+      filter: blur(1px);
+      transform: rotate3d(0, 1, 0, 360deg) scale(4);
+    }
+    .spin-show {
+      opacity: initial;
+      filter: initial;
+      transform: initial;
+    }
+    .spin-leave {
+      opacity: 0.1;
+      filter: blur(1px);
+      transform: rotate3d(0, 1, 0, -360deg) scale(4);
+    }`
+  }
 
   // swapped template is transitioned automatically
   get crazy() {
     return transition( // <- this is all!
       this.a ? html`<h2>DIZZZZY!</h2>` 
              : html`<h2>Click me</h2>`,
-      spin);
+      spin3D);
   }
   
   render() {
@@ -247,6 +288,21 @@ export class Comp extends LitElement {
 }
 </script>
 
-# Caveat: Layout reflows
+> It is typically preferable to move your transition
+> css with your other app css so it 1) does not clutter your
+> code and 2) performanc is better since
+> the classes are only created once and simply applied during
+> transition phases
 
+> It is important your css classes actually execute
+> a transition since lit-transition uses 'ontransitionend' 
+> and 'onanimationend' events to determine if your animation
+> has finished so the next transition can be scheduled.
+> If your animations never start or finish, this mechanism breaks.
+> You can specify a fixed duration using the `duration` field in
+> the transition optins to nail it down in case of problems.
+
+# Caveat: Layout reflows
+TODO
 # Predefined transitions
+TODO
