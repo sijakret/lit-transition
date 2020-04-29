@@ -1,5 +1,7 @@
 import {render,html} from 'lit-html';
-import {transition, mark} from 'lit-transition1';
+
+// check some basic imports
+import {jhjhj, transition, mark} from 'lit-transition';
 
 // super basic sanity test
-render(transition(mark(html`<div></div>`,'test'), document.body));
+render(jhjhj(mark(html`<div></div>`,'test'), document.body));

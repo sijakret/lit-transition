@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm install&&npm install ../../lit-transition*.tgz&&webpack"
+    "test": "npm install&&npm install --no-save ../../lit-transition*.tgz&&webpack --config ./webpack.config.js"
   },
   "author": "",
   "license": "ISC",
