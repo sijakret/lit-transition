@@ -1,9 +1,17 @@
 Limitations and Notes
 
 
-# Performance hit
+# General remarks
 
-Be aware that animating large sections of your web app will come at a performance cost.
+This goes without saying, but be aware that..
+
+* animating large sections of your web app will 
+  most certainly come at a __performance cost__.
+* transitions need to be employed with care
+  so they don't interrupt the user experience.
+  Where transitions block user interaction,
+  __200ms__ should typically not be exceeded.
+
 
 # Single roots
 
@@ -32,6 +40,4 @@ the same may lead to undesired effects.
 export const render = () =>
   html`${(transition(asyncReplace(/*temlplate*/))}`;
 ```
-
-# Element
 

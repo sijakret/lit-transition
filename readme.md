@@ -12,8 +12,10 @@ A directive to effortlessly animated transitions in lit-html.
 Full documentation is available at [TODO](https://TODO).
 
 Docs source is in the `docs` folder.
+
 To build the library and the docs yourself,
-clone it run `npm install` and `npm run build`
+clone it run `npm install` and `npm run build`.
+This will build the library as well as the documentation.
 
 ## Overview
 
@@ -43,14 +45,11 @@ render(transition(helloTemplate('Kevin')), document.body);
 $ npm install lit-transition
 ```
 
-## TODO
+## Roadmap
 
-* increase test coverage
 * add js hooks
 * add transitions via web animation
-* elaborate on docs
-
 
 ## Contributing
 
-TODO
+Happy to accept PRs!
