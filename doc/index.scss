@@ -3,7 +3,9 @@ body, html {
   font-size: 14px;
   display: flex;
   flex-direction: column;
-  --theme-color: #2dabca; 
+  --theme-color: rgb(45, 171, 202); 
+  --theme-color-trans: rgba(45, 171, 202,0.4); 
+  --theme-color-trans-opaque: #aaddea;
   --theme-color-bright: #1db7dc;
   --bg-color: #FFFFFF; 
   --font-color: #000000;  
@@ -29,13 +31,21 @@ svg {
   fill: var(--bg-color);
 }
 
+a {
+  color: var(--bg-color);
+}
+
 header {
   height: 60px;
   position: fixed;
   z-index: 3;
   top: 0px;
   width: 100%;
-  background-color: var(--theme-color); 
+  background-image: linear-gradient(
+    to right,
+    var(--theme-color),
+    var(--theme-color-trans-opaque)
+  ); 
   font-size: 20px;
   line-height: 54px;
   font-weight: 600;
@@ -67,12 +77,11 @@ header {
     font-weight: inherit;
     margin-left: 60px;
   }
-  a:first-child > div {
-    width: 20px;
-    height: 2px;
-    margin-top: -18px;
-    margin-left: -2px;
-    margin-bottom: 16px;
+  [underline]:before {
+    width: 22px;
+    height: 1px;
+    left: 18px;
+    margin-top: 40px;
     border-bottom: 1px solid var(--bg-color);
   }
 }
@@ -119,21 +128,31 @@ nav {
   }
 }
 
+h1[title] {
+  font-size: 40px;
+  color: var(--theme-color); 
+}
+
+h1[title]:before, [underline]:before {
+  content: '';
+  float: left;
+  width: 40px;
+  height: 2px;
+  margin-right: -40px;
+  margin-left: -4px;
+  margin-top: 47px;
+  border-bottom: 2px solid;
+}
+
 content {
   flex: 1 1;
   max-width: 500px;
   margin-left: var(--nav-width);
   width: calc(100% - var(--nav-width));
   margin-top: 90px;
-  padding-bottom: 50px;
-  h1[title] {
-    font-size: 40px;
-    color: var(--theme-color); 
-  }
-  h1[title] > div {
-    width: 40px;
-    height: 2px;
-    margin-top: 0px;
+  padding-bottom: 50px; 
+
+  h1[title]:before {
     border-bottom: 2px solid rgba(0,0,0,0.7);
   }
 
@@ -189,7 +208,11 @@ content {
     --nav-left: 20px;
     --nav-width: 200px;
   }
+  [teaser] {
+    display: none;
+  }
 }
+
 
 a {
   text-decoration: none;
@@ -198,23 +221,100 @@ a:visited {
   color: inherit;
 }
 
-
-[home] {
+doc-landing {
   display: flex;
   flex: 1 1;
   margin-top: 60px;
   height: 100%;
-  > * {
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  background-image: linear-gradient(
+    to right,
+    var(--theme-color),
+    var(--theme-color-trans-opaque)
+  );
+
+  h2 {
+    margin-bottom: 0px;
+    text-align: left;
+  }
+
+  > div {
+    flex: 1 1;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  
+    > div {
+      width: 100%;
+      margin: auto;
+      display: flex;
+      flex-direction: row;
+      flex-wrap:nowrap;
+    
+      [underline] {
+        white-space: nowrap;
+        color: var(--bg-color);
+      }
+      [underline]:before {
+        margin-top: 65px;
+        width: 55px;
+        margin-right: -60px;
+        border-color: var(--bg-color);
+      }
+    
+      > * {
+        flex: 1 1;
+        margin: auto;
+      }
+      
+      h1 {
+        font-size: 60px;
+        margin-bottom: 20px;
+      }
+    
+    
+      
+      [short] {
+        p {
+          margin-top: 0px;
+          margin-bottom: 30px;
+        }
+        svg {
+          margin-bottom: -5px;
+          fill: var(--font-color);
+        }
+      }
+    }
+  }
+}
+
+[short], [teaser] {
+  flex: 1 1;
+  position: relative;
+  font-size: 18px;
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  > div {
+    flex: 1 1;
     margin: auto;
   }
-  h1 {
-    font-size: 120px;
+}
+[short] {
+  > div {
+    margin-left: 60px;
+    margin-right: 0px;
   }
-  background-image: linear-gradient(
-    to bottom right,
-    rgba(255,255,255,0),
-    var(--theme-color));
-  
+}
+[teaser] {
+  > div {
+    max-width: 400px;
+    margin-left: 0px;
+    margin-right: 80px;
+  }
 }
 
 .fixed {

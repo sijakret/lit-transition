@@ -18,6 +18,10 @@ export const flow = {
       lock
     } = classes;
     const dom = partDom(part);
+    if(!dom) {
+      // animation was cancelled?
+      return;
+    }
     //const parent = dom.parentNode;
     let extents: any;
     if(lock) {

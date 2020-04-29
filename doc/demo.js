@@ -20,60 +20,67 @@ class Component extends LitElement {
 
   static get properties() {
     return {
-      chunk: { type: String }
+      chunk: String,
+      code: String,
+      name: String
     }
   }
 
   async firstUpdated() {
-    const ctx = {...window.globals};
-    for(let e in transition) {
-      ctx[e] = transition[e];
-    }
-
-    let {Comp,render,template,code,run} = await load(this.chunk);
-    this.code = code;
-    if(render) {
-      Comp = class Auto extends LitElement {
-        render() {
-          return render();
+    if(!this.code) {
+      if(!this.chunk) {
+        throw new Error('doc-demo needs either chunk or code')
+      }
+      let {Comp,render,template,code,run} = await load(this.chunk);
+      this.code = code;
+      if(render) {
+        Comp = class Auto extends LitElement {
+          render() {
+            return render();
+          }
+        }
+      } else if(template) {
+        Comp = class Auto extends LitElement {
+          render() {
+            return template;
+          }
+        }
+      } else if(run) {
+        Comp = class Auto extends LitElement {
+          render() {
+            return undefined
+          }
+          updated() {
+            run(this.shadowRoot);
+          }
         }
       }
-    } else if(template) {
-      Comp = class Auto extends LitElement {
-        render() {
-          return template;
-        }
-      }
-    } else if(run) {
-      Comp = class Auto extends LitElement {
-        render() {
-          return undefined
-        }
-        updated() {
-          run(this.shadowRoot);
-        }
+      if(!defs.has(Comp)) {
+        this.name = 'random-demo-'+(id++);
+        customElements.define(this.name, Comp);
+        defs.set(Comp, this.name);
+      } else {
+        this.name = defs.get(Comp);
       }
     }
-    if(!defs.has(Comp)) {
-      this.name = 'random-demo-'+(id++);
-      customElements.define(this.name, Comp);
-      defs.set(Comp, this.name);
-    } else {
-      this.name = defs.get(Comp);
-    }
-    this.requestUpdate();
   }
 
   render() {
-    if(!this.name) return undefined;
+    if(!this.code) return undefined;
     const h = hljs.highlight('javascript', this.code.trim(), true).value;
-    return html`
-    ${unsafeHTML(`<pre class="hljs"><code>${h}</code></pre>`)}
-    <h3>Result</h3>
-    <div class="result">
-      ${unsafeHTML(`<${this.name}></${this.name}>`)}
-    </div>
-    `;
+    const code = unsafeHTML(`<pre class="hljs"><code>${h}</code></pre>`);
+    if(!this.name) {
+      // just return highlighted ode
+      return code;
+    } else {
+      return html`
+      ${code}
+      <h3>Result</h3>
+      <div class="result">
+        ${unsafeHTML(`<${this.name}></${this.name}>`)}
+      </div>
+      `;
+    }
   }
 }
 

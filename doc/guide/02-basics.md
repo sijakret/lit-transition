@@ -15,7 +15,7 @@ This makes it very easy to transition between items in a list:
 import { LitElement, html } from 'lit-element';
 import { transition, slide } from 'lit-transition';
 const items = [
-  'Another', html`<i>one</i>`, 'bites', 'the', html`<h3>dust</h3>`,
+  'Another', html`<i>one</i>`, 'bites', 'the', html`<b>dust</b>`,
   'Hey,', 'I\'m', 'gonna', 'get', 'you', 'too'
 ];
 
@@ -131,7 +131,7 @@ import { transition, slide } from 'lit-transition';
 export class Comp extends LitElement {
   static get styles() { return css`
     .two {
-      background: #FF0000;
+      background: red;
     }`;
   }
   static get properties() {
@@ -152,7 +152,7 @@ export class Comp extends LitElement {
     <button @click=${() => this.a = !this.a}>change transitioned content</button>
     <button @click=${() => this.u = !this.u}>change unrelated content (should not transition)</button>
     <div>${transition(this.a
-        ? html`<div>ONE ${this.unrelated}</div>`
+        ? html`<div>${this.unrelated}</div>`
         : html`<div class="two">TWO ${this.unrelated}</div>`
     , slide)}</div>`;
   } 
@@ -180,7 +180,7 @@ import { transition, mark, slide } from 'lit-transition';
 export class Comp extends LitElement {
   static get styles() { return css`
     .two {
-      background: #FF0000;
+      background: red;
     }`;
   }
   static get properties() {

@@ -1,6 +1,7 @@
 import './index.scss';
 import 'highlight.js/styles/atelier-savanna-dark.css';
 import './demo';
+import './landing';
 
 import { html } from 'lit-element';
 import {cache} from 'lit-html/directives/cache';
@@ -8,7 +9,7 @@ import {index} from './loaders/md-loader?folder=./guide!';
 import router from './router';
 import {transition, slide, mark } from 'lit-transition';
 import {transLanding,transContent,transTitle} from './transitions';
-import {github} from './utils';
+import github from './assets/github.svg';
 
 
 // main app
@@ -27,15 +28,17 @@ class Component extends router() {
     }}>
     ${cache(
       html`<header>
-      <a href="/">lit-transition <span>${require('../package.json').version}</span>
-      <div></div></a>
+      <a href="/" underline>
+        lit-transition
+        <span>${require('../package.json').version}</span>
+      </a>
       <a href=https://github.com/sijakret/lit-transition>${github}</a>
       <a href=${index[0].route}>doc</a>
     </header>`
     )}
     ${transition(
-      this.route === 'Home' ?
-        mark(this.home,'home') :
+      this.route === 'Landing' ?
+        mark(html`<doc-landing></doc-landing>`, 'landing') :
         mark(this.page, 'page')
       , transLanding
     )}
@@ -55,14 +58,6 @@ class Component extends router() {
         </ul>`,i.route+'-sub') : undefined, slide({mode: 'out-in',duration:200}))
       ]
     });
-  }
-  
-  get home() {
-    return html`<div home>
-      <center>
-      <h1><a href="getting-started">sers</a></h1>
-      </center>
-    </home>`;
   }
   
   get page() {

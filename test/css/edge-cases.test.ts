@@ -38,20 +38,20 @@ suite('Edge cases', function() {
   test('shoud not redraw same marked template', async function() {
     this.timeout(3000);
     const div = quickDiv();
-    const marked = mark(transition(
-      html`<span>M</span>`,
-    ), 'marked');
+    const marked = transition(
+      mark(html`<span>M</span>`, 'marked'
+    ));
     render(marked, div);
     // this should reuse the span
-    render(mark(transition(
-      html`<i>I</i>`,
-    ), 'marked'), div)
+    render(transition(
+      mark(html`<i>I</i>`,'marked'
+    )), div)
     assert(!!div.querySelector('i'),
       'marked template renders immediately');
 
-    render(mark(transition(
-      html`<b>B</b>`,
-    ), 'marked1'), div)
+    render(transition(
+      mark(html`<b>B</b>`,'marked1'
+    )), div)
     assert(!!div.querySelector('i'),
       'different mark triggers transition');
     assert(!!div.querySelector('b'),
