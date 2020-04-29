@@ -3,3 +3,5 @@ node_modules
 /dist
 /coverage
 .DS_Store
+lit-transition-*.tgz
+test/bundle/dist/*

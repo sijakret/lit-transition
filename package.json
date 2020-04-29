@@ -8,7 +8,7 @@
     "test-base": "karma start karma.conf.js",
     "test": "npm run test-base -- --single-run",
     "test-dev": "npm run test-base -- --no-single-run --browsers Chrome",
-    "test-bundle": "npm pack&&cd test/bundle&&npm install",
+    "test-bundle": "npm pack&&npm install --prefix test/bundle&&npm test --prefix test/bundle",
     "build": "tsc",
     "build-doc": "webpack --mode production"
   },

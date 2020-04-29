@@ -135,7 +135,7 @@ const spin = {
   mode: 'out-in',
   css: `
     .enter-active, .leave-active {
-      transition: all 0.4s linear;
+      transition: all 0.2s linear;
     }
     .enter-from {
       opacity: 0.1;

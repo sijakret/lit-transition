@@ -1,3 +1,3 @@
 Javascript Transitions
 
-not just yet :()
+soon..

@@ -2,8 +2,6 @@ Getting Started
 
 ```lit-transition``` is available as an npm package.
 
-Grab it via like this
-
 ```bash
 npm install lit-transition
 ```
