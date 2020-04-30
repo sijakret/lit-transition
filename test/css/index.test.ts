@@ -60,6 +60,7 @@ function generate({
     
     render() {
       return transition(
+        // @ts-ignore
         this.toggle ? html`<div id="B">B</div>` : html`<div id="A">A</div>`,
         type({
           onAfterEnter: this.enter.bind(this),
@@ -72,8 +73,10 @@ function generate({
     // after-entering assertions
     enter() {
       // check is important so we toggle only once!
+      // @ts-ignore
       if(!this.toggle) {
         const dom = this.dom('div');
+        // @ts-ignore
         const expected = this.toggle ? 'B' : 'A';
         // our component and it's contents must be in dom
         assert(dom.innerText === expected,
@@ -81,6 +84,7 @@ function generate({
         assert(dom.id === expected,
           'content not rendered after enter');
         seq.push('enter '+dom.innerText);
+        // @ts-ignore
         this.toggle = !this.toggle;
       }
     }

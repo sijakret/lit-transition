@@ -302,6 +302,8 @@ export class Comp extends LitElement {
 > You can specify a fixed duration using the `duration` field in
 > the transition optins to nail it down in case of problems.
 
+# CSS Animations
+TODO
 # Caveat: Layout reflows
 TODO
 # Predefined transitions

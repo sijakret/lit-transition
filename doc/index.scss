@@ -3,8 +3,8 @@ body, html {
   font-size: 14px;
   display: flex;
   flex-direction: column;
-  --theme-color: rgb(45, 171, 202); 
-  --theme-color-trans: rgba(45, 171, 202,0.4); 
+  --theme-color: hsl(66, 64%, 48%); 
+  --theme-color-trans: rgba(178, 202, 45, 0.4); 
   --theme-color-trans-opaque: #aaddea;
   --theme-color-bright: #1db7dc;
   --bg-color: #FFFFFF; 
