@@ -35,8 +35,9 @@ class Component extends LitElement {
 
   async *teaser() {
     while (true) {
-      let one;
-      teasers.push(one = teasers.splice(0,1)[0]);
+      let one = teasers[0];
+      teasers.splice(0,1);
+      teasers.push(one);
       // wrapping a template using transition directive will
       // automatically animate it on change
       yield transition(one,trans);
@@ -54,7 +55,7 @@ html `
 import {transition} from 'lit-transition';
 // this template will change depending on 'cond'
 const dynamic = cond ? \`Slim\` : \`<b>Bold</b>\`;
-// when dynamic changes, it will animate automatically
+// will animate when 'dynamic' changes
 render(
   html\`<b>\${transition(dynamic)}</b>\`,
   document.body

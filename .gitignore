@@ -1,6 +1,7 @@
 node_modules
 /extension
 /dist
+/dist-doc
 /coverage
 .DS_Store
 lit-transition-*.tgz

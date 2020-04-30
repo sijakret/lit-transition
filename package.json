@@ -3,6 +3,12 @@
   "version": "0.0.1-alpha",
   "description": "",
   "module": "dist/index",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sijakret/lit-transition.git"
+  },
   "scripts": {
     "start": "webpack-dev-server",
     "test-base": "karma start karma.conf.js",
@@ -12,8 +18,8 @@
     "build": "tsc",
     "build-doc": "webpack --mode production"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jan Kretschmer",
+  "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
