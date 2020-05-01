@@ -78,7 +78,9 @@ const config = {
         to: 'assets'
       },
     ]),
-    new FaviconsWebpackPlugin('doc/assets/favicon.svg')
+    new FaviconsWebpackPlugin(
+      path.join(__dirname, 'doc/assets/favicon.svg')
+    )
   ]
 };
 
