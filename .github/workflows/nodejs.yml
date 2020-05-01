@@ -33,3 +33,11 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
       env:
         CI: true
+    - name: Deploy Doc
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v1
+      with:
+        target_branch: gh-pages
+        build_dir: dist-doc
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
