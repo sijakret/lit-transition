@@ -1,4 +1,5 @@
-import {CSSTransitionOptions,TransitionMode} from '../base';
+import { CSSTransitionOptions } from '../interfaces';
+import { instantiateDefault } from '../utils';
 
 interface CSSSlideOptions extends CSSTransitionOptions  {
   duration?: number
@@ -7,39 +8,36 @@ interface CSSSlideOptions extends CSSTransitionOptions  {
   x?: string
   y?: string
 }
-export function slide(opts:CSSSlideOptions = {}) {
-  const {
-    duration = 500,
-    x = '100%',
-    y = '0%',
-    ease = 'ease-out',
-    opacity = 0.0,
-    mode = TransitionMode.InOut
-  } = opts;
-  return {
-    css:`
-  .enter-active, .leave-active {
-    transition: all ${duration}ms ${ease};
+
+export const slide = instantiateDefault(
+  function slide(opts:CSSSlideOptions = {}) {
+    const {
+      duration = 500,
+      x = '100%',
+      y = '0%',
+      ease = 'ease-out',
+      opacity = 0.0,
+    } = opts;
+    return {
+      enter: {
+        active: 'slide-enter-active',
+        from: 'slide-enter-from',
+        to: 'slide-enter-to',
+      },
+      leave: {
+        active: 'slide-leave-active',
+        from:  'slide-leave-from',
+        to: 'slide-leave-to',
+        lock: true
+      },
+      css:`
+    .slide-enter-active, .slide-leave-active {
+      transition: transform ${duration}ms ${ease}, opacity ${duration}ms ${ease};
+    }
+    .slide-enter-from, .slide-leave-to {
+      opacity: ${opacity};
+      transform: translate(${x}, ${y});
+    }`,
+    ...opts
   }
-  .leave-active {
-    position: ${mode !== 'out-in' ? 'absolute' : 'initial'};
-  }
-  .enter-from {
-    transform: translate(${x}, ${y});
-    opacity: 0;
-  }
-  .enter-to {
-    opacity: 1;
-    transform: none;
-  }
-  .leave-from {
-    opacity: 1;
-    transform: none;
-  }
-  .leave-to {
-    opacity: ${opacity};
-    transform: translate(${x}, ${y});
-  }`,
-  ...opts
-};
-};
+})

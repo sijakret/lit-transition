@@ -1,9 +1,11 @@
 Getting Started
 
-```lit-transition``` is available as an npm package.
+lit-transition is available as an npm package.
+
+Install it as a devDependency using npm:
 
 ```bash
-npm install lit-transition
+npm install lit-transition --save-dev
 ```
 
 Now, anywhere you swap templates in your render code,
@@ -57,5 +59,5 @@ export class Comp extends LitElement {
 
 How could this be any easier, right?
 
-Continue with the [basics](/basics) to learn how 
+Continue with the [basics](/basics) to learn 
 how lit-transition works and what else you can do with it.

@@ -10,21 +10,27 @@ body, html {
   --bg-color: #FFFFFF; 
   --font-color: #000000;  
   padding: 0px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   margin: 0px;  
-  min-height: 100%;
+  height: 100%;
   flex: 1 1;
 }
 
 code {
-  color: var(--theme-color-bright);
+  color: var(--theme-color);
 }
 
 doc-app, doc-app > div {
   flex: 1 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+[layout] {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
 }
 
 svg {
@@ -88,20 +94,28 @@ header {
 
 
 main {
-  display: flex;
   flex: 1 1;
+  position: fixed;
+  left: var(--nav-width);
+  top: 0px;
+  height: 100%;
+  width: calc(100% - var(--nav-width) - 64px);
+  overflow-y: scroll;
+  overflow-x: hidden;
   flex-direction: row;
   padding-left: 32px;
-  padding-top: 0px;
   padding-right: 32px;
-  height: calc(100%);
 }
 
 nav {
-  position: fixed;
-  top: 110px;
-  left: var(--nav-left);
-  width: calc(var(--nav-width) - var(--nav-left));
+  flex: 1 1;
+  width: var(--nav-width);
+  position: fixed; 
+  display: flex;
+  flex-direction: column;
+  left: 40px;
+  top: 120px;
+
   a {
     color: inherit;
     display: block;
@@ -145,13 +159,13 @@ h1[title]:before, [underline]:before {
 }
 
 content {
-  flex: 1 1;
+  display: inline-block;
+  overflow: hidden;
   max-width: 500px;
-  margin-left: var(--nav-width);
-  width: calc(100% - var(--nav-width));
-  margin-top: 90px;
-  padding-bottom: 50px; 
-
+  width: calc(100% - 30px);
+  margin-top: 100px;
+  margin-bottom: 30px;
+  margin-right: 30px;
   h1[title]:before {
     border-bottom: 2px solid rgba(0,0,0,0.7);
   }
@@ -188,17 +202,10 @@ content {
       
     }
   }
-
-  .result {
-    margin: 10px;
-    padding: 10px;
-    margin-bottom: 30px;
-    border-left: 4px solid rgba(0,0,0,0.2);
-  }
 }
 
 [app] {
-  --nav-width: 260px;
+  --nav-width: 300px;
   --nav-left: 40px;
 }
 
@@ -290,6 +297,15 @@ doc-landing {
   }
 }
 
+doc-demo {
+  .result {
+    margin: 5px;
+    padding: 5px;
+    margin-bottom: 20px;
+    /*border-top: 1px solid rgba(0,0,0,0.2);*/
+  }
+}
+
 [short], [teaser] {
   flex: 1 1;
   position: relative;
@@ -305,6 +321,8 @@ doc-landing {
 }
 [short] {
   > div {
+    margin-top: 0px;
+    margin-bottom: 80px;
     margin-left: 60px;
     margin-right: 0px;
   }
@@ -335,5 +353,39 @@ doc-landing {
   margin: 2px;
   margin-top: 12px;
   box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+
+  code {
+    color: inherit;
+  }
 }
 
+[stackblitz] {
+  float: right;
+  font-size: 12px;
+  --sb-color1: #1389FD;
+  --sb-color2: #ffffff;
+  cursor: pointer;
+  transition: all 0.5s;
+  svg {
+    fill: var(--sb-color1);
+    margin-bottom: -7px;
+  }
+  color: var(--sb-color1);
+  background: var(--sb-color2);
+  border: 2px solid var(--sb-color1);
+  border-radius: 6px;
+  padding: 4px;
+  padding-right: 12px;
+  line-height: 20px;
+  margin-top: -6px;
+  vertical-align: center;
+}
+
+[stackblitz]:hover {
+  background: var(--sb-color1);
+  color: var(--sb-color2);
+  border: 2px solid var(--sb-color2);
+  svg {
+    fill: var(--sb-color2);
+  }
+}

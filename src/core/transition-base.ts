@@ -72,17 +72,17 @@ export function transitionBase(flow:any) {
       // perform enter transition
       async function enterFlow(part:NodePart) {
         // first mount element
-        onEnter && onEnter();
+        onEnter && await onEnter();
         enter && await flow.transition(part, enter, transition);
-        onAfterEnter && onAfterEnter();
+        onAfterEnter && await onAfterEnter();
       }
   
       // perform enter transition
       async function leaveFlow(part:NodePart) {
-        onLeave && onLeave();
+        onLeave && await onLeave();
         leave && await flow.transition(part, leave, transition);
         remove(part);
-        onAfterLeave && onAfterLeave();
+        onAfterLeave && await onAfterLeave();
       }
   
       // init container
@@ -118,21 +118,21 @@ export function transitionBase(flow:any) {
           // in this case we wait for leave
           // to finish before we enter
           const last = data.last;
-          //delete data.last;
+          // delete data.last;
           last && await leaveFlow(last);
           // trigger enter and remember part
           // it will be pased to leaveFlow
           // on the next transition
-          enterFlow(data.last = add(tr));
+          await enterFlow(data.last = add(tr));
         } else {
           // mode === 'both'
           // here we don't wait so we trigger enter
-          // right away
-          data.last && leaveFlow(data.last);
+          // and leave right away
+          data.last && leaveFlow(data.last),
           // trigger enter and remember part
           // it will be pased to leaveFlow
           // on the next transition
-          enterFlow(data.last = add(tr));
+          await enterFlow(data.last = add(tr));
         }
       }
   

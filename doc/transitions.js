@@ -19,8 +19,7 @@ export const transTitle = {
   leave: {
     active: ['animated', 'zoomOut', 'top', 'fixed'],
     from: undefined,
-    to: undefined,
-    lock: true
+    to: undefined
   }
 };
 
@@ -97,3 +96,7 @@ export const transWaitBar = (duration) => ({
   },
   leave: false
 });
+
+
+import {slide} from 'lit-transition';
+export const transSubNav = slide({mode: 'out-in', x: '-10%', duration:200});

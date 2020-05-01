@@ -5,13 +5,13 @@ import {
 import {
   CSSTransitionOptions,
   TransitionMode
-} from '../base';
+} from './interfaces';
 
 /**
  * takes an object and normalizes it into CSSTransitionOptions
  * by padding it with defaults etc..
  */
-export function CSSTransition(opts : any = {}): CSSTransitionOptions {
+export function normalizeCSSTransitionOptions(opts : any = {}): CSSTransitionOptions {
   const {
     css,
     duration,
@@ -24,6 +24,8 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
     onLeave
   } = opts;
 
+  // don't do it by default, it might confuse
+  const lock = false; //mode !== TransitionMode.Both;
   return {
     duration,
     css: html`<style>${css}</style>`,
@@ -37,11 +39,12 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
       }) : false,
     leave: leave != false ? (Array.isArray(leave)||typeof leave === 'string' ? {
         active: leave,
+        lock
       } : {
         active: 'leave-active',
         from: 'leave-from',
         to: 'leave-to',
-        lock: mode !== TransitionMode.Both,
+        lock,
         ...leave
       } ): false,
     onEnter,
@@ -50,4 +53,15 @@ export function CSSTransition(opts : any = {}): CSSTransitionOptions {
     onAfterLeave,
     mode
   }
+}
+
+
+export function instantiateDefault(generator:any) {
+  // create default instance
+  const inst = generator();
+  // patch generator with default instance
+  for(let p in inst) {
+    generator[p] = inst[p];
+  }
+  return generator;
 }

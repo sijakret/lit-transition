@@ -1,8 +1,10 @@
 import { NodePart, html} from 'lit-html';
 import classList from './class-list';
 import {partDom, applyExtents, recordExtents, pageVisible, classChanged} from '../core/utils';
-
-// describes scheduling css transitons
+ 
+/**
+ * schedules css transitons
+ */
 export const flow = {
   async transition(part:NodePart, classes:any, global: any) {
     // make sure we never animate on hidden windows
@@ -43,7 +45,19 @@ export const flow = {
 
       // called once transition is completed
       function done(e:Event) {
-        // Remove all unused hooks
+        if(e) {
+          // if e is set we have an actual event
+          if(e.target !== dom) {
+            // bubbled up from someone else, ignore..
+            return;
+          }
+          // this event was meant for us
+          // we handle it definitively
+          e.preventDefault();
+          e.stopPropagation();
+        } 
+
+        // Remove all the other excess hooks
         ['transitionend','transitioncancel'
         ,'animationend','animationcancel']
         .filter(type => !e || type !== e.type)
@@ -71,12 +85,12 @@ export const flow = {
         }, o);
       }
 
-      await classChanged(dom, () => add(from));
-      await classChanged(dom, () => add(active));
+      // add actual transition classes
+      from && await classChanged(dom, () => add(from));
+      active && await classChanged(dom, () => add(active));
 
       from && remove(from);
       to && add(to);
-      
     });
   },
   // injects style tags
