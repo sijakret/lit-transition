@@ -95,9 +95,13 @@ export const flow = {
   },
   // injects style tags
   init({data,remove,add,transition}:{data:any,remove:any,add:any,transition:any}) {
-    let css = transition.css;
-    css = typeof css === 'string' ? html`<style>${css}</style>`: css;
-    data.css && remove(data.css);
-    data.css = add(css);
+    if(data._cssSource !== transition.css) {
+      // only init css if it has changed!
+      data._cssSource = transition.css;
+      let css = transition.css;
+      css = typeof css === 'string' ? html`<style>${css}</style>`: css;
+      data.css && remove(data.css);
+      data.css = add(css);
+    }
   }
 };

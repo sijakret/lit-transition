@@ -8,7 +8,7 @@ interface CSSLandOptions extends CSSTransitionOptions  {
 }
 
 export const land = instantiateDefault(
-  function (opts:CSSLandOptions = {}) {
+  function land(opts:CSSLandOptions = {}) {
     const {
       duration = 500,
       ease = 'linear',

@@ -1,5 +1,10 @@
 Basics
 
+> Currently, we only support CSS-based transitions. We plan, however, on adding
+> Javascript/web animation transitions as well.
+> The concepts in this document are general and will also apply to Javascript transitions
+> once they are implemented
+
 # Transition types
 
 Currently, only transitioning between single elements/components are supported.

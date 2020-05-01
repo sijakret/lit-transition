@@ -1,4 +1,4 @@
-import { CSSTransitionOptions } from '../interfaces';
+import { CSSTransitionOptions, TransitionMode } from '../interfaces';
 import { instantiateDefault } from '../utils';
 
 interface CSSSlideOptions extends CSSTransitionOptions  {
@@ -16,28 +16,31 @@ export const slide = instantiateDefault(
       x = '100%',
       y = '0%',
       ease = 'ease-out',
+      mode,
       opacity = 0.0,
     } = opts;
     return {
       enter: {
         active: 'slide-enter-active',
-        from: 'slide-enter-from',
-        to: 'slide-enter-to',
+        from: 'slide-enter-from'
       },
       leave: {
         active: 'slide-leave-active',
-        from:  'slide-leave-from',
         to: 'slide-leave-to',
-        lock: true
       },
       css:`
-    .slide-enter-active, .slide-leave-active {
+    .slide-enter-active {
+      transition: transform ${duration}ms ${ease}, opacity ${duration}ms ${ease};
+    }
+    .slide-leave-active {
+      position: ${mode !== TransitionMode.OutIn ? 'absolute': 'initial' };
       transition: transform ${duration}ms ${ease}, opacity ${duration}ms ${ease};
     }
     .slide-enter-from, .slide-leave-to {
       opacity: ${opacity};
       transform: translate(${x}, ${y});
     }`,
+    mode,
     ...opts
   }
 })

@@ -44,6 +44,7 @@ $ npm install lit-transition
 
 ## Roadmap
 
+* multi-root templates
 * add js hooks
 * add transitions via web animation
 

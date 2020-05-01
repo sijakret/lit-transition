@@ -120,7 +120,7 @@ nav {
     color: inherit;
     display: block;
     cursor: pointer;
-    padding: 10px;
+    padding: 4px;
     transition: color 0.2s;
   }
    a[active], a:hover {
@@ -133,10 +133,10 @@ nav {
     > li {
       margin-left: 0px;
       list-style-type: none;
-      font-size: 14px;
+      font-size: 12px;
       > a {
-        font-size: 13px;
-        padding: 6px;
+        font-size: 12px;
+        padding: 5px;
       }
     }
   }
@@ -162,10 +162,9 @@ content {
   display: inline-block;
   overflow: hidden;
   max-width: 500px;
-  width: calc(100% - 30px);
+  width: calc(100%);
   margin-top: 100px;
   margin-bottom: 30px;
-  margin-right: 30px;
   h1[title]:before {
     border-bottom: 2px solid rgba(0,0,0,0.7);
   }
@@ -209,11 +208,37 @@ content {
   --nav-left: 40px;
 }
 
+@media screen and (max-width: 980px) {
+  [app] {
+    --nav-left: 20px;
+    --nav-width: 250px;
+  }
+  [teaser] {
+    display: none;
+  }
+}
+
+
 // Medium devices (tablets, 768px and up)
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   [app] {
     --nav-left: 20px;
     --nav-width: 200px;
+  }
+  [teaser] {
+    display: none;
+  }
+}
+
+
+// Medium devices (tablets, 768px and up)
+@media screen and (max-width: 600px) {
+  [app] {
+    --nav-left: 0px;
+    --nav-width: 0px;
+  }
+  nav {
+    display: none;
   }
   [teaser] {
     display: none;

@@ -388,5 +388,53 @@ Also, if you want your elements to overlay during animations, we have a `lock` h
 > working one that is close to what you want and tweak it.
 
 
-# Predefined transitions
-TODO
+# Built-in transitions
+
+We have a set of predefined css-based transitions ready for use:
+
+<script>
+import { LitElement, html } from 'lit-element';
+import {
+  transition,
+  slide,
+  fade,
+  land
+} from 'lit-transition';
+
+// our built-in animations
+const builtins = {slide,fade,land};
+
+export class Comp extends LitElement {
+  static get properties() {
+    return { 
+      a: Boolean, // to toggle content
+      choice: Object // for transition mode
+    }
+  }
+  // initialize component
+  constructor() {
+    super();
+    this.choice = slide;
+  }
+
+  // sets mode and swaps transitioned content
+  select(e) {
+    this.choice = builtins[e.target.value];
+    this.a = !this.a;
+  }
+
+  render() {
+    // animates with different modes
+    return html`click to transition
+    <select @change=${this.select}>${
+      Object.values(builtins).map(b => html`<option value=${b.name}>${b.name}</option>`)
+    }</select>
+    <button @click=${() => this.a = !this.a}>animate</button>
+    <div style="margin: 20px; font-size: 30px;">
+    ${transition(
+      this.a ? 'CONTENT A' : 'CONTENT B',
+      this.choice
+    )}</div>`;
+  } 
+}
+</script>

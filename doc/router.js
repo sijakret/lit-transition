@@ -61,10 +61,6 @@ export default function() {
       this.params = params;
       this.query = query;
       this.routeData = data;
-
-      // for nav links we scroll to top!
-      //if(this.route) {
-      //}
     }
 
     navigate(href) {

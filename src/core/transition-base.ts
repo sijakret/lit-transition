@@ -25,7 +25,7 @@ export function transitionBase(flow:any) {
       }
 
       if(typeof tr === 'string' || typeof tr === 'number') {
-        tr = html`<div>${tr}</div>`;
+        tr = html`<div style="display: inline-block">${tr}</div>`;
       }
 
       // see if template was marked
@@ -89,16 +89,20 @@ export function transitionBase(flow:any) {
       if(!data) {
         setup.set(container, data = {
           children: new Map<TemplateResult, NodePart>(),
-          styles: new Map<TemplateResult, NodePart>()
-        });
-        // init flow, like to init css
-        flow.init && flow.init({
-          transition,
-          data,
-          add,
-          remove
+          styles: new Map<TemplateResult, NodePart>(),
+          transition
         });
       }
+
+      // important in case transition has changed
+      // init flow, like to init css
+      // init must be laze
+      flow.init && flow.init({
+        transition,
+        data,
+        add,
+        remove
+      })
 
       // same template? no animation! 
       if(data.last && !!name && name === data.name) {
@@ -135,8 +139,6 @@ export function transitionBase(flow:any) {
           await enterFlow(data.last = add(tr));
         }
       }
-  
-      
     }
   }  
 }

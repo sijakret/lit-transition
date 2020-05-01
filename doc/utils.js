@@ -3,7 +3,7 @@ export function scrolly(elem, offset = 0) {
   elem = document.querySelector(elem)
   if(elem) {
     const scroll = document.querySelector('main');
-    const top = elem.getBoundingClientRect().top  - offset;
+    const top = elem.offsetTop - offset;
     scroll.scrollTo({top, behavior: 'smooth'});
   }
 }
