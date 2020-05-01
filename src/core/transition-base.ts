@@ -59,7 +59,12 @@ export function transitionBase(flow:any) {
       // removes a template result
       function remove(part:NodePart) {
         const {startNode:s, endNode:e} = part;
-        part.clear();
+        try {
+          s && part.clear();
+        } catch(e) {
+          // TODO: why does this happen?
+          // out-in seems to have a bug..
+        }
         s && s.parentNode && s.parentNode.removeChild(s);
         e && e.parentNode && e.parentNode.removeChild(e);
       }
@@ -112,7 +117,9 @@ export function transitionBase(flow:any) {
         } else if(mode === 'out-in') {
           // in this case we wait for leave
           // to finish before we enter
-          data.last && await leaveFlow(data.last);
+          const last = data.last;
+          //delete data.last;
+          last && await leaveFlow(last);
           // trigger enter and remember part
           // it will be pased to leaveFlow
           // on the next transition

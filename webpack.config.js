@@ -3,8 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
-  mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'cheap-module-source-map',
   entry: {
     doc: './doc/index.js',
     'lit-transition': 'lit-transition'
@@ -29,7 +28,14 @@ const config = {
     rules: [
       {
         test: /\.ts?$/,
-        use: 'ts-loader',
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: path.join(__dirname, 'tsconfig.json')
+            }
+          }
+        ],
         exclude: /node_modules/,
       },
       {
@@ -53,11 +59,9 @@ const config = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader',
-        ],
-      },
+        test: /\.svg$/,
+        loader: './doc/loaders/svg-loader'
+      }
     ],
   },
 

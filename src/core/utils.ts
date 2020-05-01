@@ -31,16 +31,16 @@ export function classChanged(node:HTMLElement, cb:Function|null, skipFrame:Boole
     });
     cb && cb();
   });
-
 }
 
 export function partDom(part:NodePart):any {
   return part.startNode.nextSibling;
 }
 
-
+/**
+ * marked templates are kept in a global weak map
+ */
 const markedTemplates = new WeakMap<TemplateResult,String>();
-
 export function mark(templateResult:TemplateResult, name:String) {
   markedTemplates.set(templateResult, name);
   return templateResult;
@@ -51,27 +51,33 @@ export function marked(templateResult:TemplateResult) {
 }
 
 /**
- * records geometry of a dom node
+ * records geometry of a dom node so it can
+ * be reaplied later on
  */
-export function recordExtents(e:HTMLElement) {
+export function recordExtents(e:any) {
   const rect = e.getBoundingClientRect();
-  const style = window.getComputedStyle(e);
-  let top = e.offsetTop - parseFloat(style.marginTop) || 0;
-  let left = e.offsetLeft - parseFloat(style.marginLeft) || 0;
+  let top = 0;
+  let left = 0;
   {
-    let p:any = e;
-    do {
-      p = p.parentNode || p.host;
-      if(!p) break;
-      top -= p.scrollTop || 0;
-      left -= p.scrollLeft || 0;
-    } while(p != e.offsetParent)
+    let offsetParent:Element|null = e.offsetParent;
+    while(e && e !== document && !(e instanceof DocumentFragment)) {
+      const style = window.getComputedStyle(e);
+      top += e.offsetTop 
+          - parseFloat(style.marginTop) || 0
+          - e.scrollTop || 0;
+      left += e.offsetLeft
+          - parseFloat(style.marginLeft) || 0
+          - e.scrollLeft || 0;
+      if(e === offsetParent) {
+        break;
+      }
+      e = e.parentNode || (e as any).host;
+    } 
   }
   return {
     left,
     top,
-    rect,
-    style
+    rect
   }
 }
 

@@ -10,7 +10,7 @@ import {scrolly} from './utils';
 // routing
 const routes = [
   {
-    name: 'Home',
+    name: 'Landing',
     pattern: '*'
   },
   ...index.map(i => ({
@@ -88,7 +88,6 @@ export default function() {
     get routeTitle() {
       return this.routeData && mark(html`<h1 title>
         ${this.routeData.title}
-        <div></div>
       </h1>`, this.routeData.title+'title');
     }
     
