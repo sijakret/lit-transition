@@ -25,7 +25,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build
-    - run: npm run build-doc
     - run: npm test
     - run: npm run test-bundle
     - name: Coveralls GitHub Action
@@ -34,6 +33,9 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
       env:
         CI: true
+
+    - run: npm run build-doc&&cp dist-doc/index.html dist-doc/200.html
+      if: ${{ success() }}
     - name: Deploy Doc
       if: success()
       uses: crazy-max/ghaction-github-pages@v1

@@ -3,20 +3,21 @@ import { navigator, router } from 'lit-element-router';
 import {index} from './loaders/md-loader?folder=./guide!';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 
-import {transition, slide, mark } from 'lit-transition';
- 
-import {scrolly} from './utils';
+import { mark } from 'lit-transition';
+import { scrolly } from './utils';
+
+const publicPath = '/lit-transition/'
 
 // routing
 const routes = [
   {
     name: 'Landing',
-    pattern: '*'
+    pattern: publicPath + '*'
   },
   ...index.map(i => ({
     name: i.title,
     index: i.index,
-    pattern: (i.route = i.file.slice(3,-3)),
+    pattern: (i.route = publicPath + i.file.slice(3,-3)),
     data: {
       render: () => {
         // debugger
