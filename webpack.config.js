@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   entry: {
     doc: './doc/index.js',
     'lit-transition': 'lit-transition'
