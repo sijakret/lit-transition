@@ -1,25 +1,38 @@
 import { CSSTransitionOptions, TransitionMode } from '../interfaces';
 import { instantiateDefault } from '../utils';
+import {merge} from 'lodash';
 
 interface CSSSlideOptions extends CSSTransitionOptions  {
   duration?: number
   ease?: string
   opacity?: number
+  leavePosition?: string
   x?: string
   y?: string
+  x1?: string
+  y1?: string
 }
 
+/**
+ * simple slide transition
+ * TODO
+ */
 export const slide = instantiateDefault(
   function slide(opts:CSSSlideOptions = {}) {
-    const {
+    let {
       duration = 500,
       x = '100%',
       y = '0%',
+      x1 = '',
+      y1 = '',
       ease = 'ease-out',
+      leavePosition = '',
       mode,
       opacity = 0.0,
     } = opts;
-    return {
+    x1 = x1 || x;
+    y1 = y1 || y;
+    return merge(opts, {
       enter: {
         active: 'slide-enter-active',
         from: 'slide-enter-from'
@@ -33,14 +46,18 @@ export const slide = instantiateDefault(
       transition: transform ${duration}ms ${ease}, opacity ${duration}ms ${ease};
     }
     .slide-leave-active {
-      position: ${mode !== TransitionMode.OutIn ? 'absolute': 'initial' };
+      position: ${leavePosition
+        || (mode !== TransitionMode.OutIn ? 'absolute': 'initial')};
       transition: transform ${duration}ms ${ease}, opacity ${duration}ms ${ease};
     }
-    .slide-enter-from, .slide-leave-to {
+    .slide-leave-to {
       opacity: ${opacity};
       transform: translate(${x}, ${y});
+    }
+    .slide-enter-from {
+      opacity: ${opacity};
+      transform: translate(${x1}, ${y1});
     }`,
-    mode,
-    ...opts
-  }
+    mode
+  })
 })

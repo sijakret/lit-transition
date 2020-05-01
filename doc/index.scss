@@ -113,7 +113,7 @@ nav {
   position: fixed; 
   display: flex;
   flex-direction: column;
-  left: 40px;
+  left: var(--nav-left);
   top: 120px;
 
   a {
@@ -205,46 +205,8 @@ content {
 
 [app] {
   --nav-width: 300px;
-  --nav-left: 40px;
+  --nav-left: 60px;
 }
-
-@media screen and (max-width: 980px) {
-  [app] {
-    --nav-left: 20px;
-    --nav-width: 250px;
-  }
-  [teaser] {
-    display: none;
-  }
-}
-
-
-// Medium devices (tablets, 768px and up)
-@media screen and (max-width: 768px) {
-  [app] {
-    --nav-left: 20px;
-    --nav-width: 200px;
-  }
-  [teaser] {
-    display: none;
-  }
-}
-
-
-// Medium devices (tablets, 768px and up)
-@media screen and (max-width: 600px) {
-  [app] {
-    --nav-left: 0px;
-    --nav-width: 0px;
-  }
-  nav {
-    display: none;
-  }
-  [teaser] {
-    display: none;
-  }
-}
-
 
 a {
   text-decoration: none;
@@ -414,3 +376,44 @@ doc-demo {
     fill: var(--sb-color2);
   }
 }
+
+
+@media screen and (max-width: 980px) {
+  [app] {
+    --nav-left: 20px;
+    --nav-width: 200px;
+  }
+  [teaser] {
+    > div {
+      max-width: 400px;
+      margin-left: 40px;
+      margin-right: 40px;
+    }
+  }
+}
+
+
+// Medium devices (tablets, 768px and up)
+@media screen and (max-width: 768px) {
+  [app] {
+    --nav-left: 20px;
+    --nav-width: 180px;
+  }
+  [teaser] {
+    display: none;
+  }
+}
+
+
+// Medium devices (tablets, 768px and up)
+@media screen and (max-width: 600px) {
+  [app] {
+    --nav-left: 0px;
+    --nav-width: 0px;
+  }
+
+  nav {
+    display: none;
+  }
+}
+

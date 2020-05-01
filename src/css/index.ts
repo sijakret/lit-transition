@@ -9,6 +9,11 @@ import {
 } from './interfaces';
 
 /**
+ * re-export interfaces
+ */ 
+export * from './interfaces';
+
+/**
  * re-export predefined transitions
  */ 
 export * from './transitions';

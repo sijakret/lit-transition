@@ -390,7 +390,12 @@ Also, if you want your elements to overlay during animations, we have a `lock` h
 
 # Built-in transitions
 
-We have a set of predefined css-based transitions ready for use:
+We have a set of predefined css-based transitions ready for use.
+These transitions have a set of custom options and try
+to derive some transition css in a context-aware way.
+
+They also forward all standard options (like `mode`, `duration`)
+to the underlying system:
 
 <script>
 import { LitElement, html } from 'lit-element';
@@ -438,3 +443,6 @@ export class Comp extends LitElement {
   } 
 }
 </script>
+
+TODO: elaborate a bit.
+TODO: show actual paramters
