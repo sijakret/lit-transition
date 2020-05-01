@@ -1,6 +1,5 @@
 import { CSSTransitionOptions, TransitionMode } from '../interfaces';
-import { instantiateDefault } from '../utils';
-import {merge} from 'lodash';
+import { instantiateDefault, mergeObjects as merge } from '../utils';
 
 interface CSSSlideOptions extends CSSTransitionOptions  {
   duration?: number
