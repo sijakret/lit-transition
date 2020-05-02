@@ -28,7 +28,7 @@ class Component extends router() {
     }}>
     ${cache(
       html`<header>
-      <a href="/" underline>
+      <a href=${baseRoute} underline>
         lit-transition
         <span>${require('../package.json').version}</span>
       </a>

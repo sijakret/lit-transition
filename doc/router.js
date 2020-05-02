@@ -45,6 +45,10 @@ export default function() {
       return routes;
     }
 
+    get baseRoute() {
+      return publicPath;
+    }
+
     // make css bleed in
     createRenderRoot() {
       return this;

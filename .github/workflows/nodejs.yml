@@ -34,7 +34,7 @@ jobs:
       env:
         CI: true
 
-    - run: npm run build-doc&&cp dist-doc/index.html dist-doc/200.html
+    - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
       if: ${{ success() }}
     - name: Deploy Doc
       if: success()
