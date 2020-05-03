@@ -64,7 +64,9 @@ export const flow = {
         .forEach(type => dom.removeEventListener(type, done));
 
         // remove all classes we added and resolve
-        remove([active, from, to]);
+        active && remove(active);
+        from && remove(from);
+        to && remove(to);
         resolve();
       }
       
@@ -96,12 +98,14 @@ export const flow = {
   // injects style tags
   init({data,remove,add,transition}:{data:any,remove:any,add:any,transition:any}) {
     if(data._cssSource !== transition.css) {
+      data.css && remove(data.css);
+      if(!!transition.css) {
       // only init css if it has changed!
       data._cssSource = transition.css;
       let css = transition.css;
       css = typeof css === 'string' ? html`<style>${css}</style>`: css;
-      data.css && remove(data.css);
       data.css = add(css);
+      }
     }
   }
 };
