@@ -6,6 +6,10 @@ interface CSSSlideOptions extends CSSTransitionOptions  {
   ease?: string
   opacity?: number
   leavePosition?: string
+  left?:Boolean
+  right?:Boolean
+  up?:Boolean
+  down?:Boolean
   x?: string
   y?: string
   x1?: string
@@ -18,7 +22,26 @@ interface CSSSlideOptions extends CSSTransitionOptions  {
  */
 export const slide = instantiateDefault(
   function slide(opts:CSSSlideOptions = {}) {
+    const {left,right,up,down} = opts;
+    let simple = {};
+    left && (simple = {
+      x:'-100%',  // slide out to right ..
+      x1:'100%' // .. and in from left
+    });
+    right && (simple = {
+      x:'100%',  // slide out to right ..
+      x1:'-100%' // .. and in from left
+    });
+    up && (simple = {
+      y:'100%',  // slide out to right ..
+      y1:'-100%' // .. and in from left
+    });
+    down && (simple = {
+      y:'-100%',  // slide out to right ..
+      y1:'100%' // .. and in from left
+    });
     let {
+      mode,
       duration = 500,
       x = '100%',
       y = '0%',
@@ -26,9 +49,11 @@ export const slide = instantiateDefault(
       y1 = '',
       ease = 'ease-out',
       leavePosition = '',
-      mode,
       opacity = 0.0,
-    } = opts;
+    } = {
+      ...simple,
+      ...opts
+    };
     x1 = x1 || x;
     y1 = y1 || y;
     return merge(opts, {

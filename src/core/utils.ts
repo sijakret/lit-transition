@@ -61,12 +61,12 @@ export function recordExtents(e:any) {
   {
     let offsetParent:Element|null = e.offsetParent;
     while(e && e !== document && !(e instanceof DocumentFragment)) {
-      const style = window.getComputedStyle(e);
+      //const style = window.getComputedStyle(e);
       top += e.offsetTop 
-          - parseFloat(style.marginTop) || 0
+          //- parseFloat(style.marginTop) || 0
           - e.scrollTop || 0;
       left += e.offsetLeft
-          - parseFloat(style.marginLeft) || 0
+          //- parseFloat(style.marginLeft) || 0
           - e.scrollLeft || 0;
       if(e === offsetParent) {
         break;

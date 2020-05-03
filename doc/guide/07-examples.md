@@ -11,44 +11,59 @@ have a look at the comments in the code (probably 80% of it is unrelated logic, 
 import { LitElement, html, css } from 'lit-element';
 import { transition, TransitionMode, slide } from 'lit-transition';
 
-const anim = slide({
-  mode: TransitionMode.Both,
-  opacity: 1,
-  leave: {
-    lock: true
-  },
-  x:'100%',  // slide out to right ..
-  x1:'-100%' // .. and in from left
-});
+// helper that uses unsplash to get a list of <img> templates
+async function getImages(topics) {
+  // brutal image preloader
+  const prel = (url) => !(new Image().src = url)||url;
+  const base = 'https://source.unsplash.com/800x500/?';
+  const slides = await Promise.all(topics.map(t => fetch(base+t)))
+    // slides is a list of image urls
+  return slides.map(({url}) => html`<img src=${prel(url)}>`);
+}
+
+// our base animation configuration
+const anim = {
+  mode: TransitionMode.Both, // transition enter+leave concurrently
+  opacity: 0.0, // fade in as well
+  leave: { lock: true }
+  // left, right <- these will be set dynamically
+};
 
 // slideshow component
 export class Comp extends LitElement {
   static get properties() {
     return { 
-      slide: Number,
-      slides: Object
+      slides: Object, // list of slides
+      slide: Number   // current slide
     }
   }
   static get styles() {
+    // some styling, you don't really need this
+    // remove it and the slideshow will work but look more ugly
     return css`
     :host {
       position: relative;
-      display: block;
-      height: 300px;
+      display: flex;
+      height: 200px;
       overflow: hidden;
+      border: 1px solid;
     }
-    [a],[b] {
+    div {
+      margin: auto;
+    }
+    [l],[r] {
       z-index: 1;
       position: absolute;
       top: 50%;
     }
-    [a] {
+    [l] {
       left: 5%;
     }
-    [b] {
+    [r] {
       right: 5%;
     }
     img {
+      margin: auto;
       max-height: 100%;
       max-width: 100%;
     }
@@ -57,31 +72,33 @@ export class Comp extends LitElement {
   constructor() {
     super();
     this.slide = 0;
-    this.init();
-  }
-  
-  // get some cool images
-  async init() {
-    const slides = (await Promise.all(Array(10).fill(0)
-      .map(() => fetch('https://source.unsplash.com/800x500/?beach'))))
-      .map(({url})  => html`<img src=${url} >`);
-    this.slides = slides;
-  }
-
-  render() {
-    return !!this.slides ? this.slideshow : html`<span>Loading...</span>`;
+    // get some cool images
+    (async () => {
+      // this.slides is also used know if we initialized
+      this.slides = await getImages(
+        [ 'house', 'beach', 'cat', 'dog', 'funny' ]
+      );
+    })();
   }
 
   skip(n = 1) {
-    this.slide = (this.slide + n) % this.slides.length;
+    anim.left = !!(n < 0)  // configure to slide left depending on n
+    anim.right = !!(n > 0) // configure to slide rigt depending on n
+    const num = this.slides.length; // we wrap here
+    this.slide = (this.slide + n + num) % num;
+  }
+
+  // show loading until we are ready
+  render() {
+    return !!this.slides ? this.slideshow : html`<div>Loading...</div>`;
   }
 
   get slideshow() {
-    // slide to show
+    // slideshow tremplate
     return html`
-    <button a @click=${() => this.skip(-1)}>prev</button>
-    <button b @click=${() => this.skip()}>next</button>
-    ${transition(this.slides[this.slide], anim)}`;
+    <button l @click=${() => this.skip()}>prev</button>
+    <button r @click=${() => this.skip(-1)}>next</button>
+    ${transition(this.slides[this.slide], slide(anim))}`;
   }
 }
 </script>
