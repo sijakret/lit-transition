@@ -82,8 +82,8 @@ export class Comp extends LitElement {
   }
 
   skip(n = 1) {
-    anim.left = !!(n < 0)  // configure to slide left depending on n
-    anim.right = !!(n > 0) // configure to slide rigt depending on n
+    anim.left = !!(n > 0)  // configure to slide left depending on n
+    anim.right = !!(n < 0) // configure to slide rigt depending on n
     const num = this.slides.length; // we wrap here
     this.slide = (this.slide + n + num) % num;
   }
@@ -96,8 +96,8 @@ export class Comp extends LitElement {
   get slideshow() {
     // slideshow tremplate
     return html`
-    <button l @click=${() => this.skip()}>prev</button>
-    <button r @click=${() => this.skip(-1)}>next</button>
+    <button l @click=${() => this.skip(-1)}>prev</button>
+    <button r @click=${() => this.skip(1)}>next</button>
     ${transition(this.slides[this.slide], slide(anim))}`;
   }
 }
@@ -105,4 +105,84 @@ export class Comp extends LitElement {
 
 # Use with lit-element-router
 
-# Use with animated.css
+# Use with animate.css
+
+[animate.css](https://daneden.github.io/animate.css/) is a neat collection
+of css animations.
+It is ridiculously easy to combine it with the lit-transition directive.
+In fact, We use animate.css on many of the tansitions in this documentation.
+
+For this, make sure animate.css is available where your transitions are used.
+
+```html
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1"
+    rel="stylesheet" type="text/css">
+</head>
+```
+
+After this, it is enough set the `enter` and `leave` options
+in our transition.
+You need to add 'animated' class and whatever transition class you
+want to use.
+In the example below, we add another class 'absolute' for the leave transition
+since we set the transition mode to `Transition.Both` so the entering conent
+will immediately take the space of the leaving content in the flow when transitioning.
+
+> Settinng only `enter` or `leave` is equivalent to setting `enter: { active }`
+> or `leave: { active }`. Using an array will simply apply multiple classes.
+
+<script>
+import { LitElement, html, css } from 'lit-element';
+import { transition } from 'lit-transition';
+
+// all rotating entrances available in animate.css
+// will be prefixed with 'rotateIn' or 'rotateOut'
+const classes = ['','DownLeft','DownRight','UpLeft','UpRight'];
+
+export class Comp extends LitElement {
+  static get properties() {
+    return { 
+      a: Boolean, // to toggle content / trigger anim
+      choice: Object // for transition mode
+    }
+  }
+  static get styles() {
+    return css`.absolute { position: absolute }`;
+  }
+  
+  // initialize component
+  constructor() {
+    super();
+    this.choice = classes[0];
+  }
+
+  // sets mode and swaps transitioned content
+  select(e) {
+    this.choice = e.target.value;
+    this.a = !this.a;
+  }
+
+  render() {
+    // animates with different modes
+    return html`
+    <!-- get latest animate.css v3.5.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1"
+    rel="stylesheet" type="text/css">
+    click to transition
+    <select @change=${this.select}>${
+      Object.values(classes).map(c =>
+        html`<option value=${c}>rotate[In/Out]${c}</option>`)
+    }</select>
+    <button @click=${() => this.a = !this.a}>animate</button>
+    <div style="margin: 20px; font-size: 30px;">
+    ${transition(
+      this.a ? 'CONTENT A' : 'CONTENT B', {
+        mode: 'both',
+        enter: ['animated', 'rotateIn'+this.choice],
+        leave: ['animated', 'rotateOut'+this.choice, 'absolute']
+      }
+    )}</div>`;
+  } 
+}
+</script>

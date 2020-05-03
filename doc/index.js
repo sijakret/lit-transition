@@ -10,6 +10,7 @@ import router from './router';
 import {transition, mark } from 'lit-transition';
 import {transLanding,transContent,transTitle,transSubNav} from './transitions';
 import github from './assets/github.svg';
+import { publicPath } from './config';
 
 
 // main app
@@ -23,6 +24,7 @@ class Component extends router() {
         if(href.startsWith(window.location.origin)) {
           e.preventDefault();
           this.navigate(href);
+          //this.navigate(publicPath + href.replace(window.location.origin,''));
         }
       }
     }}>

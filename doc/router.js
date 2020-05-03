@@ -3,16 +3,19 @@ import { navigator, router } from 'lit-element-router';
 import {index} from './loaders/md-loader?folder=./guide!';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 
+import { publicPath } from './config';
 import { mark } from 'lit-transition';
 import { scrolly } from './utils';
-
-import { publicPath } from './config';
 
 // routing
 const routes = [
   {
     name: 'Landing',
-    pattern: publicPath 
+    pattern: publicPath
+  },
+  {
+    name: 'Landing',
+    pattern: publicPath.slice(0,-1)
   },
   ...index.map(i => ({
     name: i.title,
