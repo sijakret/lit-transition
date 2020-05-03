@@ -6,28 +6,31 @@ import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 import { mark } from 'lit-transition';
 import { scrolly } from './utils';
 
-const publicPath = '/lit-transition/'
+import { publicPath } from './config';
 
 // routing
 const routes = [
   {
     name: 'Landing',
-    pattern: publicPath + '*'
+    pattern: publicPath 
   },
   ...index.map(i => ({
     name: i.title,
     index: i.index,
     pattern: (i.route = publicPath + i.file.slice(3,-3)),
     data: {
-      render: () => {
-        // debugger
-        // const im = await load(i.import);
-        // const {default: page} = 
-        return html`<div>${unsafeHTML(i.markdown)}</div>`;
-      },
+      render: () => html`<div>${unsafeHTML(i.markdown)}</div>`,
       title: i.title
     }
-  }))
+  })),
+  {
+    name: 'not-foud',
+    pattern: '*',
+    data: {
+      render: () => html`<div>How on earth did you get here??</div>`,
+      title: '404 - Ooops'
+    }
+  },
 ];
 
 export default function() {

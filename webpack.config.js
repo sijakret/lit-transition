@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
+const {publicPath} = require('./doc/config');
 const config = {
   devtool: 'source-map',
   entry: {
@@ -11,11 +12,12 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, 'dist-doc'),
-    publicPath: '/lit-transition/',
+    publicPath,
     filename: '[name].js'
   },
   devServer: {
     historyApiFallback: {
+      index: publicPath,
       disableDotRule: true
     },
   },
