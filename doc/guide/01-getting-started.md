@@ -59,5 +59,5 @@ export class Comp extends LitElement {
 
 How could this be any easier, right?
 
-Continue with the [basics](/basics) to learn 
+Continue with the [basics](basics) to learn 
 how lit-transition works and what else you can do with it.

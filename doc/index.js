@@ -10,7 +10,6 @@ import router from './router';
 import {transition, mark } from 'lit-transition';
 import {transLanding,transContent,transTitle,transSubNav} from './transitions';
 import github from './assets/github.svg';
-import { publicPath } from './config';
 
 
 // main app
@@ -30,7 +29,11 @@ class Component extends router() {
     }}>
     ${cache(
       html`<header>
-      <a href=${this.baseRoute} underline>
+      <a @click=${() => {
+        this.route === 'Landing' && this.navigate('about')
+        this.menu = !this.menu;
+      }} mobile-menu-button>☰</a>
+      <a href=${this.baseRoute} underline title>
         lit-transition
         <span>${require('../package.json').version}</span>
       </a>
@@ -64,7 +67,7 @@ class Component extends router() {
   
   get page() {
     return html`<div layout>
-      <nav>
+      <nav ?menu=${this.menu}>
         ${this.nav}
       </nav>
       <main>

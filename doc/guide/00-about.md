@@ -34,4 +34,4 @@ export const template = html`lit! ${asyncReplace(count())}`;
 </script>
 
 
-Head over to the [Getting Started](/getting-started) section to get set up.
+Head over to the [Getting Started](getting-started) section to get set up.

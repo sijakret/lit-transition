@@ -129,8 +129,9 @@ In the example below, we add another class 'absolute' for the leave transition
 since we set the transition mode to `Transition.Both` so the entering conent
 will immediately take the space of the leaving content in the flow when transitioning.
 
-> Settinng only `enter` or `leave` is equivalent to setting `enter: { active }`
-> or `leave: { active }`. Using an array will simply apply multiple classes.
+> Settinng only `enter: ..` or `leave: ..` is equivalent to setting `enter: { active: .. }`
+> or `leave: { active: .. }`.
+> Using an array, as we do below, will simply apply multiple classes.
 
 <script>
 import { LitElement, html, css } from 'lit-element';
@@ -175,14 +176,17 @@ export class Comp extends LitElement {
         html`<option value=${c}>rotate[In/Out]${c}</option>`)
     }</select>
     <button @click=${() => this.a = !this.a}>animate</button>
-    <div style="margin: 20px; font-size: 30px;">
+    <center style="margin: 20px; font-size: 30px; position: relative">
     ${transition(
-      this.a ? 'CONTENT A' : 'CONTENT B', {
+      this.a ? 'LIT-TRANSITION' : 'ANIMATE.CSSmmmmmm', {
         mode: 'both',
         enter: ['animated', 'rotateIn'+this.choice],
-        leave: ['animated', 'rotateOut'+this.choice, 'absolute']
+        leave: {
+          active: ['animated', 'rotateOut'+this.choice, 'absolute'],
+          lock: true
+        }
       }
-    )}</div>`;
+    )}</center>`;
   } 
 }
 </script>

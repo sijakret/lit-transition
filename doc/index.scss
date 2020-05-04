@@ -68,20 +68,31 @@ header {
     transition: border 0.5s;
     border-bottom: 3px solid rgba(255,255,255,0);
     border-top: 3px solid rgba(255,255,255,0);
-    > span {
-      font-size: 12px;
-      font-weight: 100;
-      vertical-align: top;
-    }
+    
   }
   a:hover {
     border-bottom: 3px solid var(--bg-color);
   }
 
-  a:first-child {
+  [mobile-menu-button] {
+    display: none;
+    float: left;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  [mobile-menu] {
+    display: none;
+  }
+
+  [title] {
     float: left;
     font-weight: inherit;
-    margin-left: 60px;
+    margin-left: 40px;
+    > span {
+      font-size: 12px;
+      font-weight: 100;
+      vertical-align: top;
+    }
   }
   [underline]:before {
     width: 22px;
@@ -248,7 +259,6 @@ doc-landing {
       flex-wrap:nowrap;
     
       [underline] {
-        white-space: nowrap;
         color: var(--bg-color);
       }
       [underline]:before {
@@ -395,6 +405,7 @@ doc-demo {
 
 // Medium devices (tablets, 768px and up)
 @media screen and (max-width: 768px) {
+  
   [app] {
     --nav-left: 20px;
     --nav-width: 180px;
@@ -407,13 +418,65 @@ doc-demo {
 
 // Medium devices (tablets, 768px and up)
 @media screen and (max-width: 600px) {
+  header {
+    [mobile-menu-button] {
+      display: initial;
+    }
+    [title] {
+      margin-left: 0px;
+    }
+  }
   [app] {
     --nav-left: 0px;
     --nav-width: 0px;
   }
 
   nav {
-    display: none;
+    transition: all 0.2s;
+    opacity: 0;
+    height: 0px;
+    width: 100%;
+    top: 64px;
+    display: fixed;
+    > a {
+      font-size: 16px;
+    }
+    
+    padding: 20px;
+  }
+
+  nav[menu] {
+    opacity: 1;
+    display: initial;
+    height: 100%;
+    z-index: 10;
+    background: var(--bg-color);
+  }
+  [short] {
+    > div {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
   }
 }
+
+// Phones 
+@media screen and (max-width: 400px) {
+  header {
+    a {
+      padding-left: 00px;
+      padding-right: 20px;
+    }
+    [title] {
+      position: relative;
+      > span {
+        position: absolute;
+        font-size: 12px;
+        right: 20px;
+        bottom: -18px;
+      }
+    }
+  }
+}
+
 

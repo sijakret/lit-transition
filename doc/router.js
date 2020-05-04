@@ -43,7 +43,8 @@ export default function() {
         route: { type: String },
         params: { type: Object },
         query: { type: Object },
-        routeData: { type: Object }
+        routeData: { type: Object },
+        menu: Boolean
       };
     }
   
@@ -75,6 +76,7 @@ export default function() {
     }
 
     navigate(href) {
+      this.menu = false;
       super.navigate(href);
       this.scroll(href);
     }
