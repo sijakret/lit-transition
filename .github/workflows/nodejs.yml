@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     env:
-      PUBLISH: ${{ github.ref == 'refs/heads/master' }}
+      PUBLISH: ${{ env.BRANCH == 'master' }}
     runs-on: ubuntu-latest
 
     strategy:
