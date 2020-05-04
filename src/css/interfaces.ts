@@ -5,6 +5,7 @@ import {
 /**
  * in-out: enter transition starts playing right away
  * out-in: enter transition only plays after leave completed
+ * both: both transitions play immediately
  */
 export enum TransitionMode {
   InOut = "in-out",
@@ -13,12 +14,16 @@ export enum TransitionMode {
 }
 
 export interface CSSClassSequence {
+  // class applied throughout whole transition
   active?: string
+  // class with initial props applied on first frame
   from?: string
+  // class with target props applied after first frame
   to?: string
 }
 
 export interface CSSTransitionOptions {
+  // css string
   css?: TemplateResult|string|null
   duration?: Number
   enter?: CSSClassSequence|Boolean
@@ -29,3 +34,6 @@ export interface CSSTransitionOptions {
   onAfterEnter?: Function
   onAfterLeave?: Function
 }
+
+export type CSSTransitionOptionsGenerator
+  = (opts?:any) => CSSTransitionOptions;

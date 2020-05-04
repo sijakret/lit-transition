@@ -1,20 +1,23 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
+const {publicPath} = require('./doc/config');
 const config = {
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   entry: {
     doc: './doc/index.js',
     'lit-transition': 'lit-transition'
   },
   output: {
     path: path.resolve(__dirname, 'dist-doc'),
-    publicPath: '/',
+    publicPath,
     filename: '[name].js'
   },
   devServer: {
     historyApiFallback: {
+      index: publicPath,
       disableDotRule: true
     },
   },
@@ -76,7 +79,10 @@ const config = {
         from: 'doc/assets',
         to: 'assets'
       },
-    ])
+    ]),
+    new FaviconsWebpackPlugin(
+      path.join(__dirname, 'doc/assets/favicon.svg')
+    )
   ]
 };
 

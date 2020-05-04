@@ -7,8 +7,6 @@ export const transLanding = {
   enter: ['animated', 'bounceIn', 'top'],
   leave: {
     active: ['animated', 'bounceOut', 'top', 'fixed'],
-    from: undefined,
-    to: undefined,
     lock: true
   }
 };
@@ -16,23 +14,13 @@ export const transLanding = {
 export const transTitle = {
   mode: 'both',
   enter: ['animated', 'zoomIn', 'top'],
-  leave: {
-    active: ['animated', 'zoomOut', 'top', 'fixed'],
-    from: undefined,
-    to: undefined,
-    lock: true
-  }
+  leave: ['animated', 'zoomOut', 'top', 'absolute']
 };
 
 export const transContent = {
   mode: 'both',
   enter: ['animated', 'zoomIn', 'top'],
-  leave: {
-    active: ['animated', 'zoomOut', 'top', 'fixed'],
-    from: undefined,
-    to: undefined,
-    lock: true
-  }
+  leave: ['animated', 'zoomOut', 'top', 'absolute']
 };
 
 export const transTeaser = {
@@ -97,3 +85,7 @@ export const transWaitBar = (duration) => ({
   },
   leave: false
 });
+
+
+import {slide} from 'lit-transition';
+export const transSubNav = slide({mode: 'out-in', x: '-10%', duration:200});

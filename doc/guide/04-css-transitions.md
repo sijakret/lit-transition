@@ -237,13 +237,13 @@ import {transition} from 'lit-transition';
 const spin3D = {
   mode: 'out-in',
   enter: {
-    active: 'spin',
+    active: 'spin', 
     from: 'spin-enter',
     to: 'spin-show',
   },
   leave: {
-    active: 'spin',
-    from: 'spin-show',
+    active: 'spin', // same class as active phase of enter
+    from: 'spin-show', // .. this one too!
     to: 'spin-leave',
   }
 }
@@ -288,11 +288,12 @@ export class Comp extends LitElement {
 }
 </script>
 
-> It is typically preferable to move your transition
-> css with your other app css so it 1) does not clutter your
-> code and 2) performanc is better since
-> the classes are only created once and simply applied during
-> transition phases
+It is typically preferable to move your transition
+css with your other app css so it does not clutter your
+code.
+Moreover, performanc is better since
+the classes are only created once and simply applied during
+transition phases.
 
 > It is important your css classes actually execute
 > a transition since lit-transition uses 'ontransitionend' 
@@ -302,9 +303,146 @@ export class Comp extends LitElement {
 > You can specify a fixed duration using the `duration` field in
 > the transition optins to nail it down in case of problems.
 
+> If you see elements piling up in your document
+> it likely means your transitions are not finishing!
+
 # CSS Animations
-TODO
+
+css animations can be used pretty much the analogously.
+Since typically keyframes are used to define web animations,
+no `from` and `to` phases are are required.
+
+If you assign a string or an array to the `enter` and `leave` fields
+of the transition options, the respective class names
+are used during the the `active` phase.
+
+<script>
+import {LitElement, html, css} from 'lit-element';
+import {transition} from 'lit-transition';
+
+const swirl = {
+  mode: 'out-in',
+  enter: 'swirl-enter',
+  leave: ['swirl-leave', /* more if needed */ ]
+}
+
+export class Comp extends LitElement {
+  // a prop that we toggle and what will trigger redraw
+  static get properties() { return { a: Boolean } }
+  static get styles() {
+    return css`
+    .swirl-enter {
+      animation: swirl .35s;
+    }
+    .swirl-leave {
+      animation: swirl .35s reverse;
+    }
+    @keyframes swirl {
+      0% {
+        transform: scale(3.0) rotate(600deg);
+        filter: blur(3px);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+      }
+    }`
+  }
+
+  render() {
+    return html`<center @click=${() => this.a = !this.a}>${
+      transition( 
+        this.a ? html`<h2>WROOHM!</h2>` 
+             : html`<h2>Click me</h2>`,
+        swirl)
+      }</center>`;
+  } 
+}
+</script>
+
 # Caveat: Layout reflows
-TODO
-# Predefined transitions
-TODO
+
+At some point during transitions the leaving template is removed
+and the entering template is added.
+
+If any of these items is part of the flow of the document (i.e. has `position: relative` and not `absolute` or `fixed`) this operation will lead to a reflow of
+your app.
+Typically transitions have a certain point in time where the leacing template gets taken
+out of the flow and the entering one gets added.
+Similarly, the css `display` property has a huge effect on how a DOM node
+is nested in the flow.
+
+> If you use `display: block`, a node will fill the whole line.
+> If you remove it from the flow by setting `postion: relatve|absolute`
+> the extends of the object may change drastically.
+> If this is not desired, try `display: inline-block` to make the
+> DOM Node keep more of its geometry!
+
+For example, if the `active` phase of your leave transition sets the position to `fixed`, that element get's taken out of the flow the second its leave transition is started.
+In case of transition mode `'both'` this might be fine since the entering element will be added right at that same time anyways.
+In case of `'out-in'` mode, however, the template would be taken out of the flow, and the reacalculated layout would probably collapse a bit taking up the empty space.
+
+Also, if you want your elements to overlay during animations, we have a `lock` helper described in the transition options.
+
+> __Tip__: if you have problems with animations, try grabing an existing
+> working one that is close to what you want and tweak it.
+
+
+# Built-in transitions
+
+We have a set of predefined css-based transitions ready for use.
+These transitions have a set of custom options and try
+to derive some transition css in a context-aware way.
+
+They also forward all standard options (like `mode`, `duration`)
+to the underlying system:
+
+<script>
+import { LitElement, html } from 'lit-element';
+import {
+  transition,
+  slide,
+  fade,
+  land
+} from 'lit-transition';
+
+// our built-in animations
+const builtins = {slide,fade,land};
+
+export class Comp extends LitElement {
+  static get properties() {
+    return { 
+      a: Boolean, // to toggle content
+      choice: Object // for transition mode
+    }
+  }
+  // initialize component
+  constructor() {
+    super();
+    this.choice = slide;
+  }
+
+  // sets mode and swaps transitioned content
+  select(e) {
+    this.choice = builtins[e.target.value];
+    this.a = !this.a;
+  }
+
+  render() {
+    // animates with different modes
+    return html`click to transition
+    <select @change=${this.select}>${
+      Object.values(builtins).map(b => html`<option value=${b.name}>${b.name}</option>`)
+    }</select>
+    <button @click=${() => this.a = !this.a}>animate</button>
+    <div style="margin: 20px; font-size: 30px;">
+    ${transition(
+      this.a ? 'CONTENT A' : 'CONTENT B',
+      this.choice
+    )}</div>`;
+  } 
+}
+</script>
+
+TODO: elaborate a bit.
+TODO: show actual paramters

@@ -1,26 +1,39 @@
 Basics
 
+> Currently, we only support CSS-based transitions. We plan, however, on adding
+> Javascript/web animation transitions as well.
+> The concepts in this document are general and will also apply to Javascript transitions
+> once they are implemented
+
 # Transition types
 
 Currently, only transitioning between single elements/components are supported.
 As opposed to concepts like [list transitions](https://vuejs.org/v2/guide/transitions.html#List-Transitions), here, only one of the transitioned items is designated for
 presentation at any point in time.
 
-This means you can apply the `transition` directive on anything that returns a
+This means you can apply the transition directive on anything that returns a
 template with one single root node.
 
-This makes it very easy to transition between items in a list:
+```javascript
+html`<div>
+  ${transition(html`<div>cool stuff</div>`)}
+</div>`;
+```
+
+This makes it very easy to transition between items in a list for instance:
 
 <script>
 import { LitElement, html } from 'lit-element';
 import { transition, slide } from 'lit-transition';
+
+// list of renderable templates
 const items = [
   'Another', html`<i>one</i>`, 'bites', 'the', html`<b>dust</b>`,
   'Hey,', 'I\'m', 'gonna', 'get', 'you', 'too'
 ];
 
 export class Comp extends LitElement {
-  // i cycles through items
+  // this.i is used to cycle through items
   static get properties() { return { i: Number } }
 
   // helper to set up periodic updates to this.i
@@ -84,7 +97,7 @@ export class Comp extends LitElement {
     }
   }
 
-  // sets mode and triggers repaint
+  // sets mode and swaps transitioned content
   exec(mode) {
     this.mode = mode;
     this.a = !this.a;
@@ -99,7 +112,7 @@ export class Comp extends LitElement {
     ${transition(this.a
       ? html`<div>A ${this.mode}</div>`
       : html`<div>B ${this.mode}</div>`,
-      slide({x:'-200px',y:'200px', mode: this.mode})
+      slide({x:'200px', mode: this.mode})
     )}`;
   } 
 }
@@ -161,8 +174,7 @@ export class Comp extends LitElement {
 
 ## The fix
 To fix this, we use the `mark` helper to make
-lit-transition recognize templates so it can now
-when to execute the transition animation.
+lit-transition recognize templates it has already seen.
 
 ```javascript
 import { transition, mark } from 'lit-transition';
@@ -209,4 +221,4 @@ export class Comp extends LitElement {
 </script>
 
 Once you familiarized yourself with these basic concepts,
-continue by learning how to use [css transitions](/css-transitions).
+continue by learning how to use [css transitions](css-transitions).

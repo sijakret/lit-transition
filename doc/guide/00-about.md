@@ -1,37 +1,15 @@
 About
 
 lit-transition is a directive for [lit-html](https://lit-html.polymer-project.org/)
-that enables animated transitions between templates in a dead simple way.
-It is largely inspired by the concepts of the beautiful [transition system of vue.js](https://vuejs.org/v2/guide/transitions.html).
+that enables animated transitions between templates.
+It is in parts inspired by the [transition system of vue.js](https://vuejs.org/v2/guide/transitions.html).
 
 lit-transition is written in typescript, extremely tiny and tree-shakeable.
 It mainly orchestrates state transitions when a lit-html template is updated.
 By adding css classes or executing js-based animations and delaying the removal or insertion of new DOM, transitions can be played.
 
-TODOTODOTODO
-Currently we only support [css transitions](https://developer.mozilla.org/de/docs/Web/CSS/transition).
-However, the plan is to transparently support [web animations](https://developer.mozilla.org/de/docs/Web/API/Web_Animations_API) eventually.
-
-<!-- script>
-import {render,html} from 'lit-html'
-import {transition} from 'lit-transition';
-
-// dom node is an HTMLElement
-export async function run(domNode) {
-  // This is a lit-html template function. It returns a lit-html template.
-  const helloTemplate = (name) => html`<div>Hello ${name}!</div>`;
-
-  // This renders <div>Hello Steve!</div> to the document body
-  render(transition(helloTemplate('Steve')), domNode);
-
-  // wait a bit
-  await new Promise(r => setTimeout(r,1000));
-
-  // This updates to <div>Hello Kevin!</div>, while looking cool
-  render(transition(helloTemplate('Kevin')), domNode);
-}
-</script-->
-
+Currently we only support [css transitions](https://developer.mozilla.org/de/docs/Web/CSS/transition) [css animations](https://developer.mozilla.org/de/docs/Web/CSS/animation).
+However, the plan is to eventually also transparently support [web animations](https://developer.mozilla.org/de/docs/Web/API/Web_Animations_API).
 
 Check out the following example:
 
@@ -45,13 +23,15 @@ async function* count() {
   while (true) {
     // wrapping a template using transition directive will
     // automatically animate it on change
-    yield transition(new Date().toLocaleString(),land);
-    await new Promise(r => setTimeout(r, 1000));
+    yield transition(html`<div style="display: inline-block">
+        ${new Date().toLocaleString()}
+      </div>`, land);
+    await new Promise(r => setTimeout(r,1000));
   }
 }
-
-export const render = () => html`lit! ${asyncReplace(count())}`;
+// asyncReplace directive updates on as generator yields
+export const template = html`lit! ${asyncReplace(count())}`;
 </script>
 
 
-Head over to the [Getting Started](/getting-started) section to get set up.
+Head over to the [Getting Started](getting-started) section to get set up.

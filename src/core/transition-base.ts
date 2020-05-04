@@ -25,7 +25,7 @@ export function transitionBase(flow:any) {
       }
 
       if(typeof tr === 'string' || typeof tr === 'number') {
-        tr = html`<div>${tr}</div>`;
+        tr = html`<div style="display: inline-block">${tr}</div>`;
       }
 
       // see if template was marked
@@ -72,33 +72,37 @@ export function transitionBase(flow:any) {
       // perform enter transition
       async function enterFlow(part:NodePart) {
         // first mount element
-        onEnter && onEnter();
+        onEnter && await onEnter();
         enter && await flow.transition(part, enter, transition);
-        onAfterEnter && onAfterEnter();
+        onAfterEnter && await onAfterEnter();
       }
   
       // perform enter transition
       async function leaveFlow(part:NodePart) {
-        onLeave && onLeave();
+        onLeave && await onLeave();
         leave && await flow.transition(part, leave, transition);
         remove(part);
-        onAfterLeave && onAfterLeave();
+        onAfterLeave && await onAfterLeave();
       }
   
       // init container
       if(!data) {
         setup.set(container, data = {
           children: new Map<TemplateResult, NodePart>(),
-          styles: new Map<TemplateResult, NodePart>()
-        });
-        // init flow, like to init css
-        flow.init && flow.init({
-          transition,
-          data,
-          add,
-          remove
+          styles: new Map<TemplateResult, NodePart>(),
+          transition
         });
       }
+
+      // important in case transition has changed
+      // init flow, like to init css
+      // init must be laze
+      flow.init && flow.init({
+        transition,
+        data,
+        add,
+        remove
+      })
 
       // same template? no animation! 
       if(data.last && !!name && name === data.name) {
@@ -118,25 +122,23 @@ export function transitionBase(flow:any) {
           // in this case we wait for leave
           // to finish before we enter
           const last = data.last;
-          //delete data.last;
+          // delete data.last;
           last && await leaveFlow(last);
           // trigger enter and remember part
           // it will be pased to leaveFlow
           // on the next transition
-          enterFlow(data.last = add(tr));
+          await enterFlow(data.last = add(tr));
         } else {
           // mode === 'both'
           // here we don't wait so we trigger enter
-          // right away
-          data.last && leaveFlow(data.last);
+          // and leave right away
+          data.last && leaveFlow(data.last),
           // trigger enter and remember part
           // it will be pased to leaveFlow
           // on the next transition
-          enterFlow(data.last = add(tr));
+          await enterFlow(data.last = add(tr));
         }
       }
-  
-      
     }
   }  
 }

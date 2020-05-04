@@ -61,6 +61,9 @@ export function recordExtents(e:any) {
   {
     let offsetParent:Element|null = e.offsetParent;
     while(e && e !== document && !(e instanceof DocumentFragment)) {
+      if(e === offsetParent) {
+        break;
+      }
       const style = window.getComputedStyle(e);
       top += e.offsetTop 
           - parseFloat(style.marginTop) || 0
@@ -68,9 +71,6 @@ export function recordExtents(e:any) {
       left += e.offsetLeft
           - parseFloat(style.marginLeft) || 0
           - e.scrollLeft || 0;
-      if(e === offsetParent) {
-        break;
-      }
       e = e.parentNode || (e as any).host;
     } 
   }

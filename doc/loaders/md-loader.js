@@ -27,11 +27,8 @@ module.exports = function(source) {
     this.dependency(options.file);
     //return `export default () => 'sers'`;
     const {code,opts} = blocks[Number(options.block)];
-    const codeOut = code.match(/\/\/\/run/) ? `
-    ${code.replace(/\/\/\/run/, 'export function run(domNode) {')}
-    }` : code
     return `
-      ${codeOut}
+      ${code}
       export const code = ${JSON.stringify(code)};
     `
 

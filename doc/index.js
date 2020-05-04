@@ -7,8 +7,8 @@ import { html } from 'lit-element';
 import {cache} from 'lit-html/directives/cache';
 import {index} from './loaders/md-loader?folder=./guide!';
 import router from './router';
-import {transition, slide, mark } from 'lit-transition';
-import {transLanding,transContent,transTitle} from './transitions';
+import {transition, mark } from 'lit-transition';
+import {transLanding,transContent,transTitle,transSubNav} from './transitions';
 import github from './assets/github.svg';
 
 
@@ -23,12 +23,17 @@ class Component extends router() {
         if(href.startsWith(window.location.origin)) {
           e.preventDefault();
           this.navigate(href);
+          //this.navigate(publicPath + href.replace(window.location.origin,''));
         }
       }
     }}>
     ${cache(
       html`<header>
-      <a href="/" underline>
+      <a @click=${() => {
+        this.route === 'Landing' && this.navigate('about')
+        this.menu = !this.menu;
+      }} mobile-menu-button>☰</a>
+      <a href=${this.baseRoute} underline title>
         lit-transition
         <span>${require('../package.json').version}</span>
       </a>
@@ -55,24 +60,26 @@ class Component extends router() {
           ${i.index.map((s,j) => html`<li>
           <a href=${`${i.route}#sec-${j}`}>${s}</a>
           </li>` )}
-        </ul>`,i.route+'-sub') : undefined, slide({mode: 'out-in',duration:200}))
+        </ul>`,i.route+'-sub') : undefined, transSubNav)
       ]
     });
   }
   
   get page() {
-    return html`<nav>
-      ${this.nav}
-    </nav>
-    <main>
-      <a id="top"></a>
-      <content>
-        ${transition(this.routeTitle, transTitle)}
-        ${transition(this.renderContent, transContent)}
-      </content>
-    </main>`
-  }
-  updated() {
+    return html`<div layout>
+      <nav ?menu=${this.menu}>
+        ${this.nav}
+      </nav>
+      <main>
+        <div id="top"></div>
+        <content>
+          ${transition(this.routeTitle, transTitle)}
+          ${transition(this.renderContent, {
+            ...transContent
+          })}
+        </content>
+      </main>
+    </div>`;
   }
 }
 

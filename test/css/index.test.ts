@@ -1,11 +1,11 @@
-import {html} from 'lit-element';
-import {transition} from 'lit-transition'
-import {compTest,TestComponent} from '../utils/comp';
+import { html } from 'lit-element';
+import { assert} from 'chai';
 
-import {assert} from 'chai';
-import {fade,land,slide} from '../../src/css/transitions';
-import {setForceClassList} from '../../src/css/class-list';
-import {TransitionMode} from '../../src/css/base'
+import { transition } from 'lit-transition';
+import { compTest, TestComponent } from '../utils/comp';
+import { fade, land, slide } from '../../src/css/transitions';
+import { setForceClassList } from '../../src/css/class-list';
+import { TransitionMode } from '../../src/css/interfaces';
 
 const modes = [
   TransitionMode.InOut,

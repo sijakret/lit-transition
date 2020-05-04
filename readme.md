@@ -6,7 +6,7 @@ A directive to effortlessly animated transitions in lit-html.
 
 ## Documentation
 
-Full documentation is available at [TODO](https://TODO).
+Full documentation is available at [sijakret.github.io/lit-transition](https://sijakret.github.io/lit-transition).
 
 Docs source is in the `docs` folder.
 
@@ -44,6 +44,7 @@ $ npm install lit-transition
 
 ## Roadmap
 
+* multi-root templates
 * add js hooks
 * add transitions via web animation
 

@@ -3,30 +3,37 @@ import { navigator, router } from 'lit-element-router';
 import {index} from './loaders/md-loader?folder=./guide!';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 
-import {transition, slide, mark } from 'lit-transition';
- 
-import {scrolly} from './utils';
+import { publicPath } from './config';
+import { mark } from 'lit-transition';
+import { scrolly } from './utils';
 
 // routing
 const routes = [
   {
     name: 'Landing',
-    pattern: '*'
+    pattern: publicPath
+  },
+  {
+    name: 'Landing',
+    pattern: publicPath.slice(0,-1)
   },
   ...index.map(i => ({
     name: i.title,
     index: i.index,
-    pattern: (i.route = i.file.slice(3,-3)),
+    pattern: (i.route = publicPath + i.file.slice(3,-3)),
     data: {
-      render: () => {
-        // debugger
-        // const im = await load(i.import);
-        // const {default: page} = 
-        return html`<div>${unsafeHTML(i.markdown)}</div>`;
-      },
+      render: () => html`<div>${unsafeHTML(i.markdown)}</div>`,
       title: i.title
     }
-  }))
+  })),
+  {
+    name: 'not-foud',
+    pattern: '*',
+    data: {
+      render: () => html`<div>How on earth did you get here??</div>`,
+      title: '404 - Ooops'
+    }
+  },
 ];
 
 export default function() {
@@ -36,12 +43,17 @@ export default function() {
         route: { type: String },
         params: { type: Object },
         query: { type: Object },
-        routeData: { type: Object }
+        routeData: { type: Object },
+        menu: Boolean
       };
     }
   
     static get routes() {
       return routes;
+    }
+
+    get baseRoute() {
+      return publicPath;
     }
 
     // make css bleed in
@@ -61,13 +73,10 @@ export default function() {
       this.params = params;
       this.query = query;
       this.routeData = data;
-
-      // for nav links we scroll to top!
-      //if(this.route) {
-      //}
     }
 
     navigate(href) {
+      this.menu = false;
       super.navigate(href);
       this.scroll(href);
     }

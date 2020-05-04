@@ -1,4 +1,5 @@
-import {CSSTransitionOptions,TransitionMode} from '../base';
+import { CSSTransitionOptions } from '../interfaces';
+import { instantiateDefault } from '../utils';
 
 interface CSSFadeOptions extends CSSTransitionOptions  {
   duration?: number
@@ -6,33 +7,40 @@ interface CSSFadeOptions extends CSSTransitionOptions  {
   opacity?: number
 }
 
-export function fade(opts:CSSFadeOptions = {}) {
+export const fade = instantiateDefault(
+  function fade(opts:CSSFadeOptions = {}) {
   const {
     duration = 500,
     ease = 'ease-out',
-    opacity = 0.0,
-    mode = TransitionMode.Both
+    opacity = 0.0
   } = opts;
   return {
+    enter: {
+      active: 'fade-enter-active',
+      from: 'fade-enter-from',
+      to: 'fade-enter-to',
+    },
+    leave: {
+      active: 'fade-leave-active',
+      from:  'fade-leave-from',
+      to: 'fade-leave-to',
+      lock: true
+    },
     css: `
-    .leave-active {
-      transition: opacity ${duration}ms ${ease},
-        transform ${duration}ms ${ease};
+    .fade-leave-active {
+      position: fixed;
+      transition: opacity ${duration}ms ${ease}, transform ${duration}ms ${ease};
     }
-    .enter-active {
-      transition: opacity ${duration}ms ${ease},
-        transform ${duration}ms ${ease};
+    .fade-enter-active {
+      transition: opacity ${duration}ms ${ease}, transform ${duration}ms ${ease};
     }
-  .leave-active {
-    position: ${mode === TransitionMode.Both ? 'fixed' : 'absolute'};
-  } 
-  .enter-from, .leave-to {
+  .fade-enter-from, .fade-leave-to {
     opacity: ${opacity};
   }
-  .enter-to, .leave-from {
+  .fade-enter-to, .fade-leave-from {
     opacity: 1;
   }
   `,
   ...opts
-  };
-};
+  }
+});
