@@ -1,6 +1,6 @@
 # lit-transition
 
-A directive to effortlessly animated transitions in lit-html.
+A directive for animated transitions in lit-html.
 
 ![Build](https://github.com/sijakret/lit-transition/workflows/Build/badge.svg?branch=master)
 
@@ -18,9 +18,9 @@ This will build the library as well as the documentation.
 
 `lit-transition` is a directive for [lit-html](https://lit-html.polymer-project.org/) that will automatically generate animated tranistions when templates are swapped.
 
-The library automatically detects your dom rerenders and supports css transitions based on `transitions` and `animations`.
+The library detects when your template re-renders and applies css `transitions` and `animations`.
 It mostly manages a state cycle when your view is updated
-by automatically appends and removes DOM nodes as they transition in and out.
+by automatically appending and removing DOM nodes as they transition in and out.
 
 ```javascript
 import {html, render} from 'lit-html';
@@ -35,6 +35,8 @@ render(transition(helloTemplate('Steve')), document.body);
 // This updates to <div>Hello Kevin!</div>, while looking cool
 render(transition(helloTemplate('Kevin')), document.body);
 ```
+
+Check out the [documentation](https://sijakret.github.io/lit-transition)!
 
 ## Installation
 
