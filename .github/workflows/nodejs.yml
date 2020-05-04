@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     env:
-      PUBLISH: github.ref == 'refs/heads/master'
+      PUBLISH: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -34,7 +34,7 @@ jobs:
       env:
         CI: true
 
-    - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+    - run: echo "//registry.npmjs.org/:_authToken=$secrets.NPM_TOKEN" > .npmrc
       if: env.PUBLISH
       # will do verythingbut publish! (we need the bumped version number)
     - run: npx release-it
