@@ -33,7 +33,6 @@ jobs:
       env:
         CI: true
 
-    - run: echo "publish ${{ env.PUBLISH }}"
     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       env: # Or as an environment variable
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -42,6 +41,8 @@ jobs:
     - run: npx release-it
       if: env.PUBLISH == true
     - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
+      if: env.PUBLISH == true
+    - run: cat package.json
       if: env.PUBLISH == true
     - name: Deploy Doc
       if: env.PUBLISH == true
