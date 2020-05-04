@@ -37,14 +37,14 @@ jobs:
     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       env: # Or as an environment variable
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      if: env.PUBLISH
+      if: env.PUBLISH == true
       # will do verythingbut publish! (we need the bumped version number)
     - run: npx release-it
-      if: env.PUBLISH
+      if: env.PUBLISH == true
     - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
-      if: env.PUBLISH
+      if: env.PUBLISH == true
     - name: Deploy Doc
-      if: env.PUBLISH
+      if: env.PUBLISH == true
       uses: crazy-max/ghaction-github-pages@v1
       with:
         target_branch: gh-pages
