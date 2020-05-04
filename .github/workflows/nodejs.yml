@@ -14,8 +14,11 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        
+
     steps:
+      # https://help.github.com/en/actions/reference/development-tools-for-github-actions#set-an-environment-variable-set-env
+    - name: Extract Branch Name
+      run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF##*/})"
     - name: Set Release Mode (branch == master)
       if: env.BRANCH == 'master'
       run: echo "::set-env name=PUBLISH::true" 
