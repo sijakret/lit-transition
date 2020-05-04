@@ -34,7 +34,9 @@ jobs:
       env:
         CI: true
 
-    - run: echo "//registry.npmjs.org/:_authToken=$secrets.NPM_TOKEN" > .npmrc
+    - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      env: # Or as an environment variable
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       if: env.PUBLISH
       # will do verythingbut publish! (we need the bumped version number)
     - run: npx release-it
