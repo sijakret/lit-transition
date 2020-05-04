@@ -9,6 +9,8 @@ on:
 
 jobs:
   build:
+    env:
+      PUBLISH: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
     strategy:
@@ -32,15 +34,15 @@ jobs:
       env:
         CI: true
 
-  publish:
-    if: github.ref == 'refs/heads/master'
-    needs: build
     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      if: env.PUBLISH
       # will do verythingbut publish! (we need the bumped version number)
     - run: npx release-it
+      if: env.PUBLISH
     - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
+      if: env.PUBLISH
     - name: Deploy Doc
-      if: success()
+      if: env.PUBLISH
       uses: crazy-max/ghaction-github-pages@v1
       with:
         target_branch: gh-pages
