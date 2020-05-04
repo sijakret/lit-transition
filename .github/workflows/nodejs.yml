@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     env:
-      PUBLISH: ${{ env.BRANCH == 'master' }}
+      PUBLISH: ${{ BRANCH == 'master' }}
     runs-on: ubuntu-latest
 
     strategy:
