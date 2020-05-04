@@ -9,14 +9,16 @@ on:
 
 jobs:
   build:
-    env:
-      PUBLISH: ${{ github.ref == 'master' }}
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [12.x]
+        
     steps:
+    - name: Set Release Mode (branch == master)
+      if: env.BRANCH == 'master'
+      run: echo "::set-env name=PUBLISH::true" 
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -36,16 +38,16 @@ jobs:
     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       env: # Or as an environment variable
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      if: env.PUBLISH == true
+      if: env.PUBLISH == 'true'
       # will do verythingbut publish! (we need the bumped version number)
     - run: npx release-it
-      if: env.PUBLISH == true
+      if: env.PUBLISH == 'true'
     - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
-      if: env.PUBLISH == true
+      if: env.PUBLISH == 'true'
     - run: cat package.json
-      if: env.PUBLISH == true
+      if: env.PUBLISH == 'true'
     - name: Deploy Doc
-      if: env.PUBLISH == true
+      if: env.PUBLISH == 'true'
       uses: crazy-max/ghaction-github-pages@v1
       with:
         target_branch: gh-pages
