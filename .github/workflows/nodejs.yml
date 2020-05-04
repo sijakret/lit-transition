@@ -34,7 +34,7 @@ jobs:
 
   publish:
     if: github.ref == 'refs/heads/master'
-    needs: [build]
+    needs: build
     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       # will do verythingbut publish! (we need the bumped version number)
     - run: npx release-it
