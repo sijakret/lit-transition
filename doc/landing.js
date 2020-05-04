@@ -4,6 +4,8 @@ import {transition} from 'lit-transition';
 import {transTeaser as trans, transWaitBar} from './transitions';
 import arrow from './assets/arrow.svg';
 
+const interval = 8000;
+
 class Component extends LitElement {
 
   createRenderRoot() {
@@ -41,7 +43,7 @@ class Component extends LitElement {
       // wrapping a template using transition directive will
       // automatically animate it on change
       yield transition(one,trans);
-      await new Promise(r => setTimeout(r, 5000));
+      await new Promise(r => setTimeout(r, interval));
     }
   }
 }
@@ -78,5 +80,5 @@ transition(
 }></doc-demo>`
 ].map(t => html`<div>
 ${t}
-${transition(html`<div></div>`, transWaitBar(5000))}
+${transition(html`<div></div>`, transWaitBar(interval))}
 </div>`);
