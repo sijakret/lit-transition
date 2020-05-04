@@ -3,10 +3,8 @@ body, html {
   font-size: 14px;
   display: flex;
   flex-direction: column;
-  --theme-color: rgb(185, 201, 44); 
-  --theme-color-trans: rgba(178, 202, 45, 0.4); 
-  --theme-color-trans-opaque: #aaddea;
-  --theme-color-bright: #1db7dc;
+  --theme-color: rgb(93, 186, 214); 
+  --theme-color-trans-opaque: #c7eaaa;
   --bg-color: #FFFFFF; 
   --font-color: #000000;  
   padding: 0px;
@@ -26,6 +24,7 @@ doc-app, doc-app > div {
   flex-direction: column;
   overflow: hidden;
 }
+
 
 [layout] {
   position: relative;
@@ -340,6 +339,9 @@ doc-demo {
 }
 .top {
   z-index: 2;
+}
+.transformOriginTop {
+  transform-origin: 50% 0px;
 }
 
 

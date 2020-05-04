@@ -20,7 +20,10 @@ export const transTitle = {
 export const transContent = {
   mode: 'both',
   enter: ['animated', 'zoomIn', 'top'],
-  leave: ['animated', 'zoomOut', 'top', 'absolute']
+  leave: {
+    active: ['animated', 'zoomOut', 'transformOriginTop', 'absolute'],
+    lock: true
+  }
 };
 
 export const transTeaser = {
@@ -51,8 +54,7 @@ export const transTeaser = {
   leave: {
     active: ['flip3d-active', 'fixed'],
     from: 'flip3d-done',
-    to: 'flip3d-end',
-    lock: true
+    to: 'flip3d-end'
   }
 };
 
