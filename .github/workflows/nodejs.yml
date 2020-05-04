@@ -32,9 +32,13 @@ jobs:
       env:
         CI: true
 
+  publish:
+    if: github.ref == 'refs/heads/master'
+    needs: [build]
     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      # will do verythingbut publish! (we need the bumped version number)
+    - run: npx release-it
     - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
-      if: ${{ success() }}
     - name: Deploy Doc
       if: success()
       uses: crazy-max/ghaction-github-pages@v1
