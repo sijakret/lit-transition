@@ -1,0 +1,8 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{216:function(t,n,e){"use strict";e.r(n),e.d(n,"Comp",(function(){return s})),e.d(n,"code",(function(){return o}));var i=e(5),r=e(7);class s extends i.a{static get styles(){return i.b`
+    .two {
+      background: red;
+    }`}static get properties(){return{a:Boolean,u:Boolean}}get unrelated(){return this.u?"A":"B"}render(){return i.c`
+    <button @click=${()=>this.a=!this.a}>change transitioned content</button>
+    <button @click=${()=>this.u=!this.u}>change unrelated content (should not transition)</button>
+    <div>${Object(r.transition)(this.a?i.c`<div>${this.unrelated}</div>`:i.c`<div class="two">TWO ${this.unrelated}</div>`,r.slide)}</div>`}}const o="\nimport { LitElement, html, css } from 'lit-element';\nimport { transition, slide } from 'lit-transition';\n\nexport class Comp extends LitElement {\n  static get styles() { return css`\n    .two {\n      background: red;\n    }`;\n  }\n  static get properties() {\n    return { \n      a: Boolean, // to toggle content\n      u: Boolean // effects unrelated content\n    }\n  }\n\n  get unrelated() {\n    return this.u ? 'A' : 'B';\n  }\n\n  render() {\n    // changing this.u and in turn this.unrelated\n    // will re-trigger the transition\n    return html`\n    <button @click=${() => this.a = !this.a}>change transitioned content</button>\n    <button @click=${() => this.u = !this.u}>change unrelated content (should not transition)</button>\n    <div>${transition(this.a\n        ? html`<div>${this.unrelated}</div>`\n        : html`<div class=\"two\">TWO ${this.unrelated}</div>`\n    , slide)}</div>`;\n  } \n}\n"}}]);
+//# sourceMappingURL=6.js.map
