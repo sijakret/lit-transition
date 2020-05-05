@@ -38,7 +38,7 @@ jobs:
       env:
         CI: true
 
-    - run: npx semantic-release@17.0.4
+    - run: npx semantic-release@17.0.7
       env: # Or as an environment variable
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
