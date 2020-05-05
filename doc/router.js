@@ -3,7 +3,6 @@ import { navigator, router } from 'lit-element-router';
 import {index} from './loaders/md-loader?folder=./guide!';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 
-import { publicPath } from './config';
 import { mark } from 'lit-transition';
 import { scrolly } from './utils';
 
@@ -11,16 +10,16 @@ import { scrolly } from './utils';
 const routes = [
   {
     name: 'Landing',
-    pattern: publicPath
+    pattern: PUBLIC_PATH
   },
   {
     name: 'Landing',
-    pattern: publicPath.slice(0,-1)
+    pattern: PUBLIC_PATH.slice(0,-1)
   },
   ...index.map(i => ({
     name: i.title,
     index: i.index,
-    pattern: (i.route = publicPath + i.file.slice(3,-3)),
+    pattern: (i.route = PUBLIC_PATH + i.file.slice(3,-3)),
     data: {
       render: () => html`<div>${unsafeHTML(i.markdown)}</div>`,
       title: i.title
@@ -53,7 +52,7 @@ export default function() {
     }
 
     get baseRoute() {
-      return publicPath;
+      return PUBLIC_PATH;
     }
 
     // make css bleed in
