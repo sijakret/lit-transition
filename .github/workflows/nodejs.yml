@@ -21,6 +21,9 @@ jobs:
       run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF##*/})"
     - name: Set Release Mode (branch == master)
       if: env.BRANCH == 'master'
+      run: echo "::set-env name=PUBLISH::true"
+    - name: Set Release Mode (branch == next)
+      if: env.BRANCH == 'next'
       run: echo "::set-env name=PUBLISH::true" 
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
