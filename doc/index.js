@@ -34,7 +34,11 @@ class Component extends router() {
       }} mobile-menu-button>☰</a>
       <a href=${this.baseRoute} underline title>
         lit-transition
-        <span>${require('../package.json').version}</span>
+        <span>${
+          require('../package.json').version
+          +(process.env.NEXT?'-NEXT':'')
+        }</span>
+        
       </a>
       <a href=https://github.com/sijakret/lit-transition>${github}</a>
       <a href=${index[0].route}>doc</a>
