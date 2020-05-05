@@ -56,7 +56,7 @@ jobs:
       run: |
         mv dist-doc dist-doc1
         mkdir --parents ./dist-doc/next
-        mv dist-doc1 dist-doc/next
+        mv dist-doc1/ dist-doc/next/
 
     - name: Deploy Doc
       if: env.PUBLISH == 'true'
