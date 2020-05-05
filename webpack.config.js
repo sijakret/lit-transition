@@ -2,8 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const {EnvironmentPlugin, DefinePlugin} = require('webpack');
 
-const {publicPath} = require('./doc/config');
+const publicPath = process.env.NEXT ?
+  '/lit-transition/next/' : '/lit-transition/';
+
 const config = {
   devtool: 'source-map',
   entry: {
@@ -69,6 +72,10 @@ const config = {
   },
 
   plugins: [
+    new EnvironmentPlugin(['NEXT']),
+    new DefinePlugin({
+      'PUBLIC_PATH': JSON.stringify(publicPath)
+    }),
     new HtmlWebpackPlugin({
       template: 'doc/index.html',
       chunks: ['doc'],

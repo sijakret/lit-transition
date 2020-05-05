@@ -23,7 +23,6 @@ class Component extends router() {
         if(href.startsWith(window.location.origin)) {
           e.preventDefault();
           this.navigate(href);
-          //this.navigate(publicPath + href.replace(window.location.origin,''));
         }
       }
     }}>
