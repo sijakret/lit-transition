@@ -24,7 +24,9 @@ jobs:
       run: echo "::set-env name=PUBLISH::true"
     - name: Set Release Mode (branch == next)
       if: env.BRANCH == 'next'
-      run: echo "::set-env name=PUBLISH::true" 
+      run: |
+        echo "::set-env name=PUBLISH::true" 
+        echo "::set-env name=NEXT::true" 
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -54,11 +56,11 @@ jobs:
       run: |
         mv dist-doc dist-doc1
         mkdir --parents ./dist-doc/next
-        mv dist-doc1 dist-doc/next
+        mv dist-doc1/ dist-doc/next/
 
     - name: Deploy Doc
       if: env.PUBLISH == 'true'
-      uses: crazy-max/ghaction-github-pages@v1
+      uses: peaceiris/actions-gh-pages@v3
       with:
         target_branch: gh-pages
         build_dir: dist-doc
