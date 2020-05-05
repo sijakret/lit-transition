@@ -51,7 +51,11 @@ jobs:
       if: env.PUBLISH == 'true'
     - name: Move doc to next
       if: env.BRANCH == 'next'
-      run: mv dist-doc dist-doc/next
+      run: |
+        mv dist-doc dist-doc1
+        mkdir --parents ./dist-doc/next
+        mv dist-doc1 dist-doc/next
+
     - name: Deploy Doc
       if: env.PUBLISH == 'true'
       uses: crazy-max/ghaction-github-pages@v1
