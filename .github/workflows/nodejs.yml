@@ -21,6 +21,9 @@ jobs:
       run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF##*/})"
     - name: Set Release Mode (branch == master)
       if: env.BRANCH == 'master'
+      run: echo "::set-env name=PUBLISH::true"
+    - name: Set Release Mode (branch == next)
+      if: env.BRANCH == 'next'
       run: echo "::set-env name=PUBLISH::true" 
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -38,7 +41,7 @@ jobs:
       env:
         CI: true
 
-    - run: npx semantic-release@17.0.4
+    - run: npx semantic-release@17.0.7
       env: # Or as an environment variable
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
