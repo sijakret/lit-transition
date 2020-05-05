@@ -51,6 +51,9 @@ jobs:
       # will do verythingbut publish! (we need the bumped version number)
     - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
       if: env.PUBLISH == 'true'
+    - name: Move doc to next
+      if: env.BRANCH == 'next'
+      run: mv dist-doc dist-doc/next
     - name: Deploy Doc
       if: env.PUBLISH == 'true'
       uses: peaceiris/actions-gh-pages@v3
