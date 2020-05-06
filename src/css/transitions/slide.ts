@@ -64,6 +64,7 @@ export const slide = instantiateDefault(
       leave: {
         active: 'slide-leave-active',
         to: 'slide-leave-to',
+        lock: true
       },
       css:`
     .slide-enter-active {
