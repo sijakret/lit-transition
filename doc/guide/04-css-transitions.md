@@ -382,7 +382,10 @@ For example, if the `active` phase of your leave transition sets the position to
 In case of transition mode `'both'` this might be fine since the entering element will be added right at that same time anyways.
 In case of `'out-in'` mode, however, the template would be taken out of the flow, and the reacalculated layout would probably collapse a bit taking up the empty space.
 
-Also, if you want your elements to overlay during animations, we have a `lock` helper described in the transition options.
+If you want to take the leaving template out of the flow by setting its,
+we have a `lock` helper described in the transition options.
+Simple set `leave: { /*..*/, lock: true }` and make sure to set the 
+position to `absolute` in your `leave-active` state.
 
 > __Tip__: if you have problems with animations, try grabing an existing
 > working one that is close to what you want and tweak it.
