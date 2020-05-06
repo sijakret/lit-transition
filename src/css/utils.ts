@@ -56,13 +56,14 @@ export function normalizeCSSTransitionOptions(opts : any = {}): CSSTransitionOpt
 }
 
 
-export function instantiateDefault(generator:any) {
+export function instantiateDefault(name:string, generator:any) {
   // create default instance
   const inst = generator();
   // patch generator with default instance
   for(let p in inst) {
     generator[p] = inst[p];
   }
+  generator.name = name;
   return generator;
 }
 
