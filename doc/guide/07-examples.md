@@ -24,9 +24,9 @@ async function getImages(topics) {
 // our base animation configuration
 const anim = {
   mode: TransitionMode.Both, // transition enter+leave concurrently
-  opacity: 0.0, // fade in as well
-  leave: { lock: true }
-  // left, right <- these will be set dynamically
+  opacity: 0.0,              // fade in as well
+  // left: true,             <- will be set dynamically
+  // right: true             <- based on direction
 };
 
 // slideshow component
@@ -178,7 +178,7 @@ export class Comp extends LitElement {
     <button @click=${() => this.a = !this.a}>animate</button>
     <center style="margin: 20px; font-size: 30px; position: relative">
     ${transition(
-      this.a ? 'LIT-TRANSITION' : 'ANIMATE.CSSmmmmmm', {
+      this.a ? 'LIT-TRANSITION' : 'ANIMATE.CSS', {
         mode: 'both',
         enter: ['animated', 'rotateIn'+this.choice],
         leave: {

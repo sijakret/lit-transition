@@ -1,18 +1,37 @@
-import { CSSTransitionOptions, TransitionMode } from '../interfaces';
-import { instantiateDefault, mergeObjects as merge } from '../utils';
+import {
+  CSSTransitionOptions,
+  TransitionMode,
+  GeometryLockMode
+} from '../interfaces';
+import {
+  instantiateDefault,
+  mergeObjects
+} from '../utils';
 
 interface CSSSlideOptions extends CSSTransitionOptions  {
-  duration?: number
+  // easing options (default: ease-out)
   ease?: string
+  // opacity at start of animation (default: 0)
   opacity?: number
+  // duration in ms (default: 500)
+  duration?: number
+  // force positioning (default: undefined)
   leavePosition?: string
+  // slide to left (default: false)
   left?:Boolean
+  // slide to right (default: false)
   right?:Boolean
+  // slide to up (default: false)
   up?:Boolean
+  // slide to down (default: false)
   down?:Boolean
+  // slide out target x (default: 100%)
   x?: string
+  // slide out target y (default: 0%)
   y?: string
+  // slide in start x (default: same as x)
   x1?: string
+  // slide in start y (default: same as y)
   y1?: string
 }
 
@@ -56,7 +75,7 @@ export const slide = instantiateDefault('slide',
     };
     x1 = x1 || x;
     y1 = y1 || y;
-    return merge(opts, {
+    return mergeObjects({
       enter: {
         active: 'slide-enter-active',
         from: 'slide-enter-from'
@@ -64,7 +83,7 @@ export const slide = instantiateDefault('slide',
       leave: {
         active: 'slide-leave-active',
         to: 'slide-leave-to',
-        lock: true
+        lock: GeometryLockMode.Auto
       },
       css:`
     .slide-enter-active {
@@ -84,5 +103,5 @@ export const slide = instantiateDefault('slide',
       transform: translate(${x1}, ${y1});
     }`,
     mode
-  })
+  }, opts)
 })
