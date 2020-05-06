@@ -50,7 +50,10 @@ jobs:
       if: env.PUBLISH == 'true'
       # will do verythingbut publish! (we need the bumped version number)
     - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
-      if: env.PUBLISH == 'true'
+      if: ${{ env.PUBLISH == 'true' && !(env.NEXT == 'true') }}
+      # only on next
+    #- run: npm run build-doc&&cp dist-doc/next/index.html dist-doc/404.html
+    #  if: env.NEXT == 'true'
     - name: Deploy Doc
       if: env.PUBLISH == 'true'
       uses: peaceiris/actions-gh-pages@v3
