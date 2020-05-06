@@ -4,8 +4,10 @@ const CopyPlugin = require('copy-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const {EnvironmentPlugin, DefinePlugin} = require('webpack');
 
-const publicPath = process.env.NEXT ?
-  '/lit-transition/next/' : '/lit-transition/';
+const outDir = process.env.NEXT ?
+  'next/' : '';
+
+const publicPath = '/lit-transition/' + outDir;
 
 const config = {
   devtool: 'source-map',
@@ -14,7 +16,7 @@ const config = {
     'lit-transition': 'lit-transition'
   },
   output: {
-    path: path.resolve(__dirname, 'dist-doc'),
+    path: path.resolve(__dirname, 'dist-doc', outDir),
     publicPath,
     filename: '[name].js'
   },
