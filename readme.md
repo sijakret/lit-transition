@@ -53,4 +53,4 @@ $ npm install lit-transition
 
 ## Contributing
 
-Happy to accept pull requests!
+Happy to accept PRs!
