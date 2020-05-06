@@ -4,7 +4,7 @@ import { assert} from 'chai';
 import { transition } from 'lit-transition';
 import { compTest, TestComponent } from '../utils/comp';
 import { fade, land, slide } from '../../src/css/transitions';
-import { setForceClassList } from '../../src/css/class-list';
+import { setForceClassList } from '../../src/core/class-list';
 import { TransitionMode } from '../../src/css/interfaces';
 
 const modes = [
