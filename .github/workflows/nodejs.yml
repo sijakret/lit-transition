@@ -47,7 +47,7 @@ jobs:
       env: # Or as an environment variable
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: env.PUBLISH == 'true'
+      if: ${{ env.PUBLISH == 'true' && !(env.NEXT == 'true') }}
       # will do verythingbut publish! (we need the bumped version number)
     - run: npm run build-doc
       if: env.PUBLISH == 'true'
