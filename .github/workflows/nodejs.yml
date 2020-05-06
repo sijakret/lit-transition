@@ -49,7 +49,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: env.PUBLISH == 'true'
       # will do verythingbut publish! (we need the bumped version number)
-    - run: npm run build-doc&&cp dist-doc/index.html dist-doc/404.html
+    - run: npm run build-doc
+      if: env.PUBLISH == 'true'
+      # fallback
+    - run: cp dist-doc/index.html dist-doc/404.html
       if: ${{ env.PUBLISH == 'true' && !(env.NEXT == 'true') }}
       # only on next
     #- run: npm run build-doc&&cp dist-doc/next/index.html dist-doc/404.html
