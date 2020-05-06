@@ -176,11 +176,14 @@ export class Comp extends LitElement {
     <button @click=${() => this.a = !this.a}>animate</button>
     <center style="margin: 20px; font-size: 30px; position: relative">
     ${transition(
-      this.a ? 'LIT-TRANSITION' : 'ANIMATE.CSS', {
+      this.a ? 'LIT-TRANSITION' : '<3 ANIMATE.CSS <3', {
         mode: 'both',
         enter: ['animated', 'rotateIn'+this.choice],
         leave: {
           active: ['animated', 'rotateOut'+this.choice, 'absolute'],
+          // container is relative and leave transition
+          // has absolute positioning. let's lock the geometry
+          // so the leaving temaplte does not jump around
           lock: true
         }
       }
