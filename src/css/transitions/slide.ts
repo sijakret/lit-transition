@@ -20,7 +20,7 @@ interface CSSSlideOptions extends CSSTransitionOptions  {
  * simple slide transition
  * TODO
  */
-export const slide = instantiateDefault(
+export const slide = instantiateDefault('slide',
   function slide(opts:CSSSlideOptions = {}) {
     const {left,right,up,down} = opts;
     let simple = {};
