@@ -63,7 +63,11 @@ export function instantiateDefault(name:string, generator:any) {
   for(let p in inst) {
     generator[p] = inst[p];
   }
-  generator.name = name;
+  Object.defineProperty(generator, 'name', {
+    get() {
+      return name;
+    }
+  })
   return generator;
 }
 
