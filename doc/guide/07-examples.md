@@ -103,8 +103,6 @@ export class Comp extends LitElement {
 }
 </script>
 
-# Use with lit-element-router
-
 # Use with animate.css
 
 [animate.css](https://daneden.github.io/animate.css/) is a neat collection
@@ -190,3 +188,11 @@ export class Comp extends LitElement {
   } 
 }
 </script>
+
+
+# Use with lit-element-router
+
+TODO
+
+Basically you just need to add the transition directive
+whereever your templates are swapped.

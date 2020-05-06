@@ -394,7 +394,7 @@ In case of transition mode `TransitionMode.Both (==='both')` this might be fine 
 In case of `'out-in'` mode, however, the template would be taken out of the flow, and the reacalculated layout would probably collapse a bit taking up the empty space.
 So here, you likely want to keep elements in the flow of the document as long as they live.
 
-### GeomtryLockMode
+### GeometryLockMode
 
 If you want to take the leaving template out of the flow by setting its
 position to `absolute`.
