@@ -435,11 +435,12 @@ doc-demo {
 
   nav {
     transition: all 0.2s;
-    opacity: 0;
-    height: 0px;
-    width: 100%;
-    top: 64px;
-    display: fixed;
+    opacity: 1;
+    width: initial;
+    height: 100%;
+    left: -100%;
+    top: 60px;
+    position: fixed;
     > a {
       font-size: 16px;
     }
@@ -450,9 +451,11 @@ doc-demo {
   nav[menu] {
     opacity: 1;
     display: initial;
+    left: 0%;
     height: 100%;
     z-index: 10;
     background: var(--bg-color);
+    border-right: 1px solid var(--theme-color);
   }
   [short] {
     > div {
