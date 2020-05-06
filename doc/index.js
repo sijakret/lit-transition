@@ -10,6 +10,7 @@ import router from './router';
 import {transition, mark } from 'lit-transition';
 import {transLanding,transContent,transTitle,transSubNav} from './transitions';
 import github from './assets/github.svg';
+import {version} from './version';
 
 
 // main app
@@ -34,10 +35,7 @@ class Component extends router() {
       }} mobile-menu-button>☰</a>
       <a href=${this.baseRoute} underline title>
         lit-transition
-        <span>${
-          require('../package.json').version
-          +(process.env.NEXT?'-NEXT':'')
-        }</span>
+        <span>${version}</span>
         
       </a>
       <a href=https://github.com/sijakret/lit-transition>${github}</a>
