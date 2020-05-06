@@ -7,7 +7,7 @@ interface CSSFadeOptions extends CSSTransitionOptions  {
   opacity?: number
 }
 
-export const fade = instantiateDefault(
+export const fade = instantiateDefault('fade',
   function fade(opts:CSSFadeOptions = {}) {
   const {
     duration = 500,

@@ -7,7 +7,7 @@ interface CSSLandOptions extends CSSTransitionOptions  {
   opacity?: number
 }
 
-export const land = instantiateDefault(
+export const land = instantiateDefault('land',
   function land(opts:CSSLandOptions = {}) {
     const {
       duration = 500,
