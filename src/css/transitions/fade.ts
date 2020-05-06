@@ -1,9 +1,12 @@
 import { CSSTransitionOptions } from '../interfaces';
-import { instantiateDefault } from '../utils';
+import { instantiateDefault, mergeObjects } from '../utils';
 
 interface CSSFadeOptions extends CSSTransitionOptions  {
+  // duration in ms (default: 500 )
   duration?: number
+  // css easing options (default: ease-out)
   ease?: string,
+  // opactiy to fade from and to (default: 0)
   opacity?: number
 }
 
@@ -14,7 +17,7 @@ export const fade = instantiateDefault('fade',
     ease = 'ease-out',
     opacity = 0.0
   } = opts;
-  return {
+  return mergeObjects({
     enter: {
       active: 'fade-enter-active',
       from: 'fade-enter-from',
@@ -41,6 +44,5 @@ export const fade = instantiateDefault('fade',
     opacity: 1;
   }
   `,
-  ...opts
-  }
+  }, opts)
 });

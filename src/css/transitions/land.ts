@@ -1,9 +1,12 @@
 import { CSSTransitionOptions } from '../interfaces';
-import { instantiateDefault } from '../utils';
+import { instantiateDefault, mergeObjects } from '../utils';
 
 interface CSSLandOptions extends CSSTransitionOptions  {
+  // duration in ms (default: 500 )
   duration?: number
+  // css easing options (default: ease-out)
   ease?: string,
+  // opactiy to fade from and to (default: 0)
   opacity?: number
 }
 
@@ -11,10 +14,10 @@ export const land = instantiateDefault('land',
   function land(opts:CSSLandOptions = {}) {
     const {
       duration = 500,
-      ease = 'linear',
+      ease = 'ease-out',
       opacity = 0
     } = opts;
-    return {
+    return mergeObjects({
       enter: {
         active: 'land1-enter-active',
         from: 'land1-enter-from',
@@ -44,6 +47,5 @@ export const land = instantiateDefault('land',
         transform: translate(0px, 100px);
         opacity: ${opacity};
       }`,
-      ...opts
-    }
+    }, opts)
   });

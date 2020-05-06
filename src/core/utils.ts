@@ -1,13 +1,27 @@
-
 import {
   NodePart,
   TemplateResult
 } from 'lit-html';
+import classList from './class-list';
 
 export function nextFrame(n = 1):Promise<void> {
   return new Promise(resolve => 
     --n === 0 ? requestAnimationFrame(() => resolve()) :
       resolve(nextFrame(n)));
+}
+
+/**
+ * get parent skipping over fragments
+ * @param elem input element
+ */
+function parentElement(elem:HTMLElement):HTMLElement|null {
+  let e = elem;
+  while(e = (e.parentNode || (e as any).host)) {
+    if(e instanceof HTMLElement) {
+      return e;
+    }
+  }
+  return null;
 }
 
 /**
@@ -51,6 +65,43 @@ export function marked(templateResult:TemplateResult) {
 }
 
 /**
+ * tries to figure out if the geometry of an object
+ * should be locked. will return true if e will have
+ * position: absolute and parent has position: relative;
+ * @param e element
+ * @param activeCass className that would be applied
+ */
+export function needsLock(e:HTMLElement, activeClass:string) {
+  const parent = parentElement(e);
+  if(parent) {
+
+    // createa a div with active class to peek if
+    // it will be positioned relatively;
+    const position = (() => {
+      const div = document.createElement('div');
+      const cl = classList(div);
+      // remove not needed since we detach child alltogether
+      const add = (c:any) => Array.isArray(c) ?
+        c.forEach((i:string) => cl.add(i)) : cl.add(c);
+      // use shadowRoot for peeking if available!
+      const root = parent.shadowRoot || parent;
+      add(activeClass);
+      root.appendChild(div);
+      const style = window.getComputedStyle(div);
+      const position = style.position;
+      // peeking done remove child
+      root.removeChild(div);
+      return position;
+    })()
+    if(position === 'absolute') {
+      const style = window.getComputedStyle(parent);
+      return style.position === 'relative';
+    }
+  }
+  return false;
+}
+
+/**
  * records geometry of a dom node so it can
  * be reaplied later on
  */
@@ -77,7 +128,7 @@ export function recordExtents(e:any) {
       // const style = window.getComputedStyle(e);
       top += e.offsetTop - (e.scrollTop || 0);
       left += e.offsetLeft - (e.scrollLeft || 0);
-      e = e.parentNode || (e as any).host;
+      e = parentElement(e);
     } 
   }
   return {
@@ -114,3 +165,4 @@ document.addEventListener('visibilitychange', updteVisibility, false);
 export function pageVisible() {
   return _visible;
 }
+

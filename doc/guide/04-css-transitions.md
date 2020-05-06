@@ -64,10 +64,10 @@ transition(html`..transition me..`, {
   // default: undefined
   duration: 1000 //ms
 
-  // override the classes assigned during enter transitions
   // if set to 'false' no enter transition is performed
   // default: as indicated below
   enter: {
+    // override classes assigned during enter transitions
     active: 'enter-active',
     from: 'enter-from',
     to: 'enter-to',
@@ -75,19 +75,23 @@ transition(html`..transition me..`, {
     // only applies to enter transition
     // falls back to base duration
     // default: undefined
-    duration: 2000, 
+    duration: Number (ms), 
 
     // if true, additional styles
     // will be applied that will freeze the current geometry
-    // present before animation start
+    // present before animation starts
     // check out the 'Layout reflows' section below
-    lock: false
+    // options:
+    //  GeometryLockMode.None = 0 | false
+    //  GeometryLockMode.Lock = 1 | true
+    //  GeometryLockMode.Auto = 'auto'
+    lock: GeometryLockMode.None
   },
 
-  // override the classes assigned during enter transitions
   // if set to 'false' no enter transition is performed
   // default: as indicated below
   leave: {
+    // override classes assigned during enter transitions
     active: 'leave-active',
     from: 'leave-from',
     to: 'leave-to',
@@ -95,12 +99,17 @@ transition(html`..transition me..`, {
     // only applies to enter transition
     // falls back to base duration
     // default: undefined
-    duration: 2000, 
-
-    // leave transitions use the lock feature for
-    // conditionally by default
+    duration: Number (ms),
+    
+    // if true, additional styles
+    // will be applied that will freeze the current geometry
+    // present before animation starts
     // check out the 'Layout reflows' section below
-    lock: mode !== TransitionMode.Both
+    // options:
+    //  GeometryLockMode.None = 0 | false
+    //  GeometryLockMode.Lock = 1 | true
+    //  GeometryLockMode.Auto = 'auto'
+    lock: GeometryLockMode.None
   },
 
   // hook called right before enter transition starts
@@ -360,7 +369,7 @@ export class Comp extends LitElement {
 }
 </script>
 
-# Caveat: Layout reflows
+# Layout reflows
 
 At some point during transitions the leaving template is removed
 and the entering template is added.
@@ -378,14 +387,49 @@ is nested in the flow.
 > If this is not desired, try `display: inline-block` to make the
 > DOM Node keep more of its geometry!
 
-For example, if the `active` phase of your leave transition sets the position to `fixed`, that element get's taken out of the flow the second its leave transition is started.
-In case of transition mode `'both'` this might be fine since the entering element will be added right at that same time anyways.
-In case of `'out-in'` mode, however, the template would be taken out of the flow, and the reacalculated layout would probably collapse a bit taking up the empty space.
 
-If you want to take the leaving template out of the flow by setting its,
-we have a `lock` helper described in the transition options.
-Simple set `leave: { /*..*/, lock: true }` and make sure to set the 
-position to `absolute` in your `leave-active` state.
+If the `active` phase of your leave transition sets the position to `absolute` (or `fixed`),
+that element get's taken out of the flow the second its leave transition is started.
+In case of transition mode `TransitionMode.Both (==='both')` this might be fine since the entering element will be added right at that same time anyways.
+In case of `'out-in'` mode, however, the template would be taken out of the flow, and the reacalculated layout would probably collapse a bit taking up the empty space.
+So here, you likely want to keep elements in the flow of the document as long as they live.
+
+### GeomtryLockMode
+
+If you want to take the leaving template out of the flow by setting its
+position to `absolute`.
+The item might snap to a different location depending other css properties
+like margins etc.
+To help with this, we have a `lock` helper described in the transition options.
+
+```javascript
+transition(temaplte, { 
+  leave: {
+    /*..*/,
+    lock: true
+  }
+})
+```
+and set the position to `absolute` in your `leave-active` state.
+The geometry of the node right before applying the leave transition will be recorded
+and locked so you can for instance easily apply `transform: translate(..)` css
+without having to worry about positioning much.
+
+> Note: you will likely want to set the position of you parent element to `relative`
+> when using transitions with absolute positioning!
+
+If you are not sure or are having problems, try 'auto' mode. 
+```javascript
+transition(temaplte, { 
+  leave: {
+    /*..*/,
+    lock: GeomtryLockMode.Auto (=='auto')
+  }
+})
+```
+It will try to detect if you are applying absolute positioning during the `-active`
+phase of your animation and are located in a container with `relative`positioning.
+In that case geometry will be locked for you!
 
 > __Tip__: if you have problems with animations, try grabing an existing
 > working one that is close to what you want and tweak it.
@@ -438,7 +482,7 @@ export class Comp extends LitElement {
       Object.values(builtins).map(b => html`<option value=${b.name}>${b.name}</option>`)
     }</select>
     <button @click=${() => this.a = !this.a}>animate</button>
-    <div style="margin: 20px; font-size: 30px;">
+    <div style="margin: 20px; font-size: 30px">
     ${transition(
       this.a ? 'CONTENT A' : 'CONTENT B',
       this.choice
@@ -447,5 +491,61 @@ export class Comp extends LitElement {
 }
 </script>
 
-TODO: elaborate a bit.
-TODO: show actual paramters
+> Note: some of the built-in transitions manipulate positions, and by default they
+> assume 
+
+### Options
+
+The following options are available for our built-in transitions
+
+```javascript
+interface CSSFadeOptions extends CSSTransitionOptions  {
+  // duration in ms (default: 500 )
+  duration?: number
+  // css easing options (default: ease-out)
+  ease?: string,
+  // opactiy to fade from and to (default: 0)
+  opacity?: number
+}
+
+interface CSSSlideOptions extends CSSTransitionOptions  {
+  // duration in ms (default: 500)
+  duration?: number
+  // easing options (default: ease-out)
+  ease?: string
+  // opacity at start of animation (default: 0)
+  opacity?: number
+  // force positioning (default: undefined)
+  leavePosition?: string
+  // slide to left (default: false)
+  left?:Boolean
+  // slide to right (default: false)
+  right?:Boolean
+  // slide to up (default: false)
+  up?:Boolean
+  // slide to down (default: false)
+  down?:Boolean
+  // slide out target x (default: 100%)
+  x?: string
+  // slide out target y (default: 0%)
+  y?: string
+  // slide in start x (default: same as x)
+  x1?: string
+  // slide in start y (default: same as y)
+  y1?: string
+
+  // additional options will be added to
+  // to the TransitionOptions passed to the directive
+}
+
+interface CSSLandOptions extends CSSTransitionOptions  {
+  // duration in ms (default: 500 )
+  duration?: number
+  // css easing options (default: ease-out)
+  ease?: string,
+  // opactiy to fade from and to (default: 0)
+  opacity?: number
+}
+
+
+```

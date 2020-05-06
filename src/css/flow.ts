@@ -1,6 +1,16 @@
 import { NodePart, html} from 'lit-html';
-import classList from './class-list';
-import {partDom, applyExtents, recordExtents, pageVisible, classChanged} from '../core/utils';
+import classList from '../core/class-list';
+import {
+  partDom,
+  applyExtents,
+  recordExtents,
+  pageVisible,
+  classChanged,
+  needsLock
+} from '../core/utils';
+import {
+  GeometryLockMode
+} from './interfaces'
  
 /**
  * schedules css transitons
@@ -27,10 +37,11 @@ export const flow = {
     //const parent = dom.parentNode;
     let extents: any;
     if(lock) {
-      extents = recordExtents(dom);
+      if(lock !== GeometryLockMode.Auto|| active && needsLock(dom, active)) {
+        extents = recordExtents(dom);
+      }
     }
     await new Promise(async resolve => {
-      //  const id = Math.random();
       const cl = classList(dom);
       const add = (c:Array<string>) => Array.isArray(c) ?
         c.forEach((i:string) => cl.add(i)) : cl.add(c);
