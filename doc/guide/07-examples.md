@@ -183,7 +183,7 @@ export class Comp extends LitElement {
           active: ['animated', 'rotateOut'+this.choice, 'absolute'],
           // container is relative and leave transition
           // has absolute positioning. let's lock the geometry
-          // so the leaving temaplte does not jump around
+          // so the leaving template does not jump around
           lock: true
         }
       }
