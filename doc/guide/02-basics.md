@@ -75,12 +75,12 @@ We support three transition modes:
   Once the leave transition has completed,
   the enter transition for the new content triggered
 * __`both`__.
-  both enter and leave transition are triggered simulatneously right away
+  both enter and leave transition are triggered simultaneously right away
 
 The transition mode can be supplied as part of the [options of a transition](/css-transitions#sec-1)
 
 ```javascript
-transition(template, { mode: 'in-out' /*, ..more optiond*/ })
+transition(template, { mode: 'in-out' /*, ..more options*/ })
 ```
 
 Take a look at the following example to try out the differences
@@ -120,11 +120,11 @@ export class Comp extends LitElement {
 
 # Marking templates
 
-Transitions are triggered every time a template is rerendered.
+Transitions are triggered every time a template is re-rendered.
 This means, that whenever sections unrelated to your transition
 trigger a redraw, all transition directives are re-executed as well.
 
-In some scenerios, re-runing these animations might be desired.
+In some scenarios, re-running these animations might be desired.
 To only trigger transitions on content that actually changed,
 we need to mark templates so lit-transition can recognized templates
 it has already seen and skip animations.
@@ -134,7 +134,7 @@ Consider the example below.
 If you click the 'unrelated' button,
 even though the affected part of the template
 is not a direct child of the transition directive,
-it still triggers a re-reder of the whole template
+it still triggers a re-render of the whole template
 and thus a transition animation.
 
 <script>
