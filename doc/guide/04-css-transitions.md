@@ -382,7 +382,7 @@ Similarly, the css `display` property has a huge effect on how a DOM node
 is nested in the flow.
 
 > If you use `display: block`, a node will fill the whole line.
-> If you remove it from the flow by setting `postion: relatve|absolute`
+> If you remove it from the flow by setting `position: fixed|absolute`
 > the extends of the object may change drastically.
 > If this is not desired, try `display: inline-block` to make the
 > DOM Node keep more of its geometry!
@@ -391,7 +391,7 @@ is nested in the flow.
 If the `active` phase of your leave transition sets the position to `absolute` (or `fixed`),
 that element get's taken out of the flow the second its leave transition is started.
 In case of transition mode `TransitionMode.Both (==='both')` this might be fine since the entering element will be added right at that same time anyways.
-In case of `'out-in'` mode, however, the template would be taken out of the flow, and the reacalculated layout would probably collapse a bit taking up the empty space.
+In case of `'out-in'` mode, however, the template would be taken out of the flow, and the re-calculated layout would probably collapse a bit taking up the empty space.
 So here, you likely want to keep elements in the flow of the document as long as they live.
 
 ### GeometryLockMode
@@ -403,7 +403,7 @@ like margins etc.
 To help with this, we have a `lock` helper described in the transition options.
 
 ```javascript
-transition(temaplte, { 
+transition(template, { 
   leave: {
     /*..*/,
     lock: true
@@ -420,7 +420,7 @@ without having to worry about positioning much.
 
 If you are not sure or are having problems, try 'auto' mode. 
 ```javascript
-transition(temaplte, { 
+transition(template, { 
   leave: {
     /*..*/,
     lock: GeomtryLockMode.Auto (=='auto')
@@ -431,7 +431,7 @@ It will try to detect if you are applying absolute positioning during the `-acti
 phase of your animation and are located in a container with `relative`positioning.
 In that case geometry will be locked for you!
 
-> __Tip__: if you have problems with animations, try grabing an existing
+> __Tip__: if you have problems with animations, try grabbing an existing
 > working one that is close to what you want and tweak it.
 
 
@@ -543,7 +543,7 @@ interface CSSLandOptions extends CSSTransitionOptions  {
   duration?: number
   // css easing options (default: ease-out)
   ease?: string,
-  // opactiy to fade from and to (default: 0)
+  // opacity to fade from and to (default: 0)
   opacity?: number
 }
 
