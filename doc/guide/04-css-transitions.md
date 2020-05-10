@@ -61,8 +61,14 @@ transition(html`..transition me..`, {
   // we won't be able to automaticically know when it
   // finished so you need to specify the duration explicitly
   // applies to enter and leave transition
-  // default: undefined
+  // default: 500ms
   duration: 1000 //ms
+
+  // if true, animations will be bypassed during while
+  // pages are not shown, the intent is to save computations
+  // js hooks will still be executed.
+  // default: true
+  skipHidden: true
 
   // if set to 'false' no enter transition is performed
   // default: as indicated below
@@ -499,7 +505,7 @@ export class Comp extends LitElement {
 The following options are available for our built-in transitions
 
 ```javascript
-export interface CSSTransitionOptions {
+interface CSSTransitionOptions {
   // css string or template
   css?: TemplateResult|string|null = null
   // duration in ms
