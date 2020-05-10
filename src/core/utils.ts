@@ -74,7 +74,6 @@ export function marked(templateResult:TemplateResult) {
 export function needsLock(e:HTMLElement, activeClass:string) {
   const parent = parentElement(e);
   if(parent) {
-
     // createa a div with active class to peek if
     // it will be positioned relatively;
     const position = (() => {
@@ -156,13 +155,17 @@ export function applyExtents(e:HTMLElement, ext:any) {
 
 
 let _visible:Boolean;
-function updteVisibility(){
-  _visible = !document.hidden;
+function updatePageVisibility(visible = !document.hidden){
+  _visible = visible;
 }
-updteVisibility();
-document.addEventListener('visibilitychange', updteVisibility, false);
+updatePageVisibility();
+document.addEventListener('visibilitychange', () => updatePageVisibility(), false);
 
-export function pageVisible() {
+if(process.env.DEBUG) {
+  // @ts-ignore
+  window.updatePageVisibility = updatePageVisibility;
+}
+  
+export function pageVisible():Boolean {
   return _visible;
 }
-

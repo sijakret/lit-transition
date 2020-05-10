@@ -42,6 +42,7 @@ export interface CSSTransitionOptions {
   enter?: CSSClassSequence|Boolean
   leave?: CSSClassSequence|Boolean
   mode?: TransitionMode
+  skipHidden?: Boolean
   onEnter?: Function
   onLeave?: Function
   onAfterEnter?: Function

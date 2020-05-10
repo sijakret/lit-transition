@@ -74,7 +74,7 @@ const config = {
   },
 
   plugins: [
-    new EnvironmentPlugin(['NEXT']),
+    new EnvironmentPlugin(['NEXT','DEBUG']),
     new DefinePlugin({
       'PUBLIC_PATH': JSON.stringify(publicPath)
     }),

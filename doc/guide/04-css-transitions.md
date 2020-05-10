@@ -499,9 +499,27 @@ export class Comp extends LitElement {
 The following options are available for our built-in transitions
 
 ```javascript
+export interface CSSTransitionOptions {
+  // css string or template
+  css?: TemplateResult|string|null = null
+  // duration in ms
+  duration?: number = 500
+  // enter classes {active,from,to}
+  enter?: CSSClassSequence|Boolean = undefined
+  // leave classes {active,from,to}
+  leave?: CSSClassSequence|Boolean = undefined
+  // enter classes {'in-out','out-in', 'both'}
+  mode?: TransitionMode = 'both'
+  // dont animate while document.hidden === true
+  skipHidden?: Boolean = true
+  // callbacks
+  onEnter?: Function = undefined
+  onLeave?: Function = undefined
+  onAfterEnter?: Function = undefined
+  onAfterLeave?: Function = undefined
+}
+
 interface CSSFadeOptions extends CSSTransitionOptions  {
-  // duration in ms (default: 500 )
-  duration?: number
   // css easing options (default: ease-out)
   ease?: string,
   // opactiy to fade from and to (default: 0)
@@ -509,8 +527,6 @@ interface CSSFadeOptions extends CSSTransitionOptions  {
 }
 
 interface CSSSlideOptions extends CSSTransitionOptions  {
-  // duration in ms (default: 500)
-  duration?: number
   // easing options (default: ease-out)
   ease?: string
   // opacity at start of animation (default: 0)
@@ -539,8 +555,6 @@ interface CSSSlideOptions extends CSSTransitionOptions  {
 }
 
 interface CSSLandOptions extends CSSTransitionOptions  {
-  // duration in ms (default: 500 )
-  duration?: number
   // css easing options (default: ease-out)
   ease?: string,
   // opacity to fade from and to (default: 0)
