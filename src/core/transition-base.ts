@@ -5,7 +5,7 @@ import {
 } from 'lit-html';
 import {
   marked,
-  //nextFrame
+  pageVisible
 } from './utils'
 
 const setup = new WeakMap();
@@ -32,10 +32,6 @@ export function transitionBase(flow:any) {
       // the name is used to decide if consider
       // an animation to have happened
       const name = marked(tr);
-  
-      // data is used to store some state data
-      // per container
-      let data = setup.get(container);
 
       const {
         enter,
@@ -47,6 +43,10 @@ export function transitionBase(flow:any) {
         mode = 'in-out'
       } = transition;
 
+      // data is used to store some state data
+      // per container
+      let data = setup.get(container);
+      
       // adds new template result
       function add(e:TemplateResult) {
         const part = new NodePart(container.options);
@@ -67,6 +67,21 @@ export function transitionBase(flow:any) {
         }
         s && s.parentNode && s.parentNode.removeChild(s);
         e && e.parentNode && e.parentNode.removeChild(e);
+      }
+
+      // in case the page is not visible
+      // we skip all animations but still call the
+      // corresponding hooks to stay transparent
+      // in regards to app logic
+      if(!pageVisible()) {
+        data.last && remove(data.last);
+        // simply update dom and call hooks
+        onLeave && await onLeave();
+        onAfterLeave && await onAfterLeave();
+        onEnter && await onEnter();
+        data.last = add(tr);
+        onAfterEnter && await onAfterEnter();
+        return;
       }
   
       // perform enter transition
