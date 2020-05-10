@@ -487,9 +487,9 @@ export class Comp extends LitElement {
     <select @change=${this.select}>${
       Object.values(builtins).map(b => html`<option value=${b.name}>${b.name}</option>`)
     }</select>
-    <button @click=${() => this.a = !this.a}>animate</button>
-    <div style="margin: 20px; font-size: 30px">
-    ${transition(
+    <div @click=${() => this.a = !this.a}
+      style="margin: 20px; font-size: 30px">
+    click to lit ${transition(
       this.a ? 'CONTENT A' : 'CONTENT B',
       this.choice
     )}</div>`;
