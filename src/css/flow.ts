@@ -4,7 +4,7 @@ import {
 } from 'lit-html';
 import classList from '../core/class-list';
 import {
-  partDom,
+  partDomSingle,
   applyExtents,
   recordExtents,
   classChanged,
@@ -30,7 +30,10 @@ export const flow = {
       to,
       lock
     } = classes;
-    const dom = partDom(part);
+
+    // will throw if dom does not expose exactly one
+    // non-text node
+    const dom = partDomSingle(part);
 
     if(!dom) {
       // animation was cancelled?

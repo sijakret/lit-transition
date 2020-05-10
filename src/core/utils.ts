@@ -47,8 +47,35 @@ export function classChanged(node:HTMLElement, cb:Function|null, skipFrame:Boole
   });
 }
 
-export function partDom(part:NodePart):any {
-  return part.startNode.nextSibling;
+/**
+ * returns true on ignore dom nodes
+ * @param dom 
+ */
+function ignoredDom(dom:HTMLElement) {
+  return dom.nodeName === '#text' && !(dom.nodeValue?.trim());
+}
+
+function partNodes(part:NodePart) {
+  const collected = [];
+  let node:any = part.startNode.nextSibling;
+  while(node !== part.endNode) {
+    collected.push(node);
+    node = node.nextSibling;
+  }
+  return collected;
+} 
+
+export function partDomSingle(part:NodePart):any {
+  let nodes:Array<any> = partNodes(part);
+  let active = nodes.filter(d => !ignoredDom(d));
+  // check part has a shape we accept
+  // (i.e. only one non-text node)
+  if(active.length != 1) {
+    throw new Error(
+      `lit-transition directive expects exactly one child node,
+      but was passed ${active.map(a => a.nodeName).join(', ')}`)
+  }
+  return active[0];
 }
 
 /**
