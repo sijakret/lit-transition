@@ -21,13 +21,15 @@ export function normalizeCSSTransitionOptions(opts : any = {}): CSSTransitionOpt
     onAfterEnter,
     onAfterLeave,
     onEnter,
-    onLeave
+    onLeave,
+    skipHidden = true
   } = opts;
 
   // don't do it by default, it might confuse
   const lock = false; //mode !== TransitionMode.Both;
   return {
     duration,
+    skipHidden,
     css: html`<style>${css}</style>`,
     enter: enter != false ? (Array.isArray(enter)||typeof enter === 'string' ? {
         active: enter,

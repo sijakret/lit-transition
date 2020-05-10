@@ -1,10 +1,12 @@
-import { NodePart, html} from 'lit-html';
+import {
+  NodePart,
+  html
+} from 'lit-html';
 import classList from '../core/class-list';
 import {
   partDom,
   applyExtents,
   recordExtents,
-  pageVisible,
   classChanged,
   needsLock
 } from '../core/utils';
@@ -14,13 +16,12 @@ import {
  
 /**
  * schedules css transitons
+ * @param part NodePart that is to be rendered
+ * @param classes classes to be applied as part of css flow
+ * @param global global params to be merged with flow-specific params
  */
 export const flow = {
   async transition(part:NodePart, classes:any, global: any) {
-    // make sure we never animate on hidden windows
-    if(!pageVisible()) {
-      return;
-    }
     // destructure params
     const {
       duration = global.duration,
@@ -30,6 +31,7 @@ export const flow = {
       lock
     } = classes;
     const dom = partDom(part);
+
     if(!dom) {
       // animation was cancelled?
       return;
