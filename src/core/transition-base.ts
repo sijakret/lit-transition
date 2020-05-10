@@ -74,12 +74,12 @@ export function transitionBase(flow:any) {
       // corresponding hooks to stay transparent
       // in regards to app logic
       if(!pageVisible()) {
-        data.last && remove(data.last);
+        data && data.last && remove(data.last);
         // simply update dom and call hooks
         onLeave && await onLeave();
         onAfterLeave && await onAfterLeave();
         onEnter && await onEnter();
-        data.last = add(tr);
+        data && (data.last = add(tr));
         onAfterEnter && await onAfterEnter();
         return;
       }

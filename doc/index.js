@@ -44,7 +44,10 @@ class Component extends router() {
     )}
     ${transition(
       this.route === 'Landing' ?
-        mark(html`<doc-landing></doc-landing>`, 'landing') :
+        mark(html`
+        <doc-landing>
+        </doc-landing>
+        `, 'landing') :
         mark(this.page, 'page')
       , transLanding
     )}
