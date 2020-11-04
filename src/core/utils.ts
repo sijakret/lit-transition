@@ -187,11 +187,6 @@ function updatePageVisibility(visible = !document.hidden){
 }
 updatePageVisibility();
 document.addEventListener('visibilitychange', () => updatePageVisibility(), false);
-
-if(process.env.DEBUG) {
-  // @ts-ignore
-  window.updatePageVisibility = updatePageVisibility;
-}
   
 export function pageVisible():Boolean {
   return _visible;
