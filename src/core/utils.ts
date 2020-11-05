@@ -185,6 +185,7 @@ let _visible:Boolean;
 function updatePageVisibility(visible = !document.hidden){
   _visible = visible;
 }
+
 updatePageVisibility();
 document.addEventListener('visibilitychange', () => updatePageVisibility(), false);
   
