@@ -43,7 +43,7 @@
     "lit-element": "^2.3.0",
     "lit-element-router": "^2.0.1",
     "loader-utils": "^2.0.0",
-    "markdown-it": "^10.0.0",
+    "markdown-it": "^12.3.2",
     "markdown-it-highlight": "^0.2.0",
     "mocha": "^7.1.1",
     "node-sass": "^4.13.1",
