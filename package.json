@@ -45,7 +45,7 @@
     "loader-utils": "^2.0.0",
     "markdown-it": "^10.0.0",
     "markdown-it-highlight": "^0.2.0",
-    "mocha": "^7.1.1",
+    "mocha": "^10.2.0",
     "node-sass": "^4.13.1",
     "puppeteer": "^3.0.0",
     "sass-loader": "^8.0.2",
